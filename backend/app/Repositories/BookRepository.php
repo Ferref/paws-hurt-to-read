@@ -2,12 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
-use Illuminate\Support\Facades\Http;
+namespace App\Repositories;
+
+// Models
 use \App\Models\Book;
+
+// Services
+use Illuminate\Support\Facades\Http;
+use Psr\Log\LoggerInterface as Logger;
 
 class BookRepository
 {
+    private $logger;
+
+    public function __construct(Logger $logger) {
+        $this->logger = $logger;
+    }
+
     public function fetchBooks(array $ids): array
     {
         $host = config('services.book_provider.host');
@@ -22,12 +33,20 @@ class BookRepository
 
             if ($response->successful()) {
                 $data = $response->json();
+
+                $this->logger->info('Fetched books successfully', [
+                    'count' => count($data['results'] ?? [])
+                ]);
+                
                 return $data['results'] ?? [];
             }
 
             return [];
         } catch (\Throwable $e) {
-            echo $e->getMessage();
+            $this->logger->error('Failed to fetch books', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
         }
     }
 
