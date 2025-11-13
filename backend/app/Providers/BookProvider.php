@@ -7,16 +7,11 @@ use Illuminate\Support\Facades\Http;
 
 class BookProvider
 {
-    public function fetchBooks(Request $request = null): array
+    public function fetchBooks(array $ids): array
     {
         $host = config('services.book_provider.host');
         $key = config('services.book_provider.key');
-        $books = config("services.book_provider.books") . "/{$ids}";
-
-        if ($request && $request->has('ids')) {
-            $ids = $request->validate(['ids' => 'required|array'])['ids'];
-            $books = config("services.book_provider.books") . '?' . http_build_query(['ids' => $ids]);
-        }
+        $books = config("services.book_provider.books") . '?' . http_build_query(['ids' => implode(',', $ids)]);
 
         try {
             $response = Http::withHeaders([
