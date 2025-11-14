@@ -1,106 +1,106 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'dart:convert';
 
-class HomeScreen extends StatelessWidget {
+import '../../viewmodels/home_view_model.dart';
+import '../../models/book.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  Future<List<dynamic>> fetchData() async {
-    final base = dotenv.env['API_BASE'];
-    final booksRangeEndpoint = dotenv.env['BOOK_COVERS_ENDPOINT'];
-    
-    int start = 1;
-    int end = 10;
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-    final uri = Uri.parse('$base/$booksRangeEndpoint/$start-$end');
-    final response = await http.get(uri);
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body) as List<dynamic>;
-    } else {
-      throw Exception('Failed to load data: ${response.statusCode}');
-    }
+class _HomeScreenState extends State<HomeScreen> {
+  final HomeViewModel _vm = HomeViewModel();
+
+  @override
+  void initState() {
+    super.initState();
+    // load initial range
+    _vm.loadBooks(start: 1, end: 10);
+  }
+
+  @override
+  void dispose() {
+    _vm.dispose();
+    super.dispose();
+  }
+
+  Widget _buildGrid(List<Book> books) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(12.0),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 0.65,
+      ),
+      itemCount: books.length,
+      itemBuilder: (context, index) {
+        final book = books[index];
+        final title = book.title;
+        final cover = book.coverImage;
+
+        return InkWell(
+          onTap: () {},
+          child: Card(
+            color: Colors.white70,
+            elevation: 2,
+            clipBehavior: Clip.hardEdge,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: cover.isNotEmpty
+                      ? Image.network(
+                          cover,
+                          fit: BoxFit.cover,
+                        )
+                      : const Center(
+                          child: Icon(
+                            Icons.book,
+                            size: 48,
+                            color: Colors.white70,
+                          ),
+                        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    title,
+                    style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: fetchData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+    return AnimatedBuilder(
+      animation: _vm,
+      builder: (context, _) {
+        if (_vm.loading) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+        if (_vm.error != null) {
+          return Center(child: Text('Error: ${_vm.error}'));
         }
 
-        if (snapshot.data == null) {
-          return const Center(child: Text('No data found'));
-        }
-        final books = snapshot.data!;
-
+        final books = _vm.books;
         if (books.isEmpty) {
           return const Center(child: Text('No books available'));
         }
 
-        return GridView.builder(
-          padding: const EdgeInsets.all(12.0),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            // Adjust to taste: height/width ratio of each tile
-            childAspectRatio: 0.65,
-          ),
-          itemCount: books.length,
-          itemBuilder: (context, index) {
-            final book = books[index] as Map<String, dynamic>;
-            final title = book['title']?.toString() ?? 'Untitled';
-            final cover = book['cover_image']?.toString() ?? '';
-
-            return InkWell(
-              onTap: () {
-                //
-              },
-              child: Card(
-              color: Colors.white70,
-              elevation: 2,
-              clipBehavior: Clip.hardEdge,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: cover.isNotEmpty
-                        ? Image.network(
-                            cover,
-                            fit: BoxFit.cover,
-                          )
-                        : const Center(
-                            child: Icon(
-                              Icons.book,
-                              size: 48,
-                              color: Colors.white70,
-                            ),
-                          ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      title,
-                      style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-          },
-        );
-
+        return _buildGrid(books);
       },
     );
   }
