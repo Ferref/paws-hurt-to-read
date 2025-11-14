@@ -13,19 +13,19 @@ class BookController extends Controller
         $this->bookRepository = app(BookRepository::class);
     }
     
-    public function getBook(int $id): JsonResponse
+    public function getBookDetailsById(int $id): JsonResponse
     {
-        $book = $this->bookRepository->getBookById($id);
+        $book = $this->bookRepository->getBookDetailsById($id);
         return response()->json($book);
     }
 
-    public function getBookCovers(string $range): JsonResponse
+    public function getBookCoversByIdRange(string $range): JsonResponse
     {
         $ids = explode('-', $range);
         $min = (int) $ids[0];
         $max = (int) $ids[1];
 
-        $books = $this->bookRepository->getBookCovers($min, $max);
+        $books = $this->bookRepository->getBookCoversByIdRange($min, $max);
         return response()->json($books);
     }
 }
