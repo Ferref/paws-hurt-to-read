@@ -19,10 +19,12 @@ class BookRepository
         $this->logger = $logger;
     }
 
-    public function fetchBooks(array $ids): array
+    public function fetchBooks(int $start, int $end): array
     {
         $host = config('services.book_provider.host');
         $key = config('services.book_provider.key');
+        $ids = range($start, $end);
+        
         $books = config("services.book_provider.books") . '?' . http_build_query(['ids' => implode(',', $ids)]);
 
         try {
