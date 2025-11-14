@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'screens/main_home_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load();
   runApp(const MyApp());
 }
 
