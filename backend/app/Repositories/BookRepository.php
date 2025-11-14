@@ -72,4 +72,16 @@ class BookRepository
 
         $book->save();
     }
+
+    public function getBookCovers(int $min, int $max): array
+    {
+        return Book::whereBetween('id', [$min, $max])
+            ->get(['title', 'cover_image'])
+            ->toArray();
+    }
+
+    public function getBookById(int $id): ?Book
+    {
+        return Book::where('id', $id)->first();
+    }
 }
