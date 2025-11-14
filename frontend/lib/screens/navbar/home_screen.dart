@@ -60,7 +60,11 @@ class HomeScreen extends StatelessWidget {
             final title = book['title']?.toString() ?? 'Untitled';
             final cover = book['cover_image']?.toString() ?? '';
 
-            return Card(
+            return InkWell(
+              onTap: () {
+                //
+              },
+              child: Card(
               color: Colors.white70,
               elevation: 2,
               clipBehavior: Clip.hardEdge,
@@ -92,7 +96,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            );
+            ),
+          );
           },
         );
 
