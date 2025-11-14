@@ -45,25 +45,53 @@ class HomeScreen extends StatelessWidget {
           return const Center(child: Text('No books available'));
         }
 
-        return ListView.builder(
+        return GridView.builder(
+          padding: const EdgeInsets.all(12.0),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            // Adjust to taste: height/width ratio of each tile
+            childAspectRatio: 0.65,
+          ),
           itemCount: books.length,
           itemBuilder: (context, index) {
             final book = books[index] as Map<String, dynamic>;
             final title = book['title']?.toString() ?? 'Untitled';
             final cover = book['cover_image']?.toString() ?? '';
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                  child: Text(title, style: GoogleFonts.lato(fontSize: 24, fontWeight: FontWeight.bold)),
-                ),
-                if (cover.isNotEmpty)
-                  Image.network(cover)
-                else
-                  const SizedBox.shrink(),
-              ],
+            return Card(
+              color: Colors.white70,
+              elevation: 2,
+              clipBehavior: Clip.hardEdge,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: cover.isNotEmpty
+                        ? Image.network(
+                            cover,
+                            fit: BoxFit.cover,
+                          )
+                        : const Center(
+                            child: Icon(
+                              Icons.book,
+                              size: 48,
+                              color: Colors.white70,
+                            ),
+                          ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      title,
+                      style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         );

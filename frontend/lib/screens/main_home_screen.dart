@@ -30,7 +30,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widgetOptions.elementAt(_selectedIndex),
-      backgroundColor: Colors.deepOrange[50],
+      backgroundColor: Colors.black,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
         showSelectedLabels: true,
