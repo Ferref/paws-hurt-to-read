@@ -52,9 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  child: cover.isNotEmpty
+                  child: cover?.isNotEmpty == true
                       ? Image.network(
-                          cover,
+                          cover!,
                           fit: BoxFit.cover,
                         )
                       : const Center(
