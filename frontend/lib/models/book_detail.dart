@@ -34,46 +34,22 @@ class BookDetail {
   });
 
   factory BookDetail.fromJson(Map<String, dynamic> json) {
-    DateTime? parseDate(Object? v) {
-      if (v == null)return null;
-      if (v is DateTime) return v;
-      return DateTime.tryParse(v.toString());
-    }
-
     return BookDetail(
-      id: json['id'] is int ? json['id'] as int : int.tryParse(json['id']?.toString() ?? '') ?? 0,
-      title: json['title']?.toString() ?? '',
+      id: int.parse(json['id'].toString()),
+      title: json['title']!.toString().trim(),
       alternativeTitle: json['alternative_title']?.toString(),
-      authors: json['authors'] != null ? List<dynamic>.from(json['authors']) : [],
-      subjects: json['subjects'] != null ? List<dynamic>.from(json['subjects']) : [],
-      bookshelves: json['bookshelves'] != null ? List<dynamic>.from(json['bookshelves']) : [],
-      formats: json['formats'] != null ? Map<String, dynamic>.from(json['formats']) : {},
-      downloadCount: json['download_count'] != null ? (json['download_count'] as num).toInt() : null,
-      issued: parseDate(json['issued']),
+      authors: json['authors'] ?? [],
+      subjects: json['subjects'] ?? [],
+      bookshelves: json['bookshelves'] ?? [],
+      formats: json['formats'] ?? {},
+      downloadCount: json['download_count']?.toInt(),
+      issued: json['issued'] != null ? DateTime.parse(json['issued'].toString()) : null,
       summary: json['summary']?.toString(),
-      readingEaseScore: json['reading_ease_score'] != null ? (json['reading_ease_score'] as num).toDouble() : null,
+      readingEaseScore: json['reading_ease_score']?.toDouble(),
       coverImage: json['cover_image']?.toString(),
-      removedFromCatalog: json['removed_from_catalog'] == null ? false : (json['removed_from_catalog'] == true),
-      createdAt: parseDate(json['created_at']),
-      updatedAt: parseDate(json['updated_at']),
+      removedFromCatalog: json['removed_from_catalog'] != null ? (json['removed_from_catalog'].toString().toLowerCase() == 'true') : null,
+      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'].toString()) : null,
+      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at'].toString()) : null,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'alternative_title': alternativeTitle,
-        'authors': authors,
-        'subjects': subjects,
-        'bookshelves': bookshelves,
-        'formats': formats,
-        'download_count': downloadCount,
-        'issued': issued?.toIso8601String(),
-        'summary': summary,
-        'reading_ease_score': readingEaseScore,
-        'cover_image': coverImage,
-        'removed_from_catalog': removedFromCatalog,
-        'created_at': createdAt?.toIso8601String(),
-        'updated_at': updatedAt?.toIso8601String(),
-      };
 }
