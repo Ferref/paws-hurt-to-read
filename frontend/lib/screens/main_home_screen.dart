@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/navbar/analytics_screen.dart';
+import 'package:frontend/widgets/navbar/analytics_screen.dart';
 
-import 'navbar/home_screen.dart';
-import 'navbar/profile_screen.dart';
-import 'navbar/settings_screen.dart';
+import '../widgets/navbar/home_screen.dart';
+import '../widgets/navbar/profile_screen.dart';
+import '../widgets/navbar/settings_screen.dart';
 
 class MainHomeScreen extends StatefulWidget {
   @override

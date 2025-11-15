@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../viewmodels/home_view_model.dart';
 import '../../models/book.dart';
 import '../../models/book_details.dart';
-import '../book_details_screen.dart';
+import '../../screens/book_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
