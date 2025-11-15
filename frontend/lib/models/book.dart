@@ -3,7 +3,7 @@ class Book {
   final String title;
   final String? coverImage;
 
-  Book({required this.id, required this.title, this.coverImage});
+  const Book({required this.id, required this.title, this.coverImage});
 
   factory Book.fromJson(Map<String, dynamic> json) {
     final int id = int.parse(json['id'].toString());
