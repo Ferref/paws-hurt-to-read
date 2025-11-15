@@ -1,4 +1,4 @@
-class BookDetail {
+class BookDetails {
   final int id;
   final String title;
   final String? alternativeTitle;
@@ -15,7 +15,7 @@ class BookDetail {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  const BookDetail({
+  const BookDetails({
     required this.id,
     required this.title,
     this.alternativeTitle,
@@ -33,8 +33,8 @@ class BookDetail {
     this.updatedAt,
   });
 
-  factory BookDetail.fromJson(Map<String, dynamic> json) {
-    return BookDetail(
+  factory BookDetails.fromJson(Map<String, dynamic> json) {
+    return BookDetails(
       id: int.parse(json['id'].toString()),
       title: json['title']!.toString().trim(),
       alternativeTitle: json['alternative_title']?.toString(),
@@ -45,7 +45,7 @@ class BookDetail {
       downloadCount: json['download_count']?.toInt(),
       issued: json['issued'] != null ? DateTime.parse(json['issued'].toString()) : null,
       summary: json['summary']?.toString(),
-      readingEaseScore: json['reading_ease_score']?.toDouble(),
+      readingEaseScore: json['reading_ease_score']==null?null:(json['reading_ease_score'] is num?(json['reading_ease_score'] as num).toDouble():double.tryParse(json['reading_ease_score'].toString())),
       coverImage: json['cover_image']?.toString(),
       removedFromCatalog: json['removed_from_catalog'] != null ? (json['removed_from_catalog'].toString().toLowerCase() == 'true') : null,
       createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'].toString()) : null,

@@ -3,9 +3,9 @@ import '../models/book.dart';
 import '../repositories/book_repository.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  final BookRepository _repository;
+  final BookRepository _bookRepository;
 
-  HomeViewModel({BookRepository? repository}) : _repository = repository ?? BookRepository();
+  HomeViewModel({BookRepository? repository}) : _bookRepository = repository ?? BookRepository();
 
   List<Book> _books = [];
   List<Book> get books => _books;
@@ -22,7 +22,7 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final fetched = await _repository.fetchRange(start: start, end: end);
+      final fetched = await _bookRepository.fetchRange(start: start, end: end);
       _books = fetched;
     } catch (e) {
       _error = e.toString();

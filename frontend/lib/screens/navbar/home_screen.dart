@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../viewmodels/home_view_model.dart';
 import '../../models/book.dart';
+import '../../models/book_details.dart';
+import '../book_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,7 +45,15 @@ class _HomeScreenState extends State<HomeScreen> {
         final cover = book.coverImage;
 
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            // Navigate to details screen and pass the book id directly
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BookDetailsScreen(bookId: book.id),
+              ),
+            );
+          },
           child: Card(
             color: Colors.white70,
             elevation: 2,
