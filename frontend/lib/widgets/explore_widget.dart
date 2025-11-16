@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../viewmodels/explore_view_model.dart';
-import '../../models/book.dart';
-import '../../screens/book_details_screen.dart';
+import '../viewmodels/explore_view_model.dart';
+import '../models/book.dart';
+import 'book_details_widget.dart';
 
-class ExploreScreen extends StatefulWidget {
+class ExploreWidget extends StatefulWidget {
   final ExploreViewModel vm;
 
-  const ExploreScreen({super.key, required this.vm});
+  const ExploreWidget({super.key, required this.vm});
 
   @override
-  State<ExploreScreen> createState() => _ExploreScreenState();
+  State<ExploreWidget> createState() => _ExploreWidgetState();
 }
 
-class _ExploreScreenState extends State<ExploreScreen> with AutomaticKeepAliveClientMixin {
-  @override
-  void initState() {
-    super.initState();
-  }
+class _ExploreWidgetState extends State<ExploreWidget> with AutomaticKeepAliveClientMixin {
+  // no custom initialization required here; keeping the default behavior
 
   Widget _buildGrid(List<Book> books) {
     return GridView.builder(
@@ -40,7 +37,7 @@ class _ExploreScreenState extends State<ExploreScreen> with AutomaticKeepAliveCl
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BookDetailsScreen(bookId: book.id),
+                builder: (context) => BookDetailsWidget(bookId: book.id),
               ),
             );
           },
