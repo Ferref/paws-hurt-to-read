@@ -4,16 +4,16 @@ import 'package:google_fonts/google_fonts.dart';
 import '../viewmodels/book_details_view_model.dart';
 import '../models/book_details.dart';
 
-class BookDetailsScreen extends StatefulWidget {
+class BookDetailsWidget extends StatefulWidget {
   final int bookId;
 
-  const BookDetailsScreen({super.key, required this.bookId});
+  const BookDetailsWidget({super.key, required this.bookId});
 
   @override
-  State<BookDetailsScreen> createState() => _BookDetailsScreenState();
+  State<BookDetailsWidget> createState() => _BookDetailsWidgetState();
 }
 
-class _BookDetailsScreenState extends State<BookDetailsScreen> {
+class _BookDetailsWidgetState extends State<BookDetailsWidget> {
   final BookDetailsViewModel _vm = BookDetailsViewModel();
 
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/main_home_screen.dart';
+import 'widgets/main_home_widget.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
       ),
-      home: MainHomeScreen(),
+  home: MainHomeWidget(),
     );
   }
 }

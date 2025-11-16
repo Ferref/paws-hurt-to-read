@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/navbar/analytics_screen.dart';
 
-import '../widgets/navbar/explore_screen.dart';
-import '../widgets/navbar/my_books_screen.dart';
+import 'explore_widget.dart';
+import 'my_books_widget.dart';
 import '../viewmodels/explore_view_model.dart';
 
-class MainHomeScreen extends StatefulWidget {
+class MainHomeWidget extends StatefulWidget {
+  const MainHomeWidget({super.key});
+
   @override
-  _MainHomeScreenState createState() => _MainHomeScreenState();
+  State<MainHomeWidget> createState() => _MainHomeWidgetState();
 }
 
-class _MainHomeScreenState extends State<MainHomeScreen> {
+class _MainHomeWidgetState extends State<MainHomeWidget> {
   int _selectedIndex = 0;
 
   final ExploreViewModel _exploreVm = ExploreViewModel();
 
-  final List<Widget?> _pages = [const MyBooksScreen(), null];
+  final List<Widget?> _pages = [const MyBooksWidget(), null];
 
   void _onItemTapped(int index) {
     if (index == 0) {
@@ -29,7 +30,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
     setState(() {
       if (_pages[index] == null) {
-        _pages[index] = index == 0 ? const MyBooksScreen() : ExploreScreen(vm: _exploreVm);
+        _pages[index] = index == 0 ? const MyBooksWidget() : ExploreWidget(vm: _exploreVm);
       }
       _selectedIndex = index;
     });
