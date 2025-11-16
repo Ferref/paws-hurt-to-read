@@ -1,32 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../viewmodels/home_view_model.dart';
+import '../../viewmodels/explore_view_model.dart';
 import '../../models/book.dart';
-import '../../models/book_details.dart';
 import '../../screens/book_details_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class ExploreScreen extends StatefulWidget {
+  final ExploreViewModel vm;
+
+  const ExploreScreen({super.key, required this.vm});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ExploreScreen> createState() => _ExploreScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  final HomeViewModel _vm = HomeViewModel();
-
+class _ExploreScreenState extends State<ExploreScreen> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
-    // load initial range
-    _vm.loadBooks(start: 1, end: 10);
-  }
-
-  @override
-  void dispose() {
-    _vm.dispose();
-    super.dispose();
   }
 
   Widget _buildGrid(List<Book> books) {
@@ -46,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
         return InkWell(
           onTap: () {
-            // Navigate to details screen and pass the book id directly
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -93,19 +83,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AnimatedBuilder(
-      animation: _vm,
+      animation: widget.vm,
       builder: (context, _) {
-        if (_vm.loading) {
+        if (widget.vm.loading) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (_vm.error != null) {
-          return Center(child: Text('Error: ${_vm.error}'));
+        if (widget.vm.error != null) {
+          return Center(child: Text('Error: ${widget.vm.error}'));
         }
 
-        final books = _vm.books;
+        if (!widget.vm.showBooks) {
+          return Center(child: Text('Explore', style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 20, color: Colors.white))));
+        }
+
+        final books = widget.vm.books;
         if (books.isEmpty) {
           return const Center(child: Text('No books available'));
         }
