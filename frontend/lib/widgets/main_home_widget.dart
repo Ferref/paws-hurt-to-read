@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'explore_widget.dart';
 import 'my_books_widget.dart';
+import 'profile_widget.dart';
+import 'analytics_widget.dart';
+import 'settings_widget.dart';
 import '../viewmodels/explore_view_model.dart';
+import 'drawer_widget.dart';
 
 class MainHomeWidget extends StatefulWidget {
   const MainHomeWidget({super.key});
@@ -13,6 +17,7 @@ class MainHomeWidget extends StatefulWidget {
 
 class _MainHomeWidgetState extends State<MainHomeWidget> {
   int _selectedIndex = 0;
+  String _drawerSelected = '';
 
   final ExploreViewModel _exploreVm = ExploreViewModel();
 
@@ -29,6 +34,7 @@ class _MainHomeWidgetState extends State<MainHomeWidget> {
     }
 
     setState(() {
+      _drawerSelected = '';
       if (_pages[index] == null) {
         _pages[index] = index == 0 ? const MyBooksWidget() : ExploreWidget(vm: _exploreVm);
       }
@@ -44,14 +50,41 @@ class _MainHomeWidgetState extends State<MainHomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Widget bodyContent;
+    switch (_drawerSelected) {
+      case 'Profile':
+        bodyContent = const ProfileWidget();
+        break;
+      case 'Analytics':
+        bodyContent = const AnalyticsWidget();
+        break;
+      case 'Settings':
+        bodyContent = const SettingsWidget();
+        break;
+      default:
+        bodyContent = IndexedStack(
+          index: _selectedIndex,
+          children: [
+            _pages[0]!,
+            _pages[1] ?? const SizedBox.shrink(),
+          ],
+        );
+    }
+
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          _pages[0]!,
-          _pages[1] ?? const SizedBox.shrink(),
-        ],
+      appBar: AppBar(
+        backgroundColor: Colors.black38,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('PawsHurtToRead', style: TextStyle(color: Colors.white)),
       ),
+      drawer: DrawerWidget(
+        onItemTap: (page) {
+          setState(() {
+            _drawerSelected = page;
+          });
+        },
+      ),
+      body: bodyContent,
       backgroundColor: Colors.black,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
@@ -61,7 +94,7 @@ class _MainHomeWidgetState extends State<MainHomeWidget> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.blueGrey,
         items: const <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.book),
             label: 'My Books',
           ),
