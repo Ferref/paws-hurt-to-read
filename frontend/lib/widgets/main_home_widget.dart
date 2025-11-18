@@ -51,6 +51,7 @@ class _MainHomeWidgetState extends State<MainHomeWidget> {
   @override
   Widget build(BuildContext context) {
     Widget bodyContent;
+
     switch (_drawerSelected) {
       case 'Profile':
         bodyContent = const ProfileWidget();
@@ -91,7 +92,7 @@ class _MainHomeWidgetState extends State<MainHomeWidget> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.white,
+        selectedItemColor: bodyContent is IndexedStack ? Colors.white : Colors.blueGrey,
         unselectedItemColor: Colors.blueGrey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
