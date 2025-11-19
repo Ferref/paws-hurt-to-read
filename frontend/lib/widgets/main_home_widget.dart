@@ -76,12 +76,12 @@ class _MainHomeWidgetState extends State<MainHomeWidget> {
     }
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: (bodyContent is LoginWidget) ? null : AppBar(
         backgroundColor: Colors.black38,
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text('PawsHurtToRead', style: TextStyle(color: Colors.white)),
       ),
-      drawer: DrawerWidget(
+      drawer: (bodyContent is LoginWidget) ? null : DrawerWidget(
         onItemTap: (page) {
           setState(() {
             _drawerSelected = page;
@@ -90,7 +90,7 @@ class _MainHomeWidgetState extends State<MainHomeWidget> {
       ),
       body: bodyContent,
       backgroundColor: Colors.black,
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: (bodyContent is LoginWidget) ? null : BottomNavigationBar(
         backgroundColor: Colors.black,
         showSelectedLabels: true,
         showUnselectedLabels: true,

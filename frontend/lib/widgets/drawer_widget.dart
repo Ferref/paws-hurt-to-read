@@ -64,7 +64,6 @@ class DrawerWidget extends StatelessWidget {
               {
                 onItemTap!('Logout');
               }
-              Navigator.pop(context);
             },
           ),
         ],
