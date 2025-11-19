@@ -83,17 +83,27 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
                 fit: BoxFit.contain,
               ),
             ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 20),
           Text(
             details.title,
             style: GoogleFonts.lato(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 20),
           if (details.authors.isNotEmpty)
             Text(
               'By: ${details.authors.map((author) => author['name'].toString()).join(', ')}',
               style: GoogleFonts.lato(fontSize: 14, color: Colors.white70),
             ),
+          if (details.downloadCount != null)
+            Text(
+              'Downloads: ${details.downloadCount}',
+              style: GoogleFonts.lato(fontSize: 14, color: Colors.white70),
+              ),
+          if (details.readingEaseScore != null)
+            Text(
+              'Readability: ${details.readingEaseScore}',
+              style: GoogleFonts.lato(fontSize: 14, color: Colors.white70),
+              ),
           const SizedBox(height: 12),
           if (details.summary != null && details.summary!.isNotEmpty)
             Text(
@@ -105,21 +115,20 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
               'No summary available.',
               style: TextStyle(color: Colors.white70),
             ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              if (details.downloadCount != null)
-                Chip(
-                  backgroundColor: Colors.black87,
-                  label: Text('Downloads: ${details.downloadCount}', style: TextStyle(color: Colors.white)),
-                ),
-              const SizedBox(width: 8),
-              if (details.readingEaseScore != null)
-                Chip(
-                  backgroundColor: Colors.black87,
-                  label: Text('Readability: ${details.readingEaseScore}', style: TextStyle(color: Colors.white)),
-                ),
-            ],
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              alignment: WrapAlignment.spaceEvenly,
+              children: [
+                if (details.formats['application/epub+zip'] != null)
+                  Chip(
+                    backgroundColor: Colors.black87,
+                    avatar: const Icon(Icons.book, color: Colors.white),
+                    label: Text('Download to My Books', style: TextStyle(color: Colors.white)),
+                  ),
+              ],
+            ),
           ),
         ],
       ),
