@@ -29,6 +29,7 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
     super.dispose();
   }
 
+  final int leadingCharactersInSummary = 1;
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -90,13 +91,13 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
           const SizedBox(height: 8),
           if (details.authors.isNotEmpty)
             Text(
-              'By: ${details.authors.map((a) => a.toString()).join(', ')}',
+              'By: ${details.authors.map((author) => author['name'].toString()).join(', ')}',
               style: GoogleFonts.lato(fontSize: 14, color: Colors.white70),
             ),
           const SizedBox(height: 12),
           if (details.summary != null && details.summary!.isNotEmpty)
             Text(
-              details.summary!,
+              details.summary!.substring(leadingCharactersInSummary),
               style: GoogleFonts.lato(fontSize: 16, color: Colors.white),
             )
           else
@@ -109,13 +110,13 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
             children: [
               if (details.downloadCount != null)
                 Chip(
-                  backgroundColor: Colors.white12,
+                  backgroundColor: Colors.black87,
                   label: Text('Downloads: ${details.downloadCount}', style: TextStyle(color: Colors.white)),
                 ),
               const SizedBox(width: 8),
               if (details.readingEaseScore != null)
                 Chip(
-                  backgroundColor: Colors.white12,
+                  backgroundColor: Colors.black87,
                   label: Text('Readability: ${details.readingEaseScore}', style: TextStyle(color: Colors.white)),
                 ),
             ],
