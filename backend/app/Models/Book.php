@@ -23,4 +23,14 @@ class Book extends Model
         'cover_image',
         'removed_from_catalog'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_books', 'book_id', 'user_id');
+    }
+
+    public function userBooks()
+    {
+        return $this->hasMany(UserBooks::class);
+    }
 }
