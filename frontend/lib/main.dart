@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/login_widget.dart';
 import 'widgets/main_home_widget.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'widgets/login_widget.dart';
 
 Future<void> main() async {
   await dotenv.load();
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
       ),
-  home: MainHomeWidget(),
+  home: LoginWidget(),
     );
   }
 }

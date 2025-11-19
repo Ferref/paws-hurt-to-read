@@ -122,10 +122,15 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
               alignment: WrapAlignment.spaceEvenly,
               children: [
                 if (details.formats['application/epub+zip'] != null)
-                  Chip(
-                    backgroundColor: Colors.black87,
-                    avatar: const Icon(Icons.book, color: Colors.white),
-                    label: Text('Download to My Books', style: TextStyle(color: Colors.white)),
+                  InkWell(
+                    onTap: () => {
+                      // send the request to add the book to the user
+                    },
+                    child: Chip(
+                      backgroundColor: Colors.black87,
+                      avatar: const Icon(Icons.book, color: Colors.white),
+                      label: Text('Download to My Books', style: TextStyle(color: Colors.white)),
+                    ),
                   ),
               ],
             ),
