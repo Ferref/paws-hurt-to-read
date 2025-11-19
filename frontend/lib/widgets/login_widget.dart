@@ -59,6 +59,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
               SizedBox(height: 26),
               TextField(
+                style: TextStyle(color: Colors.white),
                 controller: _usernameController,
                 decoration: InputDecoration(
                   labelText: 'Username',
@@ -67,6 +68,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
               SizedBox(height: 16),
               TextField(
+                style: TextStyle(color: Colors.white),
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
