@@ -29,7 +29,9 @@ class DrawerWidget extends StatelessWidget {
             leading: const Icon(Icons.account_circle, color: Colors.black),
             title: const Text('Profile', style: TextStyle(color: Colors.black)),
             onTap: () {
-              if (onItemTap != null) onItemTap!('Profile');
+              if (onItemTap != null) {
+                onItemTap!('Profile');
+              } 
               Navigator.pop(context);
             },
           ),
@@ -37,7 +39,9 @@ class DrawerWidget extends StatelessWidget {
             leading: const Icon(Icons.analytics, color: Colors.black),
             title: const Text('Analytics', style: TextStyle(color: Colors.black)),
             onTap: () {
-              if (onItemTap != null) onItemTap!('Analytics');
+              if (onItemTap != null) {
+                onItemTap!('Analytics');
+              }
               Navigator.pop(context);
             },
           ),
@@ -45,7 +49,21 @@ class DrawerWidget extends StatelessWidget {
             leading: const Icon(Icons.settings, color: Colors.black),
             title: const Text('Settings', style: TextStyle(color: Colors.black)),
             onTap: () {
-              if (onItemTap != null) onItemTap!('Settings');
+              if (onItemTap != null)
+              {
+                onItemTap!('Settings');
+              }
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.black),
+            title: const Text('Logout', style: TextStyle(color: Colors.black)),
+            onTap: () {
+              if (onItemTap != null)
+              {
+                onItemTap!('Logout');
+              }
               Navigator.pop(context);
             },
           ),

@@ -7,6 +7,7 @@ import 'analytics_widget.dart';
 import 'settings_widget.dart';
 import '../viewmodels/explore_view_model.dart';
 import 'drawer_widget.dart';
+import 'login_widget.dart';
 
 class MainHomeWidget extends StatefulWidget {
   const MainHomeWidget({super.key});
@@ -62,6 +63,8 @@ class _MainHomeWidgetState extends State<MainHomeWidget> {
       case 'Settings':
         bodyContent = const SettingsWidget();
         break;
+      case 'Logout':
+        bodyContent = const LoginWidget();
       default:
         bodyContent = IndexedStack(
           index: _selectedIndex,
