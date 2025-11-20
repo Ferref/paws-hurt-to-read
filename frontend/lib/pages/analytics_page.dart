@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AnalyticsWidget extends StatelessWidget {
-  const AnalyticsWidget({super.key});
+class AnalyticsPage extends StatelessWidget {
+  const AnalyticsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

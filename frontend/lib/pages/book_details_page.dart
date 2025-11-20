@@ -4,22 +4,21 @@ import 'package:google_fonts/google_fonts.dart';
 import '../viewmodels/book_details_view_model.dart';
 import '../models/book_details.dart';
 
-class BookDetailsWidget extends StatefulWidget {
+class BookDetailsPage extends StatefulWidget {
   final int bookId;
 
-  const BookDetailsWidget({super.key, required this.bookId});
+  const BookDetailsPage({super.key, required this.bookId});
 
   @override
-  State<BookDetailsWidget> createState() => _BookDetailsWidgetState();
+  State<BookDetailsPage> createState() => _BookDetailsPageState();
 }
 
-class _BookDetailsWidgetState extends State<BookDetailsWidget> {
+class _BookDetailsPageState extends State<BookDetailsPage> {
   final BookDetailsViewModel _vm = BookDetailsViewModel();
 
   @override
   void initState() {
     super.initState();
-    // fetch details using the view model; repository expects a String id
     _vm.fetchBookDetails(widget.bookId.toString());
   }
 
@@ -98,12 +97,12 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
             Text(
               'Downloads: ${details.downloadCount}',
               style: GoogleFonts.lato(fontSize: 14, color: Colors.white70),
-              ),
+            ),
           if (details.readingEaseScore != null)
             Text(
               'Readability: ${details.readingEaseScore}',
               style: GoogleFonts.lato(fontSize: 14, color: Colors.white70),
-              ),
+            ),
           const SizedBox(height: 12),
           if (details.summary != null && details.summary!.isNotEmpty)
             Text(

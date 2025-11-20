@@ -3,18 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../viewmodels/explore_view_model.dart';
 import '../models/book.dart';
-import 'book_details_widget.dart';
+import 'book_details_page.dart';
 
-class ExploreWidget extends StatefulWidget {
+class ExplorePage extends StatefulWidget {
   final ExploreViewModel vm;
 
-  const ExploreWidget({super.key, required this.vm});
+  const ExplorePage({super.key, required this.vm});
 
   @override
-  State<ExploreWidget> createState() => _ExploreWidgetState();
+  State<ExplorePage> createState() => _ExplorePageState();
 }
 
-class _ExploreWidgetState extends State<ExploreWidget> with AutomaticKeepAliveClientMixin {
+class _ExplorePageState extends State<ExplorePage>
+    with AutomaticKeepAliveClientMixin {
   // no custom initialization required here; keeping the default behavior
 
   Widget _buildGrid(List<Book> books) {
@@ -37,7 +38,7 @@ class _ExploreWidgetState extends State<ExploreWidget> with AutomaticKeepAliveCl
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BookDetailsWidget(bookId: book.id),
+                builder: (context) => BookDetailsPage(bookId: book.id),
               ),
             );
           },
@@ -97,7 +98,10 @@ class _ExploreWidgetState extends State<ExploreWidget> with AutomaticKeepAliveCl
         }
 
         if (!widget.vm.showBooks) {
-          return Center(child: Text('Explore', style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 20, color: Colors.white))));
+          return Center(
+              child: Text('Explore',
+                  style: GoogleFonts.poppins(
+                      textStyle: TextStyle(fontSize: 20, color: Colors.white))));
         }
 
         final books = widget.vm.books;
