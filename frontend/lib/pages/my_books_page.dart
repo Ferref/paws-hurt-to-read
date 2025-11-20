@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'file_uploader_widget.dart';
-import 'search_bar_widget.dart';
+import '../widgets/file_uploader_widget.dart';
+import '../widgets/search_bar_widget.dart';
 
-class MyBooksWidget extends StatelessWidget {
-  const MyBooksWidget({super.key});
+class MyBooksPage extends StatelessWidget {
+  const MyBooksPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black87,
-        body: Center(
-          child: ImportButton(),
-        ),
-
+      backgroundColor: Colors.black87,
+      body: Center(
+        child: ImportButton(),
+      ),
     );
   }
 }

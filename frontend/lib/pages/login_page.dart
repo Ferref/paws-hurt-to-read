@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:frontend/widgets/main_home_widget.dart';
+import 'main_home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginWidget extends StatefulWidget {
-  const LoginWidget({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  _LoginWidgetState createState() => _LoginWidgetState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -35,7 +35,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               FaIcon(
                 FontAwesomeIcons.paw,
                 color: Colors.white,
-                size: 48
+                size: 48,
               ),
               SizedBox(height: 20),
               Text(
@@ -83,8 +83,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                 child: ElevatedButton(
                   onPressed: () {
                     // Authentication not implemented yet
-                    Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const MainHomeWidget()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainHomePage()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
@@ -104,14 +106,14 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
               SizedBox(height: 26),
               Center(
-                  child: Text(
-                    'Forgot Password?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white70,
-                    ),
+                child: Text(
+                  'Forgot Password?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white70,
                   ),
+                ),
               ),
               SizedBox(height: 10),
               Center(
