@@ -78,4 +78,47 @@ class UserAuthTest extends TestCase
 
         $response->assertStatus(422);
     }
+
+    public function testUserCanLoginWithValidCredentials(): void
+    {
+        $user = User::factory()->create([
+            'email' => $this->faker->unique()->safeEmail,
+            'name' => $this->faker->userName,
+            'password' => bcrypt('validPassword123'),
+        ]);
+
+        $postData = [
+            'email' => $user->email,
+            'password' => 'validPassword123',
+        ];
+
+        $response = $this->post('/user/login', $postData);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'message',
+            'auth_token',
+        ]);
+    }
+
+    public function testUserCannotLoginWithInvalidCredentials(): void
+    {
+        $user = User::factory()->create([
+            'email' => $this->faker->unique()->safeEmail,
+            'name' => $this->faker->userName,
+            'password' => bcrypt('validPassword123'),
+        ]);
+
+        $postData = [
+            'email' => $user->email,
+            'password' => 'wrongPassword',
+        ];
+
+        $response = $this->post('/user/login', $postData);
+
+        $response->assertStatus(401);
+        $response->assertJson([
+            'message' => 'Invalid login credentials',
+        ]);
+    }
 }
