@@ -5,14 +5,14 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/book.dart';
 
 class BookRepository {
-  final String? base = dotenv.env['API_BASE'];
-  final String? booksRangeEndpoint = dotenv.env['BOOK_COVERS_ENDPOINT'];
-  final String? bookDetailsEndpoint = dotenv.env['BOOK_DETAILS_ENDPOINT'];
+  final String host = dotenv.env['API_HOST']!;
+  final String bookCoversEndpoint = dotenv.env['BOOK_COVERS_PATH']!;
+  final String bookDetailsEndpoint = dotenv.env['BOOK_DETAILS_PATH']!;
 
   Future<List<Book>> fetchRange({int start = 1, int end = 10}) async {
-    final baseVal = base ?? '';
-    final endpoint = booksRangeEndpoint ?? '';
-    final uri = Uri.parse('$baseVal/$endpoint/$start-$end');
+    final range = '$start-$end';
+    final endpoint = bookCoversEndpoint.replaceAll('/{range}', '');
+    final uri = Uri.parse('$host/$endpoint/$range');
 
     final response = await http.get(uri);
     if (response.statusCode == 200) {
@@ -28,9 +28,8 @@ class BookRepository {
   }
 
   Future<BookDetails> fetchBookDetails(String bookId) async {
-    final baseVal = base ?? '';
-    final endpoint = bookDetailsEndpoint ?? '';
-    final uri = Uri.parse('$baseVal/$endpoint/$bookId');
+    final endpoint = bookDetailsEndpoint.replaceAll('/{id}', '/$bookId');
+    final uri = Uri.parse('$host/$endpoint');
 
     final response = await http.get(uri);
     if (response.statusCode == 200) {
