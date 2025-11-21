@@ -10,3 +10,5 @@ Route::get('/', function () {
 
 Route::get('/book/details/{id}', [BookController::class, 'getBookDetailsById']);
 Route::get('/book/covers/{range}', [BookController::class, 'getBookCoversByIdRange']);
+
+Route::post('/user/register', [UserController::class, 'register']);
