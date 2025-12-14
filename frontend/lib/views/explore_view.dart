@@ -3,18 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../viewmodels/explore_view_model.dart';
 import '../models/book.dart';
-import 'book_details_page.dart';
+import 'book_details_view.dart';
 
-class ExplorePage extends StatefulWidget {
+class ExploreView extends StatefulWidget {
   final ExploreViewModel vm;
 
-  const ExplorePage({super.key, required this.vm});
+  const ExploreView({super.key, required this.vm});
 
   @override
-  State<ExplorePage> createState() => _ExplorePageState();
+  State<ExploreView> createState() => _ExploreViewState();
 }
 
-class _ExplorePageState extends State<ExplorePage>
+class _ExploreViewState extends State<ExploreView>
     with AutomaticKeepAliveClientMixin {
   // no custom initialization required here; keeping the default behavior
 
@@ -38,7 +38,7 @@ class _ExplorePageState extends State<ExplorePage>
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BookDetailsPage(bookId: book.id),
+                builder: (context) => BookDetailsView(bookId: book.id),
               ),
             );
           },

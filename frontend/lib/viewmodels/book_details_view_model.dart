@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import '../models/book_details.dart';
-import '../repositories/book_repository.dart';
+import '../services/book_service.dart';
 
 class BookDetailsViewModel extends ChangeNotifier
 {
-  final BookRepository _bookRepository = BookRepository();
+  final BookService _bookRepository = BookService();
   BookDetails? _bookDetails;
   bool _isLoading = false;
   String? _errorMessage;

@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../widgets/file_uploader_widget.dart';
 import '../widgets/search_bar_widget.dart';
 
-class MyBooksPage extends StatelessWidget {
-  const MyBooksPage({super.key});
+class MyBooksView extends StatelessWidget {
+  const MyBooksView({super.key});
 
   @override
   Widget build(BuildContext context) {

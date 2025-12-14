@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'pages/login_page.dart';
-import 'pages/main_home_page.dart';
+import 'views/login_view.dart';
+import 'views/main_home_view.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
       ),
-  home: const LoginPage(),
+  home: const LoginView(),
     );
   }
 }

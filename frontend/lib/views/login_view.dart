@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'main_home_page.dart';
+import 'package:frontend/views/registration_view.dart';
+import 'main_home_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginViewState createState() => _LoginViewState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginViewState extends State<LoginView> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -82,11 +83,10 @@ class _LoginPageState extends State<LoginPage> {
                 height: 49,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Authentication not implemented yet
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MainHomePage()));
+                            builder: (context) => const MainHomeView()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
@@ -117,13 +117,19 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 10),
               Center(
-                child: Text(
-                  "Don't have an account? Sign Up",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 14,
-                    color: Colors.white,
+                child: InkWell(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegistrationView())),
+                  child: Text(
+                    "Don't have an account? Sign Up",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               )

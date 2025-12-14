@@ -17,7 +17,8 @@ class RegistrationController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:100',
                 'email' => 'required|string|email|regex:/^[A-Za-z0-9.]+@[A-Za-z0-9]+[.][A-Za-z0-9.]+$/|max:255|unique:users',
-                'password' => 'required|string|min:8|max:20|confirmed',
+                'password' => 'required|string|min:8|max:20',
+                'password_confirmation' => 'required|string|min:8|max:20|same:password',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);

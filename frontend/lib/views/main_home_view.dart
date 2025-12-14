@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 
-import 'explore_page.dart';
-import 'my_books_page.dart';
-import 'profile_page.dart';
-import 'analytics_page.dart';
-import 'settings_page.dart';
+import 'explore_view.dart';
+import 'my_books_view.dart';
+import 'profile_view.dart';
+import 'analytics_view.dart';
+import 'settings_view.dart';
 import '../viewmodels/explore_view_model.dart';
 import '../widgets/drawer_widget.dart';
-import 'login_page.dart';
+import 'login_view.dart';
 
-class MainHomePage extends StatefulWidget {
-  const MainHomePage({super.key});
+class MainHomeView extends StatefulWidget {
+  const MainHomeView({super.key});
 
   @override
-  State<MainHomePage> createState() => _MainHomePageState();
+  State<MainHomeView> createState() => _MainHomeViewState();
 }
 
-class _MainHomePageState extends State<MainHomePage> {
+class _MainHomeViewState extends State<MainHomeView> {
   int _selectedIndex = 0;
   String _drawerSelected = '';
 
   final ExploreViewModel _exploreVm = ExploreViewModel();
 
-  final List<Widget?> _pages = [const MyBooksPage(), null];
+  final List<Widget?> _pages = [const MyBooksView(), null];
 
   void _onItemTapped(int index) {
     if (index == 0) {
@@ -37,7 +37,7 @@ class _MainHomePageState extends State<MainHomePage> {
     setState(() {
       _drawerSelected = '';
       if (_pages[index] == null) {
-        _pages[index] = index == 0 ? const MyBooksPage() : ExplorePage(vm: _exploreVm);
+        _pages[index] = index == 0 ? const MyBooksView() : ExploreView(vm: _exploreVm);
       }
       _selectedIndex = index;
     });
@@ -55,16 +55,16 @@ class _MainHomePageState extends State<MainHomePage> {
 
     switch (_drawerSelected) {
       case 'Profile':
-        bodyContent = const ProfilePage();
+        bodyContent = const ProfileView();
         break;
       case 'Analytics':
-        bodyContent = const AnalyticsPage();
+        bodyContent = const AnalyticsView();
         break;
       case 'Settings':
-        bodyContent = const SettingsPage();
+        bodyContent = const SettingsView();
         break;
       case 'Logout':
-        bodyContent = const LoginPage();
+        bodyContent = const LoginView();
       default:
         bodyContent = IndexedStack(
           index: _selectedIndex,
@@ -76,14 +76,14 @@ class _MainHomePageState extends State<MainHomePage> {
     }
 
     return Scaffold(
-      appBar: (bodyContent is LoginPage)
+      appBar: (bodyContent is LoginView)
           ? null
           : AppBar(
               backgroundColor: Colors.black38,
               iconTheme: const IconThemeData(color: Colors.white),
               title: const Text('PawsHurtToRead', style: TextStyle(color: Colors.white)),
             ),
-      drawer: (bodyContent is LoginPage)
+      drawer: (bodyContent is LoginView)
           ? null
           : DrawerWidget(
               onItemTap: (page) {
@@ -94,7 +94,7 @@ class _MainHomePageState extends State<MainHomePage> {
             ),
       body: bodyContent,
       backgroundColor: Colors.black,
-      bottomNavigationBar: (bodyContent is LoginPage)
+      bottomNavigationBar: (bodyContent is LoginView)
           ? null
           : BottomNavigationBar(
               backgroundColor: Colors.black,

@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/book.dart';
-import '../repositories/book_repository.dart';
+import '../services/book_service.dart';
 
 class ExploreViewModel extends ChangeNotifier {
-  final BookRepository _bookRepository;
+  final BookService _bookRepository;
 
-  ExploreViewModel({BookRepository? repository}) : _bookRepository = repository ?? BookRepository();
+  ExploreViewModel({BookService? repository}) : _bookRepository = repository ?? BookService();
 
   List<Book> _books = [];
   List<Book> get books => _books;

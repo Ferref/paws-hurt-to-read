@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/book.dart';
 
-class BookRepository {
+class BookService {
   final String host = dotenv.env['API_HOST']!;
   final String bookCoversEndpoint = dotenv.env['BOOK_COVERS_PATH']!;
   final String bookDetailsEndpoint = dotenv.env['BOOK_DETAILS_PATH']!;
