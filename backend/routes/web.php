@@ -2,15 +2,20 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\SessionController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcom');
 });
 
-Route::get('/book/details/{id}', [BookController::class, 'getBookDetailsById']);
-Route::get('/book/covers/{range}', [BookController::class, 'getBookCoversByIdRange']);
+// Book
+Route::get('/book/{id}', [BookController::class, 'show']);
+Route::get('/books/{range}', [BookController::class, 'index']);
 
-Route::post('/user/register', [UserController::class, 'register']);
-Route::post('/user/login', [UserController::class, 'login']);
-Route::post('/user/logout', [UserController::class, 'logout']);
+// User Registration
+Route::post('/user', [RegistrationController::class, 'store']);
+
+// User Session
+Route::post('/session', [SessionController::class, 'store']);
+Route::post('/session', [SessionController::class, 'destroy']);
