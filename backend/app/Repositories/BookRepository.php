@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-// Models
-use \App\Models\Book;
-
-// Services
 use Illuminate\Support\Facades\Http;
 use Psr\Log\LoggerInterface as Logger;
+
+use \App\Models\Book;
 
 class BookRepository
 {
@@ -23,17 +21,20 @@ class BookRepository
     {
         $host = config('services.book_provider.host');
         $key = config('services.book_provider.key');
+        $booksEndpoint = config('services.book_provider.books_endpoint');
+
         $ids = range($start, $end);
-        
-        $books = config("services.book_provider.books") . '?' . http_build_query(['ids' => implode(',', $ids)]);
+   
+        $booksEndpoint = 'https://' . $host . $booksEndpoint . '?' . http_build_query(['ids' => implode(',', $ids)]);
 
         try {
             $response = Http::withHeaders([
                 'x-rapidapi-host' => $host,
                 'x-rapidapi-key' => $key,
-            ])->get($books);
+            ])->get($booksEndpoint);
 
             if ($response->successful()) {
+
                 $data = $response->json();
 
                 $this->logger->info('Fetched books successfully', [
@@ -45,15 +46,12 @@ class BookRepository
 
             return [];
         } catch (\Throwable $e) {
-            $this->logger->error('Failed to fetch books', [
-                'status' => $response->status(),
-                'body' => $response->body()
-            ]);
+            $this->logger->error('Failed to fetch books', ['error' => $e->getMessage()]);
         }
     }
 
     public function saveBook(array $bookData): void
-    {
+    {   
         $book = Book::updateOrCreate(
             [
                 'id' => $bookData['id'],

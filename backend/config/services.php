@@ -13,10 +13,11 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+
     'book_provider' => [
         'host' => env('BOOK_PROVIDER_HOST'),
         'key' => env('BOOK_PROVIDER_KEY'),
-        'books' => env('BOOK_PROVIDER_BOOKS'),
+        'books_endpoint' => env('BOOK_PROVIDER_BOOKS_ENDPOINT'),
     ],
     
     'postmark' => [

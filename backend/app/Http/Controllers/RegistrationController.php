@@ -24,7 +24,7 @@ class RegistrationController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         }
 
-        $user = User::Create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
