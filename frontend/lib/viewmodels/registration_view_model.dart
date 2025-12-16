@@ -1,12 +1,15 @@
-
 import 'package:flutter/foundation.dart';
+
+import 'package:frontend/models/user.dart';
 import 'package:frontend/services/registration_service.dart';
-import '../models/user.dart';
 
 class RegistrationViewModel extends ChangeNotifier {
-  final RegistrationService _registrationService = RegistrationService();
+  final RegistrationService _registrationService;
+  
   User? _user;
   bool _loading = false;
+
+  RegistrationViewModel(this._registrationService);
 
   User? get user => _user;
   bool get loading => _loading;

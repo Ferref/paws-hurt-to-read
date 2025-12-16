@@ -1,13 +1,15 @@
-import 'dart:developer' as developer;
-
 import 'package:flutter/foundation.dart';
+
+import 'package:frontend/models/user.dart';
 import 'package:frontend/services/session_service.dart';
-import '../models/user.dart';
 
 class SessionViewModel extends ChangeNotifier {
-  final SessionService _sessionService = SessionService();
+  final SessionService _sessionService;
+  
   User? _user;
   bool _loading = false;
+
+  SessionViewModel(this._sessionService);
 
   User? get user => _user;
   bool get loading => _loading;
@@ -35,4 +37,17 @@ class SessionViewModel extends ChangeNotifier {
 
     _loading = false;
   }
+
+  Future<User?> storeBook({ required int bookId }) async {
+    _loading = true;
+    notifyListeners();
+    
+    await _sessionService.storeBook(bookId: bookId);
+    
+    _loading = false;
+    notifyListeners();
+
+    return _user;
+  }
+
 }

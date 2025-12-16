@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
 
-import '../viewmodels/book_details_view_model.dart';
-import '../models/book_details.dart';
+import 'package:frontend/main.dart';
+
+import 'package:frontend/models/book_details.dart';
+import 'package:frontend/viewmodels/book_details_view_model.dart';
 
 class BookDetailsView extends StatefulWidget {
   final int bookId;
@@ -14,7 +16,8 @@ class BookDetailsView extends StatefulWidget {
 }
 
 class _BookDetailsViewState extends State<BookDetailsView> {
-  final BookDetailsViewModel _vm = BookDetailsViewModel();
+  final BookDetailsViewModel _vm = getIt<BookDetailsViewModel>();
+  final int leadingCharactersInSummary = 1;
 
   @override
   void initState() {
@@ -28,7 +31,6 @@ class _BookDetailsViewState extends State<BookDetailsView> {
     super.dispose();
   }
 
-  final int leadingCharactersInSummary = 1;
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -48,13 +50,13 @@ class _BookDetailsViewState extends State<BookDetailsView> {
             backgroundColor: Colors.black,
           ),
           backgroundColor: Colors.black,
-          body: _buildBody(),
+          body: _buildBody(context),
         );
       },
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     if (_vm.isLoading) {
       return const Center(child: CircularProgressIndicator(color: Colors.white));
     }
@@ -123,7 +125,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                 if (details.formats['application/epub+zip'] != null)
                   InkWell(
                     onTap: () => {
-                      // TODO: send the request => add to user_books table (user_id, bok_id)
+                      // TODO: user_books table => sessionVm.storeBook(bookId: widget.bookId)
                       // TODO: download book on the device in epub format
                     },
                     child: Chip(

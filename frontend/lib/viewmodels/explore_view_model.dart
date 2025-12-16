@@ -1,23 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../models/book.dart';
-import '../services/book_service.dart';
+
+import 'package:frontend/models/book.dart';
+import 'package:frontend/services/book_service.dart';
 
 class ExploreViewModel extends ChangeNotifier {
-  final BookService _bookRepository;
-
-  ExploreViewModel({BookService? repository}) : _bookRepository = repository ?? BookService();
+  final BookService _bookService;
 
   List<Book> _books = [];
-  List<Book> get books => _books;
-
   bool _loading = false;
-  bool get loading => _loading;
-
   String? _error;
-  String? get error => _error;
-
   bool _showBooks = true;
+  
+  ExploreViewModel(this._bookService);
+
+  List<Book> get books => _books;
+  bool get loading => _loading;
+  String? get error => _error;
   bool get showBooks => _showBooks;
 
   void hideBooks() {
@@ -44,7 +43,7 @@ class ExploreViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final fetched = await _bookRepository.fetchRange(start: start, end: end);
+      final fetched = await _bookService.fetchRange(start: start, end: end);
       _books = fetched;
     } catch (e) {
       _error = e.toString();

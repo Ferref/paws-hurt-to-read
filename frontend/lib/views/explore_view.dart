@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../viewmodels/explore_view_model.dart';
-import '../models/book.dart';
-import 'book_details_view.dart';
+import 'package:frontend/models/book.dart';
+import 'package:frontend/views/book_details_view.dart';
+import 'package:frontend/viewmodels/explore_view_model.dart';
 
 class ExploreView extends StatefulWidget {
   final ExploreViewModel vm;

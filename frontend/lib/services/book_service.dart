@@ -1,8 +1,10 @@
 import 'dart:convert';
-import 'package:frontend/models/book_details.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../models/book.dart';
+
+import 'package:frontend/models/book_details.dart';
+import 'package:frontend/models/book.dart';
 
 class BookService {
   final String host = dotenv.env['API_HOST']!;

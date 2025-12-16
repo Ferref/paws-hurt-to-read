@@ -1,4 +1,4 @@
-import 'package:epubx/epubx.dart';
+// import 'package:epubx/epubx.dart';
 
 class EpubReaderWidget {
   // Implementation

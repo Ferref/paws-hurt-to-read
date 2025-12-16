@@ -1,14 +1,15 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../models/user.dart';
+import 'package:frontend/models/user.dart';
 
 class SessionService {
   final String host = dotenv.env['API_HOST']!;
   final String loginEndpoint = dotenv.env['LOGIN_PATH']!;
-  final String logoutEndpoint = dotenv.env['LOGIN_PATH']!;
+  final String logoutEndpoint = dotenv.env['LOGOUT_PATH']!;
+  final String storeBookEndpoint = dotenv.env['STORE_BOOK_PATH']!;
 
   // Session Stored (token)
   Future<User> store({required String name, required String password}) async {
@@ -34,6 +35,20 @@ class SessionService {
     );
 
     return user;
+  }
+
+  Future<void> storeBook({required int bookId }) async {
+    final uri = Uri.parse('$host/$storeBookEndpoint');
+
+    final response = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({ 'bookId': bookId }),
+    );
+
+    if (response.statusCode != 201) {
+      throw Exception('Failed to add book for user: ${response.statusCode}');
+    }
   }
 
   Future<User?> destroy() async {

@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../models/user.dart';
+import 'package:frontend/models/user.dart';
 
 class RegistrationService {
   final String host = dotenv.env['API_HOST']!;

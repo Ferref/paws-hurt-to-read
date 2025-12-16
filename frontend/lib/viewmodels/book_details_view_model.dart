@@ -1,13 +1,16 @@
 import 'package:flutter/foundation.dart';
-import '../models/book_details.dart';
-import '../services/book_service.dart';
 
-class BookDetailsViewModel extends ChangeNotifier
-{
-  final BookService _bookRepository = BookService();
+import 'package:frontend/models/book_details.dart';
+import 'package:frontend/services/book_service.dart';
+
+class BookDetailsViewModel extends ChangeNotifier {
+  final BookService _bookService;
+
   BookDetails? _bookDetails;
   bool _isLoading = false;
   String? _errorMessage;
+
+  BookDetailsViewModel(this._bookService);
 
   BookDetails? get bookDetails => _bookDetails;
   bool get isLoading => _isLoading;
@@ -19,7 +22,7 @@ class BookDetailsViewModel extends ChangeNotifier
     notifyListeners();
 
     try {
-      final details = await _bookRepository.fetchBookDetails(bookId);
+      final details = await _bookService.fetchBookDetails(bookId);
       _bookDetails = details;
     } catch (e) {
       _errorMessage = e.toString();

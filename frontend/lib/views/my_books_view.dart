@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/file_uploader_widget.dart';
-import '../widgets/search_bar_widget.dart';
 
+import 'package:frontend/widgets/search_bar_widget.dart';
 
 // TODO: My books will be displayed here ordered by last_opened
 // TODO: If its not downloaded you can download the book to the device

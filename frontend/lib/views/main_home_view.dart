@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/viewmodels/session_view_model.dart';
-import 'package:provider/provider.dart';
-import 'dart:developer' as developer;
+import 'package:frontend/main.dart';
 
-import 'explore_view.dart';
-import 'my_books_view.dart';
-import 'profile_view.dart';
-import 'analytics_view.dart';
-import 'settings_view.dart';
-import '../viewmodels/explore_view_model.dart';
-import '../widgets/drawer_widget.dart';
-import 'login_view.dart';
+import 'package:frontend/widgets/drawer_widget.dart';
+
+import 'package:frontend/views/explore_view.dart';
+import 'package:frontend/views/my_books_view.dart';
+import 'package:frontend/views/profile_view.dart';
+import 'package:frontend/views/analytics_view.dart';
+import 'package:frontend/views/settings_view.dart';
+import 'package:frontend/views/login_view.dart';
+
+import 'package:frontend/viewmodels/session_view_model.dart';
+import 'package:frontend/viewmodels/explore_view_model.dart';
 
 class MainHomeView extends StatefulWidget {
+
   const MainHomeView({super.key});
 
   @override
@@ -23,7 +25,7 @@ class _MainHomeViewState extends State<MainHomeView> {
   int _selectedIndex = 0;
   String _drawerSelected = '';
 
-  final ExploreViewModel _exploreVm = ExploreViewModel();
+  final ExploreViewModel _exploreVm = getIt<ExploreViewModel>();
 
   final List<Widget?> _pages = [const MyBooksView(), null];
 
@@ -67,8 +69,8 @@ class _MainHomeViewState extends State<MainHomeView> {
         bodyContent = const SettingsView();
         break;
       case 'Logout':
-        final sessionVm = context.read<SessionViewModel>();
-        sessionVm.destroy();
+        final sessionService = getIt<SessionViewModel>();
+        sessionService.destroy();
         bodyContent = const LoginView();
 
       default:
