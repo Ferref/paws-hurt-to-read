@@ -1,11 +1,18 @@
+import 'dart:convert';
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:frontend/views/registration_view.dart';
+import 'package:frontend/models/user.dart';
+import 'package:frontend/viewmodels/login_view_model.dart';
+import 'package:frontend/views/login_view.dart';
 import 'main_home_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
+
+  LoginViewModel get vm => LoginViewModel();
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -14,6 +21,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  String? errorMessage;
 
   @override
   void dispose() {
@@ -74,6 +83,7 @@ class _LoginViewState extends State<LoginView> {
                 decoration: InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
+                  errorText: errorMessage
                 ),
                 obscureText: true,
               ),
@@ -82,11 +92,39 @@ class _LoginViewState extends State<LoginView> {
                 width: double.infinity,
                 height: 49,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
+                onPressed: () async {
+                  try {
+                      User? user = await widget.vm.store(
+                      _usernameController.text,
+                      _passwordController.text,
+                    );
+
+                    if (user != null) {
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MainHomeView()));
+                          builder: (context) => const MainHomeView()
+                        ),
+                      );
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Login successful! Welcome, ${user.name}')),
+                      );
+
+                    }
+                  } catch (e) {
+                      if(e.toString().contains('Validation errors')) {
+                        Map<String, dynamic> errors = jsonDecode(e.toString().replaceFirst('Exception: Validation errors: ', ''))["errors"]; 
+
+                        setState(() {
+                          errorMessage = errors['message']?[0];
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Login failed... Please try again later')),
+                        );
+                    }
+                  }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
@@ -121,7 +159,7 @@ class _LoginViewState extends State<LoginView> {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RegistrationView())),
+                          builder: (context) => const LoginView())),
                   child: Text(
                     "Don't have an account? Sign Up",
                     textAlign: TextAlign.center,

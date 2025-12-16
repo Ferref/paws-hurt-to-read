@@ -1,5 +1,5 @@
 class User {
-  final int id;
+  final String id;
   final String name;
   final String email;
   final String token;
@@ -13,10 +13,15 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] as int,
+      id: json['id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
-      token: json['token'] as String,
+      token: json['auth_token'] as String,
     );
+  }
+
+  @override
+  String toString() {
+    return 'User(id: $id, name: $name, email: $email, token: $token)';
   }
 }

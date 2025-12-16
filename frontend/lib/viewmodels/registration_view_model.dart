@@ -24,5 +24,7 @@ class RegistrationViewModel extends ChangeNotifier {
     
     _loading = false;
     notifyListeners();
+
+    return _user;
   }
 }

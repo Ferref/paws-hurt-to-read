@@ -38,7 +38,6 @@ class RegistrationController extends Controller
 
         $user->save();
 
-
         $key = InMemory::base64Encoded(
             config('jwt.secret')
         );
