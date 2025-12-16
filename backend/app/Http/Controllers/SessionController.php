@@ -65,4 +65,9 @@ class SessionController extends Controller
             'email' => $user->email,
         ], 201);
     }
+
+    public function destroy(Request $request)
+    {
+        // Todo: Token blacklist
+    }
 }
