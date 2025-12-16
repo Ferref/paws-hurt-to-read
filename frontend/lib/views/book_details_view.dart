@@ -123,7 +123,8 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                 if (details.formats['application/epub+zip'] != null)
                   InkWell(
                     onTap: () => {
-                      // send the request to add the book to the user
+                      // TODO: send the request => add to user_books table (user_id, bok_id)
+                      // TODO: download book on the device in epub format
                     },
                     child: Chip(
                       backgroundColor: Colors.black87,

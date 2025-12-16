@@ -3,6 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import '../widgets/file_uploader_widget.dart';
 import '../widgets/search_bar_widget.dart';
 
+
+// TODO: My books will be displayed here ordered by last_opened
+// TODO: If its not downloaded you can download the book to the device
+// TODO: If its downloaded to the device you can open it for reading
+// TODO: You can remove the book from device
+// TODO: You can remove the book from (account + device)
+
 class MyBooksView extends StatelessWidget {
   const MyBooksView({super.key});
 

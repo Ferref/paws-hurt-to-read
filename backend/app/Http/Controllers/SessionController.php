@@ -68,6 +68,6 @@ class SessionController extends Controller
 
     public function destroy(Request $request)
     {
-        // Todo: Token blacklist
+        // TODO: remove tokens and refresh tokens
     }
 }
