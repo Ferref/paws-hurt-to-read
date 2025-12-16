@@ -130,7 +130,7 @@ class LoginViewState extends State<LoginView> {
               const SizedBox(height: 10),
               Center(
                 child: InkWell(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationView())),
+                  onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RegistrationView())),
                   child: const Text(
                     "Don't have an account? Sign Up",
                     textAlign: TextAlign.center,

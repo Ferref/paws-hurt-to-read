@@ -101,7 +101,7 @@ class RegistrationViewState extends State<RegistrationView> {
                       }
                       
                       if (user != null) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => const MainHomeView()),
                         );

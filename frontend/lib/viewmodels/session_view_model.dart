@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/services/session_service.dart';
 
+// TODO: after auth load user
+
 class SessionViewModel extends ChangeNotifier {
   final SessionService _sessionService;
   
