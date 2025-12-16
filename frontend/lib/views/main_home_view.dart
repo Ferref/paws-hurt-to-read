@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/viewmodels/session_view_model.dart';
+import 'package:provider/provider.dart';
+import 'dart:developer' as developer;
 
 import 'explore_view.dart';
 import 'my_books_view.dart';
@@ -64,7 +67,10 @@ class _MainHomeViewState extends State<MainHomeView> {
         bodyContent = const SettingsView();
         break;
       case 'Logout':
+        final sessionVm = context.read<SessionViewModel>();
+        sessionVm.destroy();
         bodyContent = const LoginView();
+
       default:
         bodyContent = IndexedStack(
           index: _selectedIndex,

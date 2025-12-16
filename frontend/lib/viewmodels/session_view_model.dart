@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/foundation.dart';
 import 'package:frontend/services/session_service.dart';
 import '../models/user.dart';
@@ -23,5 +25,14 @@ class SessionViewModel extends ChangeNotifier {
     notifyListeners();
 
     return _user;
+  }
+
+  Future<void> destroy() async {
+    _loading = true;
+    
+    _user = await _sessionService.destroy();
+    notifyListeners();
+
+    _loading = false;
   }
 }

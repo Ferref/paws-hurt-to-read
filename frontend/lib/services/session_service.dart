@@ -8,21 +8,16 @@ import '../models/user.dart';
 class SessionService {
   final String host = dotenv.env['API_HOST']!;
   final String loginEndpoint = dotenv.env['LOGIN_PATH']!;
+  final String logoutEndpoint = dotenv.env['LOGIN_PATH']!;
 
   // Session Stored (token)
-  Future<User> store({
-    required String name,
-    required String password,
-  }) async {
+  Future<User> store({required String name, required String password}) async {
     final uri = Uri.parse('$host/$loginEndpoint');
 
     final response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'name': name,
-        'password': password,
-      }),
+      body: jsonEncode({'name': name, 'password': password}),
     );
 
     if (response.statusCode == 401) {
@@ -34,8 +29,15 @@ class SessionService {
       throw Exception('Failed to login user: ${response.statusCode}');
     }
 
-    User user = User.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+    User user = User.fromJson(
+      jsonDecode(response.body) as Map<String, dynamic>,
+    );
 
     return user;
+  }
+
+  Future<User?> destroy() async {
+    // Todo: Token invalidation
+    return null;
   }
 }
