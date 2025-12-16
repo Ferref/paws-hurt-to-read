@@ -6,8 +6,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/viewmodels/registration_view_model.dart';
 import 'package:frontend/views/login_view.dart';
-import 'main_home_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'main_home_view.dart';
 
 class RegistrationView extends StatefulWidget {
   const RegistrationView({super.key});

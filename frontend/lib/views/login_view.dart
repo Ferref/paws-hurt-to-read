@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/viewmodels/login_view_model.dart';
+import 'package:frontend/viewmodels/session_view_model.dart';
 import 'package:frontend/views/login_view.dart';
 import 'package:frontend/views/registration_view.dart';
-import 'main_home_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import 'main_home_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
-
-  LoginViewModel get vm => LoginViewModel();
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -34,6 +35,8 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final sessionVm = context.read<SessionViewModel>();
+
     return Scaffold(
       backgroundColor: Colors.black54,
       body: Center(
@@ -95,7 +98,7 @@ class _LoginViewState extends State<LoginView> {
                 child: ElevatedButton(
                 onPressed: () async {
                   try {
-                      User? user = await widget.vm.store(
+                      User? user = await sessionVm.store(
                       _usernameController.text,
                       _passwordController.text,
                     );

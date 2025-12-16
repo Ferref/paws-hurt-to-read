@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../models/user.dart';
 
-class LoginService {
+class SessionService {
   final String host = dotenv.env['API_HOST']!;
   final String loginEndpoint = dotenv.env['LOGIN_PATH']!;
 

@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
+
 import 'views/login_view.dart';
 import 'views/main_home_view.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'viewmodels/session_view_model.dart';
 
 Future<void> main() async {
   await dotenv.load();
-  runApp(const MyApp());
+    runApp(
+      ChangeNotifierProvider(
+        create: (_) => SessionViewModel(),
+        child: const MyApp(),
+      )
+    );
 }
 
 class MyApp extends StatelessWidget {

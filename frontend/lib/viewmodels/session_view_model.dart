@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:frontend/services/session_service.dart';
 import '../models/user.dart';
 
-class LoginViewModel extends ChangeNotifier {
+class SessionViewModel extends ChangeNotifier {
   final SessionService _sessionService = SessionService();
   User? _user;
   bool _loading = false;
