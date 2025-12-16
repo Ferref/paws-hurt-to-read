@@ -14,10 +14,10 @@ class ExploreView extends StatefulWidget {
   State<ExploreView> createState() => _ExploreViewState();
 }
 
-class _ExploreViewState extends State<ExploreView>
-    with AutomaticKeepAliveClientMixin {
-  // no custom initialization required here; keeping the default behavior
+// TODO: Add searchbar
+// TODO: Implement search
 
+class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClientMixin {
   Widget _buildGrid(List<Book> books) {
     return GridView.builder(
       padding: const EdgeInsets.all(12.0),
@@ -51,10 +51,7 @@ class _ExploreViewState extends State<ExploreView>
               children: [
                 Expanded(
                   child: cover?.isNotEmpty == true
-                      ? Image.network(
-                          cover!,
-                          fit: BoxFit.cover,
-                        )
+                      ? Image.network(cover!, fit: BoxFit.cover)
                       : const Center(
                           child: Icon(
                             Icons.book,
@@ -67,7 +64,10 @@ class _ExploreViewState extends State<ExploreView>
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     title,
-                    style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.lato(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -99,9 +99,13 @@ class _ExploreViewState extends State<ExploreView>
 
         if (!widget.vm.showBooks) {
           return Center(
-              child: Text('Explore',
-                  style: GoogleFonts.poppins(
-                      textStyle: TextStyle(fontSize: 20, color: Colors.white))));
+            child: Text(
+              'Explore',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+          );
         }
 
         final books = widget.vm.books;
@@ -114,3 +118,5 @@ class _ExploreViewState extends State<ExploreView>
     );
   }
 }
+
+// TODO: Add pagination buttons

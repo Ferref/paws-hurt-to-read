@@ -120,7 +120,8 @@ class LoginViewState extends State<LoginView> {
               const SizedBox(height: 26),
               const Center(
                 child: Text(
-                  // TODO: Implement password recovery
+                  // TODO: password recovery view
+                  // TODO: password recovery implementation
                   'Forgot Password?',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14, color: Colors.white70),

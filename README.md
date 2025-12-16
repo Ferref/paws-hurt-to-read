@@ -9,6 +9,7 @@
 ## Users can
 - Register, log in, and log out
 - Explore books and their details
+- Search in books (My Books, Explore)
 - Add books to their user account or download books (EPUB format) and add them to their account
 - Upload their own books
 - Read downloaded books

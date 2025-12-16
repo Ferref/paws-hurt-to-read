@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:frontend/models/book.dart';
 import 'package:frontend/services/book_service.dart';
@@ -35,8 +34,9 @@ class ExploreViewModel extends ChangeNotifier {
       return;
     }
 
-    final start = int.parse(dotenv.env['BOOK_RANGE_START']!);
-    final end = int.parse(dotenv.env['BOOK_RANGE_END']!);
+    // TODO: implement pagination
+    final start = 1;
+    final end = 10;
 
     _loading = true;
     _error = null;

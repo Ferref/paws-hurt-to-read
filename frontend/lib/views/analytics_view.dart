@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 class AnalyticsView extends StatelessWidget {
   const AnalyticsView({super.key});
 
+  // TODO: analitycs implementation
+  // TODO: analytics visualizations
+
   @override
   Widget build(BuildContext context) {
     return Center(

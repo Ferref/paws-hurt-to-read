@@ -132,6 +132,8 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                       backgroundColor: Colors.black87,
                       avatar: const Icon(Icons.book, color: Colors.white),
                       label: Text('Download to My Books', style: TextStyle(color: Colors.white)),
+                      // TODO: add book to my account button
+                      // TODO: add book to my account implementation
                     ),
                   ),
               ],

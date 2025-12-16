@@ -9,6 +9,8 @@ import 'package:frontend/widgets/search_bar_widget.dart';
 // TODO: You can remove the book from device
 // TODO: You can remove the book from (account + device)
 
+// TODO: Implement search
+
 class MyBooksView extends StatelessWidget {
   const MyBooksView({super.key});
 
@@ -33,6 +35,7 @@ class ImportButton extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
+          // TODO: Implement search
           child: const SearchBarWidget(),
         ),
         SizedBox(
@@ -84,3 +87,6 @@ class ImportButton extends StatelessWidget {
     );
   }
 }
+
+// TODO: Add pagination buttons
+
