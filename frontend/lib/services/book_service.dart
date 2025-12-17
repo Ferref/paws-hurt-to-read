@@ -1,20 +1,23 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'package:frontend/config/api_routes.dart';
 import 'package:frontend/models/book_details.dart';
 import 'package:frontend/models/book.dart';
 
 class BookService {
-  final String host = dotenv.env['API_HOST']!;
-  final String bookCoversEndpoint = dotenv.env['BOOK_COVERS_PATH']!;
-  final String bookDetailsEndpoint = dotenv.env['BOOK_DETAILS_PATH']!;
+  final String host = ApiRoutes.basePath;
+  final String bookCoversEndpoint = ApiRoutes.bookCovers;
+  final String bookDetailsEndpoint = ApiRoutes.bookDetails;
 
   Future<List<Book>> fetchRange({int start = 1, int end = 10}) async {
     final range = '$start-$end';
     final endpoint = bookCoversEndpoint.replaceAll('/{range}', '');
     final uri = Uri.parse('$host/$endpoint/$range');
+
+    developer.log(uri.toString());
 
     final response = await http.get(uri);
     if (response.statusCode == 200) {

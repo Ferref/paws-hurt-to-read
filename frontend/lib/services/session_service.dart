@@ -1,15 +1,15 @@
 import 'dart:convert';
 
+import 'package:frontend/config/api_routes.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:frontend/models/user.dart';
 
 class SessionService {
-  final String host = dotenv.env['API_HOST']!;
-  final String loginEndpoint = dotenv.env['LOGIN_PATH']!;
-  final String logoutEndpoint = dotenv.env['LOGOUT_PATH']!;
-  final String storeBookEndpoint = dotenv.env['STORE_BOOK_PATH']!;
+  final String host = ApiRoutes.basePath;
+  final String loginEndpoint = ApiRoutes.login;
+  final String logoutEndpoint = ApiRoutes.logout;
+  final String userBooksEndpoint = ApiRoutes.userBooks;
 
   // Session Stored (token)
   Future<User> store({required String name, required String password}) async {
@@ -38,7 +38,7 @@ class SessionService {
   }
 
   Future<void> storeBook({required int bookId }) async {
-    final uri = Uri.parse('$host/$storeBookEndpoint');
+    final uri = Uri.parse('$host/$userBooksEndpoint');
 
     final response = await http.post(
       uri,
@@ -52,7 +52,7 @@ class SessionService {
   }
 
   Future<User?> destroy() async {
-    // Todo: Token invalidation
+    // TODO: Token invalidation
     return null;
   }
 }

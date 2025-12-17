@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:frontend/models/user.dart';
+import 'package:frontend/config/api_routes.dart';
 
 class RegistrationService {
-  final String host = dotenv.env['API_HOST']!;
-  final String registrationEndpoint = dotenv.env['REGISTRATION_PATH']!;
+  final String host = ApiRoutes.basePath;
+  final String registrationEndpoint = ApiRoutes.registration;
 
   Future<User> store({
     required String name,
