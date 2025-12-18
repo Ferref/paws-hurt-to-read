@@ -14,7 +14,6 @@ import 'package:frontend/viewmodels/session_view_model.dart';
 import 'package:frontend/viewmodels/explore_view_model.dart';
 
 class MainHomeView extends StatefulWidget {
-
   const MainHomeView({super.key});
 
   @override
@@ -22,12 +21,18 @@ class MainHomeView extends StatefulWidget {
 }
 
 class _MainHomeViewState extends State<MainHomeView> {
-  int _selectedIndex = 0;
-  String _drawerSelected = '';
-
   final ExploreViewModel _exploreVm = getIt<ExploreViewModel>();
-
   final List<Widget?> _pages = [const MyBooksView(), null];
+
+  String _title = "PaswHurtToRead";
+  String _drawerSelected = '';
+  int _selectedIndex = 0;
+  
+  String get title => _title;
+
+  set title(String name) {
+    _title = name;
+  }
 
   void _onItemTapped(int index) {
     if (index == 0) {
@@ -60,20 +65,27 @@ class _MainHomeViewState extends State<MainHomeView> {
 
     switch (_drawerSelected) {
       case 'Profile':
+        title = 'Profile';
         bodyContent = const ProfileView();
         break;
       case 'Analytics':
+        title = 'Analytics';
         bodyContent = const AnalyticsView();
         break;
       case 'Settings':
+        title = 'Settings';
         bodyContent = const SettingsView();
         break;
       case 'Logout':
+        title = 'Logout';
+        
+        // TODO: Confirmation box
         final sessionService = getIt<SessionViewModel>();
         sessionService.destroy();
         bodyContent = const LoginView();
 
       default:
+        title = 'PawsHurtTorRead';
         bodyContent = IndexedStack(
           index: _selectedIndex,
           children: [
@@ -89,7 +101,7 @@ class _MainHomeViewState extends State<MainHomeView> {
           : AppBar(
               backgroundColor: Colors.black38,
               iconTheme: const IconThemeData(color: Colors.white),
-              title: const Text('PawsHurtToRead', style: TextStyle(color: Colors.white)),
+              title: Text(title, style: TextStyle(color: Colors.white)),
             ),
       drawer: (bodyContent is LoginView)
           ? null
