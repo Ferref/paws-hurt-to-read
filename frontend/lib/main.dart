@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:frontend/viewmodels/registration_view_model.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:frontend/services/book_service.dart';
 import 'package:frontend/services/registration_service.dart';
 import 'package:frontend/services/session_service.dart';
+
 import 'package:frontend/viewmodels/book_details_view_model.dart';
 import 'package:frontend/viewmodels/explore_view_model.dart';
-import 'package:frontend/views/login_view.dart';
 import 'package:frontend/viewmodels/session_view_model.dart';
+import 'package:frontend/viewmodels/registration_view_model.dart';
+
+import 'package:frontend/views/login_view.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -27,7 +29,6 @@ void setup() {
   getIt.registerFactory<ExploreViewModel>(
     () => ExploreViewModel(getIt<BookService>()),
   );
-
 }
 
 Future<void> main() async {
