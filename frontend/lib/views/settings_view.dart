@@ -1,5 +1,9 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:frontend/views/settings/theme_view.dart';
 
 // TODO: display settings
 // TODO: setting change implementation
@@ -10,8 +14,25 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Settings', style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 24))),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ThemeView()),
+            );
+          },
+          child: ListTile(
+            title: Text(
+              "Theme",
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            leading: Icon(Icons.color_lens),
+          ),
+        ),
+      ],
     );
   }
 }
