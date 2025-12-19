@@ -19,8 +19,12 @@ void setup() {
   getIt.registerSingleton<SessionService>(SessionService());
   getIt.registerSingleton<RegistrationService>(RegistrationService());
   getIt.registerSingleton<BookService>(BookService());
-  getIt.registerSingleton<SessionViewModel>(SessionViewModel(getIt<SessionService>()));
-  getIt.registerSingleton<RegistrationViewModel>(RegistrationViewModel(getIt<RegistrationService>()));
+  getIt.registerSingleton<SessionViewModel>(
+    SessionViewModel(getIt<SessionService>()),
+  );
+  getIt.registerSingleton<RegistrationViewModel>(
+    RegistrationViewModel(getIt<RegistrationService>()),
+  );
 
   getIt.registerFactory<BookDetailsViewModel>(
     () => BookDetailsViewModel(getIt<BookService>()),
