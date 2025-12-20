@@ -13,6 +13,8 @@ import 'package:frontend/views/login_view.dart';
 import 'package:frontend/viewmodels/session_view_model.dart';
 import 'package:frontend/viewmodels/explore_view_model.dart';
 
+enum _DrawerPage { none, profile, analytics, settings, logout }
+
 class MainHomeView extends StatefulWidget {
   const MainHomeView({super.key});
 
@@ -21,36 +23,160 @@ class MainHomeView extends StatefulWidget {
 }
 
 class _MainHomeViewState extends State<MainHomeView> {
+  static const String _defaultTitle = 'PawsHurtToRead';
+
   final ExploreViewModel _exploreVm = getIt<ExploreViewModel>();
-  final List<Widget?> _pages = [const MyBooksView(), null];
 
-  String _title = "PaswHurtToRead";
-  String _drawerSelected = '';
+  final List<Widget?> _tabPages = [
+    const MyBooksView(),
+    null,
+  ];
+
+  _DrawerPage _drawerPage = _DrawerPage.none;
   int _selectedIndex = 0;
-  
-  String get title => _title;
 
-  set title(String name) {
-    _title = name;
-  }
+  bool get _isLogin => _drawerPage == _DrawerPage.logout;
+  bool get _showBottomNav => !_isLogin && _drawerPage == _DrawerPage.none;
 
   void _onItemTapped(int index) {
+    _handleExploreStateForTab(index);
+
+    setState(() {
+      _drawerPage = _DrawerPage.none;
+      _ensureTabPageBuilt(index);
+      _selectedIndex = index;
+    });
+  }
+
+  void _handleExploreStateForTab(int index) {
     if (index == 0) {
       _exploreVm.setShowBooks(false);
+      return;
     }
 
     if (index == 1) {
       _exploreVm.ensureLoaded();
       _exploreVm.setShowBooks(true);
     }
+  }
 
-    setState(() {
-      _drawerSelected = '';
-      if (_pages[index] == null) {
-        _pages[index] = index == 0 ? const MyBooksView() : ExploreView(vm: _exploreVm);
-      }
-      _selectedIndex = index;
-    });
+  void _ensureTabPageBuilt(int index) {
+    if (_tabPages[index] != null) {
+      return;
+    }
+
+    if (index == 1) {
+      _tabPages[index] = ExploreView(vm: _exploreVm);
+    }
+  }
+
+  void _logout() {
+    // TODO: Confirmation box
+    getIt<SessionViewModel>().destroy();
+    setState(() => _drawerPage = _DrawerPage.logout);
+  }
+
+  void _onDrawerItemTap(String page) {
+    final selection = _mapDrawerSelection(page);
+
+    if (selection == _DrawerPage.logout) {
+      _logout();
+      return;
+    }
+
+    setState(() => _drawerPage = selection);
+  }
+
+  _DrawerPage _mapDrawerSelection(String page) {
+    switch (page) {
+      case 'Profile':
+        return _DrawerPage.profile;
+      case 'Analytics':
+        return _DrawerPage.analytics;
+      case 'Settings':
+        return _DrawerPage.settings;
+      case 'Logout':
+        return _DrawerPage.logout;
+      default:
+        return _DrawerPage.none;
+    }
+  }
+
+  String get _title {
+    switch (_drawerPage) {
+      case _DrawerPage.profile:
+        return 'Profile';
+      case _DrawerPage.analytics:
+        return 'Analytics';
+      case _DrawerPage.settings:
+        return 'Settings';
+      case _DrawerPage.logout:
+        return 'Logout';
+      case _DrawerPage.none:
+        return _defaultTitle;
+    }
+  }
+
+  Widget get _body {
+    switch (_drawerPage) {
+      case _DrawerPage.profile:
+        return const ProfileView();
+      case _DrawerPage.analytics:
+        return const AnalyticsView();
+      case _DrawerPage.settings:
+        return const SettingsView();
+      case _DrawerPage.logout:
+        return const LoginView();
+      case _DrawerPage.none:
+        return IndexedStack(
+          index: _selectedIndex,
+          children: [
+            _tabPages[0]!,
+            _tabPages[1] ?? const SizedBox.shrink(),
+          ],
+        );
+    }
+  }
+
+  PreferredSizeWidget? get _appBar {
+    if (_isLogin) {
+      return null;
+    }
+
+    return AppBar(
+      backgroundColor: Colors.black38,
+      iconTheme: const IconThemeData(color: Colors.white),
+      title: Text(_title, style: const TextStyle(color: Colors.white)),
+    );
+  }
+
+  Widget? get _drawer {
+    if (_isLogin) {
+      return null;
+    }
+
+    return DrawerWidget(onItemTap: _onDrawerItemTap);
+  }
+
+  Widget? get _bottomNav {
+    if (!_showBottomNav) {
+      return null;
+    }
+
+    return BottomNavigationBar(
+      backgroundColor: Colors.black,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.blueGrey,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'My Books'),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Explore'),
+      ],
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+    );
   }
 
   @override
@@ -61,81 +187,12 @@ class _MainHomeViewState extends State<MainHomeView> {
 
   @override
   Widget build(BuildContext context) {
-    Widget bodyContent;
-
-    switch (_drawerSelected) {
-      case 'Profile':
-        title = 'Profile';
-        bodyContent = const ProfileView();
-        break;
-      case 'Analytics':
-        title = 'Analytics';
-        bodyContent = const AnalyticsView();
-        break;
-      case 'Settings':
-        title = 'Settings';
-        bodyContent = const SettingsView();
-        break;
-      case 'Logout':
-        title = 'Logout';
-        
-        // TODO: Confirmation box
-        final sessionService = getIt<SessionViewModel>();
-        sessionService.destroy();
-        bodyContent = const LoginView();
-
-      default:
-        title = 'PawsHurtTorRead';
-        bodyContent = IndexedStack(
-          index: _selectedIndex,
-          children: [
-            _pages[0]!,
-            _pages[1] ?? const SizedBox.shrink(),
-          ],
-        );
-    }
-
     return Scaffold(
-      appBar: (bodyContent is LoginView)
-          ? null
-          : AppBar(
-              backgroundColor: Colors.black38,
-              iconTheme: const IconThemeData(color: Colors.white),
-              title: Text(title, style: TextStyle(color: Colors.white)),
-            ),
-      drawer: (bodyContent is LoginView)
-          ? null
-          : DrawerWidget(
-              onItemTap: (page) {
-                setState(() {
-                  _drawerSelected = page;
-                });
-              },
-            ),
-      body: bodyContent,
       backgroundColor: Colors.black,
-      bottomNavigationBar: (bodyContent is LoginView)
-          ? null
-          : BottomNavigationBar(
-              backgroundColor: Colors.black,
-              showSelectedLabels: true,
-              showUnselectedLabels: true,
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: bodyContent is IndexedStack ? Colors.white : Colors.blueGrey,
-              unselectedItemColor: Colors.blueGrey,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.book),
-                  label: 'My Books',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  label: 'Explore',
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-            ),
+      appBar: _appBar,
+      drawer: _drawer,
+      body: _body,
+      bottomNavigationBar: _bottomNav,
     );
   }
 }

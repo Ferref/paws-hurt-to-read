@@ -45,18 +45,31 @@ class LoginViewState extends State<LoginView> {
               const SizedBox(height: 20),
               const Text(
                 'PawsHurtToRead',
-                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 26, color: Colors.white),
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 6),
               const Text(
                 'Sign In to continue',
-                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.normal, fontSize: 18, color: Colors.white),
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 26),
               TextField(
                 style: const TextStyle(color: Colors.white),
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username', border: OutlineInputBorder()),
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  border: OutlineInputBorder(),
+                ),
               ),
               const SizedBox(height: 16),
               TextField(
@@ -76,44 +89,70 @@ class LoginViewState extends State<LoginView> {
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
-                      final user = await sessionVm.store(_usernameController.text, _passwordController.text);
+                      // TODO: Uncomment this
+                      // final user = await sessionVm.store(
+                      //   _usernameController.text,
+                      //   _passwordController.text,
+                      // );
 
                       if (!context.mounted) {
                         return;
                       }
-                                   
-                      if (user != null) {
+
+                      // TODO: Replace placeholder
+                      if (true /*user != null*/) {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => const MainHomeView()),
+                          MaterialPageRoute(
+                            builder: (context) => const MainHomeView(),
+                          ),
                         );
 
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Login successful! Welcome, ${user.name}')),
+                          SnackBar(
+                            content: Text(
+                              // TODO: Replace placeholder
+                              // 'Login successful! Welcome, ${user.name}',
+                              'Login successful! Welcome, User',
+                            ),
+                          ),
                         );
                       }
                     } catch (e) {
                       if (e.toString().contains('Validation errors')) {
                         final errors = jsonDecode(
-                          e.toString().replaceFirst('Exception: Validation errors: ', ''),
+                          e.toString().replaceFirst(
+                            'Exception: Validation errors: ',
+                            '',
+                          ),
                         )["errors"];
                         setState(() {
                           errorMessage = errors['message']?[0];
                         });
-                      } else {
+                      } else if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Login failed... Please try again later')),
+                          const SnackBar(
+                            content: Text(
+                              'Login failed... Please try again later',
+                            ),
+                          ),
                         );
                       }
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   child: const Text(
                     'Login',
-                    style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -130,11 +169,20 @@ class LoginViewState extends State<LoginView> {
               const SizedBox(height: 10),
               Center(
                 child: InkWell(
-                  onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RegistrationView())),
+                  onTap: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegistrationView(),
+                    ),
+                  ),
                   child: const Text(
                     "Don't have an account? Sign Up",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14, color: Colors.white),
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
