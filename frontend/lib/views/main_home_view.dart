@@ -36,8 +36,7 @@ class _MainHomeViewState extends State<MainHomeView> {
   int _selectedIndex = 0;
 
   bool get _isLogin => _drawerPage == _DrawerPage.logout;
-  bool get _showBottomNav => !_isLogin && _drawerPage == _DrawerPage.none;
-
+  bool get _showBottomNav => !_isLogin;
   void _onItemTapped(int index) {
     _handleExploreStateForTab(index);
 
