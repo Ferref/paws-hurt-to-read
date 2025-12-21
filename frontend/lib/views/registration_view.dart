@@ -120,7 +120,7 @@ class RegistrationViewState extends State<RegistrationView> {
                           passwordError = errors['password']?[0];
                           passwordConfirmationError = errors['password_confirmation']?[0];
                         });
-                      } else {
+                      } else if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Registration failed... Please try again later')),
                         );
