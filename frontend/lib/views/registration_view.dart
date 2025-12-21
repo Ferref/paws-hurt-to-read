@@ -37,7 +37,7 @@ class RegistrationViewState extends State<RegistrationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black54,
+      backgroundColor: Theme.of(context).primaryColorDark,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
@@ -45,39 +45,39 @@ class RegistrationViewState extends State<RegistrationView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const FaIcon(FontAwesomeIcons.paw, color: Colors.white, size: 48),
+              FaIcon(FontAwesomeIcons.paw, color: Theme.of(context).appBarTheme.foregroundColor, size: 48),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 'PawsHurtToRead',
-                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 26, color: Colors.white),
+                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 26, color: Theme.of(context).appBarTheme.foregroundColor),
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Create an account to continue',
-                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.normal, fontSize: 18, color: Colors.white),
+                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.normal, fontSize: 18, color: Theme.of(context).primaryColorLight),
               ),
               const SizedBox(height: 26),
               TextField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _usernameController,
                 decoration: InputDecoration(labelText: 'Username', border: OutlineInputBorder(), errorText: usernameError),
               ),
               const SizedBox(height: 26),
               TextField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _emailController,
                 decoration: InputDecoration(labelText: 'Email', border: OutlineInputBorder(), errorText: emailError),
               ),
               const SizedBox(height: 16),
               TextField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _passwordController,
                 decoration: InputDecoration(labelText: 'Password', border: OutlineInputBorder(), errorText: passwordError),
                 obscureText: true,
               ),
               const SizedBox(height: 26),
               TextField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _passwordConfirmationController,
                 decoration: InputDecoration(labelText: 'Confirm Password', border: OutlineInputBorder(), errorText: passwordConfirmationError),
                 obscureText: true,
@@ -131,9 +131,9 @@ class RegistrationViewState extends State<RegistrationView> {
                     backgroundColor: Colors.purple,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Registration',
-                    style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Theme.of(context).canvasColor, fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -141,10 +141,10 @@ class RegistrationViewState extends State<RegistrationView> {
               Center(
                 child: InkWell(
                   onTap: () => Navigator.pop(context),
-                  child: const Text(
+                  child: Text(
                     "Already have an account? Sign In",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14, color: Colors.white),
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14, color: Theme.of(context).appBarTheme.foregroundColor),
                   ),
                 ),
               ),

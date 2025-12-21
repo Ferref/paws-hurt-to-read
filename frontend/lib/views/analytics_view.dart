@@ -29,26 +29,27 @@ class _AnalyticsViewState extends State<AnalyticsView> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _buildStats(theme),
-          const SizedBox(height: 40),
-          _buildSectionTitle("How about genres?"),
-          const SizedBox(height: 10),
-          _buildRadarChart(),
-          const SizedBox(height: 50),
-          _buildSectionTitle("Are your books well-spoken?"),
-          const SizedBox(height: 10),
-          _buildLineChart(),
-          const SizedBox(height: 50),
-          _buildSectionTitle("You may also like"),
-          const SizedBox(height: 10),
-          _buildRecommendations(),
-        ],
+      child: Container(
+        color: Theme.of(context).canvasColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildStats(Theme.of(context)),
+            const SizedBox(height: 40),
+            _buildSectionTitle("How about genres?"),
+            const SizedBox(height: 10),
+            _buildRadarChart(),
+            const SizedBox(height: 50),
+            _buildSectionTitle("Are your books well-spoken?"),
+            const SizedBox(height: 10),
+            _buildLineChart(),
+            const SizedBox(height: 50),
+            _buildSectionTitle("You may also like"),
+            const SizedBox(height: 10),
+            _buildRecommendations(),
+          ],
+        ),
       ),
     );
   }
@@ -59,7 +60,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
       child: Text(
         'Owned books: 10 \nDownloaded books: 6 \nRead books: 4',
         textAlign: TextAlign.center,
-        style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
+        style: theme.textTheme.titleMedium?.copyWith(color: Theme.of(context).appBarTheme.foregroundColor),
       ),
     );
   }
@@ -67,7 +68,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
   Widget _buildSectionTitle(String text) {
     return Text(
       text,
-      style: GoogleFonts.poppins(color: Colors.white, fontSize: 26),
+      style: GoogleFonts.poppins(color: Theme.of(context).appBarTheme.foregroundColor, fontSize: 26),
     );
   }
 
@@ -90,8 +91,8 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                 tickCount: 5,
                 radarBorderData: const BorderSide(color: Colors.white24),
                 gridBorderData: const BorderSide(color: Colors.white24),
-                titleTextStyle: const TextStyle(
-                  color: Colors.white,
+                titleTextStyle: TextStyle(
+                  color: Theme.of(context).canvasColor,
                   fontSize: 20,
                 ),
                 getTitle: (index, _) =>
@@ -159,8 +160,8 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                           padding: const EdgeInsets.only(top: 1),
                           child: Text(
                             sortedEntries[index].key,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: Theme.of(context).appBarTheme.foregroundColor,
                               fontSize: 16,
                             ),
                           ),
@@ -231,7 +232,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                         onPressed: () {},
                         child: Text(
                           "See details",
-                          style: TextStyle(color: Colors.white, fontSize: 24),
+                          style: TextStyle(color: Theme.of(context).canvasColor, fontSize: 24),
                         ),
                       ),
                     ],

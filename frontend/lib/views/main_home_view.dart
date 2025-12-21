@@ -143,9 +143,9 @@ class _MainHomeViewState extends State<MainHomeView> {
     }
 
     return AppBar(
-      backgroundColor: Colors.black38,
-      iconTheme: const IconThemeData(color: Colors.white),
-      title: Text(_title, style: const TextStyle(color: Colors.white)),
+      backgroundColor: Theme.of(context).canvasColor,
+      iconTheme: Theme.of(context).iconTheme,
+      title: Text(_title, style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor)),
     );
   }
 
@@ -163,12 +163,12 @@ class _MainHomeViewState extends State<MainHomeView> {
     }
 
     return BottomNavigationBar(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       showSelectedLabels: true,
       showUnselectedLabels: true,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.blueGrey,
+      selectedItemColor: Theme.of(context).appBarTheme.foregroundColor,
+      unselectedItemColor: Theme.of(context).appBarTheme.shadowColor,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.book), label: 'My Books'),
         BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Explore'),

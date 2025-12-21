@@ -12,13 +12,13 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: GoogleFonts.poppins(color: Colors.white),
+      style: GoogleFonts.poppins(color: Theme.of(context).appBarTheme.backgroundColor),
       decoration: InputDecoration(
         hintText: 'Search books...',
-        hintStyle: GoogleFonts.poppins(color: Colors.white54),
-        prefixIcon: const Icon(Icons.search, color: Colors.white54),
+        hintStyle: GoogleFonts.poppins(color: Theme.of(context).appBarTheme.foregroundColor),
+        prefixIcon: Icon(Icons.search, color: Theme.of(context).appBarTheme.foregroundColor),
         filled: true,
-        fillColor: Colors.grey[900],
+        fillColor: Theme.of(context).focusColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,

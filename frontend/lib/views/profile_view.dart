@@ -7,76 +7,79 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            color: Colors.deepPurple,
-            child: const Center(
-              child: FaIcon(
-                Icons.admin_panel_settings_sharp,
-                color: Colors.white,
-                size: 100,
+    return Container(
+      color: Theme.of(context).canvasColor,
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+              color: Colors.deepPurpleAccent,
+              child: Center(
+                child: FaIcon(
+                  FontAwesomeIcons.shieldCat,
+                  color: Theme.of(context).canvasColor,
+                  size: 100,
+                ),
               ),
             ),
           ),
-        ),
-        Expanded(
-          child: Container(
-            color: Colors.black,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "ExampleUser",
-                    style: GoogleFonts.poppins(
-                      fontSize: 26,
-                      color: Colors.white,
+          Expanded(
+            child: Container(
+              color: Theme.of(context).canvasColor,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "ExampleUser",
+                      style: GoogleFonts.poppins(
+                        fontSize: 26,
+                        color: Theme.of(context).appBarTheme.foregroundColor,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "exampleuser@email.com",
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      color: Colors.white70,
+                    const SizedBox(height: 8),
+                    Text(
+                      "exampleuser@email.com",
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        color: Theme.of(context).appBarTheme.foregroundColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  textStyle: GoogleFonts.poppins(
-                    fontSize: 20,
-                    color: Colors.white,
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    textStyle: GoogleFonts.poppins(
+                      fontSize: 20,
+                      color: Theme.of(context).appBarTheme.foregroundColor,
+                    ),
                   ),
+                  onPressed: () {},
+                  child: const Text("Change Email"),
                 ),
-                onPressed: () {},
-                child: const Text("Change Email"),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  textStyle: GoogleFonts.poppins(
-                    fontSize: 20,
-                    color: Colors.white,
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    textStyle: GoogleFonts.poppins(
+                      fontSize: 20,
+                      color: Theme.of(context).appBarTheme.foregroundColor,
+                    ),
                   ),
+                  onPressed: () {},
+                  child: const Text("Change Password"),
                 ),
-                onPressed: () {},
-                child: const Text("Change Password"),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

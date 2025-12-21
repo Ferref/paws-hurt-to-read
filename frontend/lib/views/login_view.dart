@@ -33,7 +33,7 @@ class LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black54,
+      backgroundColor: Theme.of(context).primaryColorDark,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
@@ -41,30 +41,30 @@ class LoginViewState extends State<LoginView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const FaIcon(FontAwesomeIcons.paw, color: Colors.white, size: 48),
+              FaIcon(FontAwesomeIcons.paw, color: Theme.of(context).appBarTheme.backgroundColor, size: 48),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 'PawsHurtToRead',
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                   fontSize: 26,
-                  color: Colors.white,
+                  color: Theme.of(context).appBarTheme.backgroundColor,
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Sign In to continue',
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.normal,
                   fontSize: 18,
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
               ),
               const SizedBox(height: 26),
               TextField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _usernameController,
                 decoration: InputDecoration(
                   labelText: 'Username',
@@ -73,7 +73,7 @@ class LoginViewState extends State<LoginView> {
               ),
               const SizedBox(height: 16),
               TextField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -146,10 +146,10 @@ class LoginViewState extends State<LoginView> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Login',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).canvasColor,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -157,31 +157,31 @@ class LoginViewState extends State<LoginView> {
                 ),
               ),
               const SizedBox(height: 26),
-              const Center(
+              Center(
                 child: Text(
                   // TODO: password recovery view
                   // TODO: password recovery implementation
                   'Forgot Password?',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, color: Colors.white70),
+                  style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColorLight),
                 ),
               ),
               const SizedBox(height: 10),
               Center(
                 child: InkWell(
-                  onTap: () => Navigator.pushReplacement(
+                  onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const RegistrationView(),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     "Don't have an account? Sign Up",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 14,
-                      color: Colors.white,
+                      color: Theme.of(context).appBarTheme.foregroundColor,
                     ),
                   ),
                 ),

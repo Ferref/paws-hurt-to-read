@@ -43,7 +43,7 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
             );
           },
           child: Card(
-            color: Colors.white70,
+            color: Theme.of(context).cardColor,
             elevation: 2,
             clipBehavior: Clip.hardEdge,
             child: Column(
@@ -52,11 +52,11 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
                 Expanded(
                   child: cover?.isNotEmpty == true
                       ? Image.network(cover!, fit: BoxFit.cover)
-                      : const Center(
+                      : Center(
                           child: Icon(
                             Icons.book,
                             size: 48,
-                            color: Colors.white70,
+                            color: Theme.of(context).cardColor
                           ),
                         ),
                 ),
@@ -86,35 +86,38 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return AnimatedBuilder(
-      animation: widget.vm,
-      builder: (context, _) {
-        if (widget.vm.loading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (widget.vm.error != null) {
-          return Center(child: Text('Error: ${widget.vm.error}'));
-        }
-
-        if (!widget.vm.showBooks) {
-          return Center(
-            child: Text(
-              'Explore',
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(fontSize: 20, color: Colors.white),
+    return Container(
+      color: Theme.of(context).canvasColor,
+      child: AnimatedBuilder(
+        animation: widget.vm,
+        builder: (context, _) {
+          if (widget.vm.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+      
+          if (widget.vm.error != null) {
+            return Center(child: Text('Error: ${widget.vm.error}'));
+          }
+      
+          if (!widget.vm.showBooks) {
+            return Center(
+              child: Text(
+                'Explore',
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),
+                ),
               ),
-            ),
-          );
-        }
-
-        final books = widget.vm.books;
-        if (books.isEmpty) {
-          return const Center(child: Text('No books available'));
-        }
-
-        return _buildGrid(books);
-      },
+            );
+          }
+      
+          final books = widget.vm.books;
+          if (books.isEmpty) {
+            return const Center(child: Text('No books available'));
+          }
+      
+          return _buildGrid(books);
+        },
+      ),
     );
   }
 }

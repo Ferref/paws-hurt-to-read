@@ -38,18 +38,20 @@ class _BookDetailsViewState extends State<BookDetailsView> {
       builder: (context, _) {
         return Scaffold(
           appBar: AppBar(
-            iconTheme: const IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(
+              color: Theme.of(context).appBarTheme.foregroundColor,
+            ),
             title: Text(
               'Book Details',
               style: GoogleFonts.lato(
-                color: Colors.white,
+                color: Theme.of(context).appBarTheme.foregroundColor,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            backgroundColor: Colors.black,
+            backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           ),
-          backgroundColor: Colors.black,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           body: _buildBody(context),
         );
       },
@@ -58,17 +60,30 @@ class _BookDetailsViewState extends State<BookDetailsView> {
 
   Widget _buildBody(BuildContext context) {
     if (_vm.isLoading) {
-      return const Center(child: CircularProgressIndicator(color: Colors.white));
+      return Center(
+        child: CircularProgressIndicator(color: Theme.of(context).appBarTheme.foregroundColor),
+      );
     }
 
     if (_vm.errorMessage != null) {
       return Center(
-          child: Text('Error: ${_vm.errorMessage}', style: TextStyle(color: Colors.redAccent)));
+        child: Text(
+          'Error: ${_vm.errorMessage}',
+          style: TextStyle(color: Colors.redAccent),
+        ),
+      );
     }
 
     final BookDetails? details = _vm.bookDetails;
     if (details == null) {
-      return const Center(child: Text('No details available', style: TextStyle(color: Colors.white70)));
+      return Center(
+        child: Text(
+          'No details available',
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
+        ),
+      );
     }
 
     return SingleChildScrollView(
@@ -87,34 +102,49 @@ class _BookDetailsViewState extends State<BookDetailsView> {
           const SizedBox(height: 20),
           Text(
             details.title,
-            style: GoogleFonts.lato(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+            style: GoogleFonts.lato(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).appBarTheme.foregroundColor,
+            ),
           ),
           const SizedBox(height: 20),
           if (details.authors.isNotEmpty)
             Text(
               'By: ${details.authors.map((author) => author['name'].toString()).join(', ')}',
-              style: GoogleFonts.lato(fontSize: 14, color: Colors.white70),
+              style: GoogleFonts.lato(
+                fontSize: 14,
+                color: Theme.of(context).appBarTheme.foregroundColor,
+              ),
             ),
           if (details.downloadCount != null)
             Text(
               'Downloads: ${details.downloadCount}',
-              style: GoogleFonts.lato(fontSize: 14, color: Colors.white70),
+              style: GoogleFonts.lato(
+                fontSize: 14,
+                color: Theme.of(context).appBarTheme.foregroundColor,
+              ),
             ),
           if (details.readingEaseScore != null)
             Text(
               'Readability: ${details.readingEaseScore}',
-              style: GoogleFonts.lato(fontSize: 14, color: Colors.white70),
+              style: GoogleFonts.lato(
+                fontSize: 14,
+                color: Theme.of(context).appBarTheme.foregroundColor,
+              ),
             ),
           const SizedBox(height: 12),
           if (details.summary != null && details.summary!.isNotEmpty)
             Text(
               details.summary!.substring(leadingCharactersInSummary),
-              style: GoogleFonts.lato(fontSize: 16, color: Colors.white),
+              style: GoogleFonts.lato(fontSize: 16, color: Theme.of(context).appBarTheme.foregroundColor),
             )
           else
-            const Text(
+            Text(
               'No summary available.',
-              style: TextStyle(color: Colors.white70),
+              style: TextStyle(
+                color: Theme.of(context).appBarTheme.foregroundColor,
+              ),
             ),
           const SizedBox(height: 20),
           SizedBox(
@@ -129,9 +159,21 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                       // TODO: download book on the device in epub format
                     },
                     child: Chip(
-                      backgroundColor: Colors.black87,
-                      avatar: const Icon(Icons.book, color: Colors.white),
-                      label: Text('Download to My Books', style: TextStyle(color: Colors.white)),
+                      backgroundColor: Theme.of(
+                        context,
+                      ).appBarTheme.backgroundColor,
+                      avatar: Icon(
+                        Icons.book,
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                      ),
+                      label: Text(
+                        'Download to My Books',
+                        style: TextStyle(
+                          color: Theme.of(
+                            context,
+                          ).navigationBarTheme.backgroundColor,
+                        ),
+                      ),
                       // TODO: add book to my account button
                       // TODO: add book to my account implementation
                     ),

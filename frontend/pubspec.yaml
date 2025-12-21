@@ -45,6 +45,7 @@ dependencies:
   fl_chart: ^1.1.1
   carousel_slider: ^5.1.1
   toggle_switch: ^2.3.0
+  adaptive_theme: ^3.7.2
 
 dev_dependencies:
   flutter_test:

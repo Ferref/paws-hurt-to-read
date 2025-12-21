@@ -1,1 +1,0 @@
-// TODO: Light and dark mode switch

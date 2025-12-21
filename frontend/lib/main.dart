@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 
 import 'package:frontend/services/book_service.dart';
 import 'package:frontend/services/registration_service.dart';
@@ -39,21 +40,37 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   setup();
-  runApp(MyApp());
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  runApp(MyApp(savedThemeMode: savedThemeMode));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AdaptiveThemeMode? savedThemeMode;
+
+  const MyApp({super.key, this.savedThemeMode});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'PawsHurtToRead',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+    return AdaptiveTheme(
+      light: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorSchemeSeed: Colors.white70,
       ),
-      home: const LoginView(),
+      dark: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorSchemeSeed: Colors.black,
+      ),
+      initial: savedThemeMode ?? AdaptiveThemeMode.dark,
+      builder: (theme, darkTheme) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'PawsHurtToRead',
+        theme: theme,
+        darkTheme: darkTheme,
+        home: const LoginView(),
+      ),
+      debugShowFloatingThemeButton: false,
     );
   }
 }

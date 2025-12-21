@@ -17,7 +17,7 @@ class MyBooksView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       body: Center(
         child: ImportButton(),
       ),
@@ -65,7 +65,7 @@ class ImportButton extends StatelessWidget {
               // );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).appBarTheme.foregroundColor,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -74,8 +74,8 @@ class ImportButton extends StatelessWidget {
             child: Text(
               'Import Books',
               style: GoogleFonts.poppins(
-                textStyle: const TextStyle(
-                  color: Colors.black87,
+                textStyle: TextStyle(
+                  color: Theme.of(context).appBarTheme.foregroundColor,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),

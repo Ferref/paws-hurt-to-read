@@ -17,27 +17,54 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).canvasColor,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.black),
-            child: Text('PawsHurtToRead', style: TextStyle(color: Colors.white, fontSize: 24)),
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.deepPurpleAccent,
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(top: 10, left: 10),
+              child: Text(
+                'PawsHurtToRead',
+                style: TextStyle(
+                  color: Theme.of(context).canvasColor,
+                  fontSize: 26,
+                ),
+              ),
+            ),
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle, color: Colors.black),
-            title: const Text('Profile', style: TextStyle(color: Colors.black)),
+            leading: Icon(
+              Icons.account_circle,
+              color: Theme.of(context).appBarTheme.foregroundColor,
+            ),
+            title: Text(
+              'Profile',
+              style: TextStyle(
+                color: Theme.of(context).appBarTheme.backgroundColor,
+              ),
+            ),
             onTap: () {
               if (onItemTap != null) {
                 onItemTap!('Profile');
-              } 
+              }
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: const Icon(Icons.analytics, color: Colors.black),
-            title: const Text('Analytics', style: TextStyle(color: Colors.black)),
+            leading: Icon(
+              Icons.analytics,
+              color: Theme.of(context).appBarTheme.backgroundColor,
+            ),
+            title: Text(
+              'Analytics',
+              style: TextStyle(
+                color: Theme.of(context).appBarTheme.foregroundColor,
+              ),
+            ),
             onTap: () {
               if (onItemTap != null) {
                 onItemTap!('Analytics');
@@ -46,22 +73,36 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.settings, color: Colors.black),
-            title: const Text('Settings', style: TextStyle(color: Colors.black)),
+            leading: Icon(
+              Icons.settings,
+              color: Theme.of(context).appBarTheme.backgroundColor,
+            ),
+            title: Text(
+              'Settings',
+              style: TextStyle(
+                color: Theme.of(context).appBarTheme.backgroundColor,
+              ),
+            ),
             onTap: () {
-              if (onItemTap != null)
-              {
+              if (onItemTap != null) {
                 onItemTap!('Settings');
               }
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: const Icon(Icons.logout, color: Colors.black),
-            title: const Text('Logout', style: TextStyle(color: Colors.black)),
+            leading: Icon(
+              Icons.logout,
+              color: Theme.of(context).appBarTheme.backgroundColor,
+            ),
+            title: Text(
+              'Logout',
+              style: TextStyle(
+                color: Theme.of(context).appBarTheme.backgroundColor,
+              ),
+            ),
             onTap: () {
-              if (onItemTap != null)
-              {
+              if (onItemTap != null) {
                 onItemTap!('Logout');
               }
             },
