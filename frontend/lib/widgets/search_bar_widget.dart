@@ -11,17 +11,20 @@ class SearchBarWidget extends StatefulWidget {
 class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      style: GoogleFonts.poppins(color: Theme.of(context).appBarTheme.backgroundColor),
-      decoration: InputDecoration(
-        hintText: 'Search books...',
-        hintStyle: GoogleFonts.poppins(color: Theme.of(context).appBarTheme.foregroundColor),
-        prefixIcon: Icon(Icons.search, color: Theme.of(context).appBarTheme.foregroundColor),
-        filled: true,
-        fillColor: Theme.of(context).focusColor,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        style: GoogleFonts.poppins(color: Theme.of(context).appBarTheme.backgroundColor),
+        decoration: InputDecoration(
+          hintText: 'Search books...',
+          hintStyle: GoogleFonts.poppins(color: Theme.of(context).appBarTheme.foregroundColor),
+          prefixIcon: Icon(Icons.search, color: Theme.of(context).appBarTheme.foregroundColor),
+          filled: true,
+          fillColor: Theme.of(context).focusColor,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );
