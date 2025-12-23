@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/book_details.dart';
 
-import 'package:frontend/widgets/search_bar_widget.dart';
+import 'package:frontend/common/search_bar_widget.dart';
 import 'package:frontend/views/my_books/import_widget.dart';
-import 'package:frontend/widgets/books_widget.dart';
+import 'package:frontend/common/books_widget.dart';
 
 // TODO: My books will be displayed here ordered by last_opened
 // TODO: If its not downloaded you can download the book to the device

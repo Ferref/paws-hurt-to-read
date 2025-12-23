@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/book_details.dart';
 
-import 'package:frontend/widgets/book_card.dart';
+import 'package:frontend/common/book_card.dart';
 
 
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 
-import 'package:frontend/widgets/drawer_widget.dart';
+import 'package:frontend/common/drawer_widget.dart';
 
 import 'package:frontend/views/explore_view.dart';
 import 'package:frontend/views/my_books/my_books_view.dart';
 import 'package:frontend/views/profile_view.dart';
 import 'package:frontend/views/analytics/analytics_view.dart';
-import 'package:frontend/views/settings_view.dart';
+import 'package:frontend/views/settings/settings_view.dart';
 import 'package:frontend/views/login_view.dart';
 
 import 'package:frontend/viewmodels/session_view_model.dart';

@@ -4,7 +4,7 @@ import 'package:frontend/views/analytics/line_chart_widget.dart';
 import 'package:frontend/views/analytics/radar_chart_widget.dart';
 import 'package:frontend/views/analytics/recommendations_widget.dart';
 import 'package:frontend/views/analytics/section_title_widget.dart';
-import 'package:frontend/views/stats_widget.dart';
+import 'package:frontend/views/analytics/stats_widget.dart';
 
 class AnalyticsView extends StatefulWidget {
   const AnalyticsView({super.key});
