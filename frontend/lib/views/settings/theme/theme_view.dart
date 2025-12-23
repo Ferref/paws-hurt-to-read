@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:frontend/views/settings/theme/components/darkmode_switch.dart';
+import 'package:frontend/views/settings/theme/darkmode_switch.dart';
 
 class ThemeView extends StatefulWidget {
   const ThemeView({super.key});
