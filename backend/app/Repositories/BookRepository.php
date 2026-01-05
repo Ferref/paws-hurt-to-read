@@ -44,10 +44,11 @@ class BookRepository
                 return $data['results'] ?? [];
             }
 
-            return [];
         } catch (\Throwable $e) {
             $this->logger->error('Failed to fetch books', ['error' => $e->getMessage()]);
         }
+        
+        return [];
     }
 
     public function saveBook(array $bookData): void
