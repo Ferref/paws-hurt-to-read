@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\Http;
 use Psr\Log\LoggerInterface as Logger;
+use Illuminate\Support\Facades\Storage;
 
 use \App\Models\Book;
 
@@ -13,7 +14,8 @@ class BookRepository
 {
     private $logger;
 
-    public function __construct(Logger $logger) {
+    public function __construct(Logger $logger)
+    {
         $this->logger = $logger;
     }
 
@@ -24,7 +26,7 @@ class BookRepository
         $booksEndpoint = config('services.book_provider.books_endpoint');
 
         $ids = range($start, $end);
-   
+
         $booksEndpoint = 'https://' . $host . $booksEndpoint . '?' . http_build_query(['ids' => implode(',', $ids)]);
 
         try {
@@ -40,19 +42,18 @@ class BookRepository
                 $this->logger->info('Fetched books successfully', [
                     'count' => count($data['results'] ?? [])
                 ]);
-                
+
                 return $data['results'] ?? [];
             }
-
         } catch (\Throwable $e) {
             $this->logger->error('Failed to fetch books', ['error' => $e->getMessage()]);
         }
-        
+
         return [];
     }
 
     public function saveBook(array $bookData): void
-    {   
+    {
         $book = Book::updateOrCreate(
             [
                 'id' => $bookData['id'],
@@ -84,5 +85,33 @@ class BookRepository
     public function getBookDetailsById(int $id): ?Book
     {
         return Book::where('id', $id)->first();
+    }
+
+    public function downloadEpubs(): void
+    {
+        $books = Book::get();
+
+        foreach ($books as $book) {
+            $epubUrl = $book->formats['application/epub+zip'] ?? null;
+
+            if (!$epubUrl) {
+                $this->logger->info('No EPUB for book', [
+                    'id' => $book->id,
+                    'title' => $book->title,
+                ]);
+                continue;
+            }
+
+            $content = Http::get($epubUrl)->body();
+
+            $filename = $book->id . '.epub';
+
+            Storage::put("epubs/{$filename}", $content);
+
+            $this->logger->info('Downloaded EPUB', [
+                'id' => $book->id,
+                'file' => $filename,
+            ]);
+        }
     }
 }
