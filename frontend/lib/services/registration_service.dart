@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
-import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,17 +32,20 @@ class RegistrationService {
       }),
     );
 
+    developer.log(response.body.toString());
+
     if (response.statusCode == 422) {
-      final body = response.body;
-      throw Exception('Validation errors: $body');
+      throw Exception(response.body);
     }
 
     if (response.statusCode != 201) {
-      throw Exception('Failed to register user: ${response.statusCode}');
+      throw Exception('Registration failed');
     }
 
-    User user = User.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
 
-    return user;
+    await _storage.write(key: 'refresh_token', value: decoded['refresh_token']);
+
+    return User.fromJson(decoded);
   }
 }

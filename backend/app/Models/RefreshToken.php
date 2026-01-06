@@ -4,15 +4,16 @@ namespace App\Models;
 
 use MongoDB\Laravel\Eloquent\Model;
 
-class Token extends Model
+class RefreshToken extends Model
 {
     protected $connection = 'mongodb';
-    protected $collection = 'tokens';
+    protected $collection = 'refresh_tokens';
 
     protected $fillable = [
         'user_id',
         'token',
         'expires_at',
+        'revoked_at',
         'device'
     ];
 }

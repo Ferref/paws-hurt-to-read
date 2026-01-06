@@ -45,41 +45,71 @@ class RegistrationViewState extends State<RegistrationView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              FaIcon(FontAwesomeIcons.paw, color: Theme.of(context).appBarTheme.foregroundColor, size: 48),
+              FaIcon(
+                FontAwesomeIcons.paw,
+                color: Theme.of(context).appBarTheme.foregroundColor,
+                size: 48,
+              ),
               const SizedBox(height: 20),
               Text(
                 'PawsHurtToRead',
-                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 26, color: Theme.of(context).appBarTheme.foregroundColor),
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26,
+                  color: Theme.of(context).appBarTheme.foregroundColor,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 'Create an account to continue',
-                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.normal, fontSize: 18, color: Theme.of(context).primaryColorLight),
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  color: Theme.of(context).primaryColorLight,
+                ),
               ),
               const SizedBox(height: 26),
               TextField(
                 style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username', border: OutlineInputBorder(), errorText: usernameError),
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  border: OutlineInputBorder(),
+                  errorText: usernameError,
+                ),
               ),
               const SizedBox(height: 26),
               TextField(
                 style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email', border: OutlineInputBorder(), errorText: emailError),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                  errorText: emailError,
+                ),
               ),
               const SizedBox(height: 16),
               TextField(
                 style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password', border: OutlineInputBorder(), errorText: passwordError),
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(),
+                  errorText: passwordError,
+                ),
                 obscureText: true,
               ),
               const SizedBox(height: 26),
               TextField(
                 style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
                 controller: _passwordConfirmationController,
-                decoration: InputDecoration(labelText: 'Confirm Password', border: OutlineInputBorder(), errorText: passwordConfirmationError),
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  border: OutlineInputBorder(),
+                  errorText: passwordConfirmationError,
+                ),
                 obscureText: true,
               ),
               const SizedBox(height: 26),
@@ -88,6 +118,13 @@ class RegistrationViewState extends State<RegistrationView> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () async {
+                    setState(() {
+                      emailError = null;
+                      usernameError = null;
+                      passwordError = null;
+                      passwordConfirmationError = null;
+                    });
+
                     try {
                       final user = await vm.store(
                         _usernameController.text,
@@ -96,44 +133,65 @@ class RegistrationViewState extends State<RegistrationView> {
                         _passwordConfirmationController.text,
                       );
 
-                      if (!context.mounted) {
-                        return;
-                      }
-                      
+                      if (!context.mounted) return;
+
                       if (user != null) {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => const MainHomeView()),
+                          MaterialPageRoute(
+                            builder: (context) => const MainHomeView(),
+                          ),
                         );
+
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Registration successful! Welcome, ${user.name}')),
+                          SnackBar(
+                            content: Text(
+                              'Registration successful! Welcome, ${user.name}',
+                            ),
+                          ),
                         );
                       }
                     } catch (e) {
-                      if (e.toString().contains('Validation errors')) {
-                        final errors = jsonDecode(
-                          e.toString().replaceFirst('Exception: Validation errors: ', ''),
-                        )["errors"];
+                      try {
+                        final decoded = jsonDecode(
+                          e.toString().replaceFirst('Exception: ', ''),
+                        );
+
+                        final errors = decoded['errors'] ?? {};
+
                         setState(() {
                           emailError = errors['email']?[0];
                           usernameError = errors['name']?[0];
                           passwordError = errors['password']?[0];
-                          passwordConfirmationError = errors['password_confirmation']?[0];
+                          passwordConfirmationError =
+                              errors['password_confirmation']?[0];
                         });
-                      } else if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Registration failed... Please try again later')),
-                        );
+                      } catch (_) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Registration failed... Please try again later',
+                              ),
+                            ),
+                          );
+                        }
                       }
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   child: Text(
                     'Registration',
-                    style: TextStyle(color: Theme.of(context).canvasColor, fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Theme.of(context).canvasColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -144,7 +202,11 @@ class RegistrationViewState extends State<RegistrationView> {
                   child: Text(
                     "Already have an account? Sign In",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14, color: Theme.of(context).appBarTheme.foregroundColor),
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 14,
+                      color: Theme.of(context).appBarTheme.foregroundColor,
+                    ),
                   ),
                 ),
               ),

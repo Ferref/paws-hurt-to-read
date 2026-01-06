@@ -16,7 +16,7 @@ class AnalyticsView extends StatefulWidget {
 class _AnalyticsViewState extends State<AnalyticsView> {
   final List<String> categories = ['Fantasy', 'Sci-Fi', 'Tech', 'Drama'];
 
-  // TODO: Limit to top 10
+  // TODO: Stop words, and limit?
   final Map<String, int> commonWords = {
     'Adversity': 6,
     'Apple': 3,

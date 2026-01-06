@@ -19,9 +19,4 @@ class User {
       accessToken: json['access_token'] as String,
     );
   }
-
-  @override
-  String toString() {
-    return 'User(id: $id, name: $name, email: $email, token: $accessToken)';
-  }
 }

@@ -1,21 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-
-use DateTimeImmutable;
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\JwtFacade;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Lcobucci\JWT\Signer\Key\InMemory;
+use App\Services\TokenService;
 
 use App\Models\User;
-use App\Models\Token;
 
 class RegistrationController extends Controller
 {
@@ -36,38 +30,15 @@ class RegistrationController extends Controller
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->password = bcrypt($validated['password']);
-
         $user->save();
 
-        $plainRefreshToken = Str::random(64);
-
-        Token::create([
-            'user_id' => $user->id,
-            'token' => Hash::make($plainRefreshToken),
-            'expires_at' => now()->addDays(30),
-        ]);
-
-        $key = InMemory::base64Encoded(
-            config('jwt.secret')
-        );
-
-        $accessToken = (new JwtFacade())->issue(
-            new Sha256(),
-            $key,
-            static fn(
-                Builder $builder,
-                DateTimeImmutable $issuedAt
-            ): Builder => $builder
-                ->issuedBy('https://api.my-awesome-app.io')
-                ->permittedFor('https://client-app.io')
-                ->expiresAt($issuedAt->modify('+60 minutes'))
-        );
+        $tokens = app(TokenService::class)->issueForUser($user);
 
         return response()->json([
             'message' => 'User registered successfully',
-            'access_token' => $accessToken->toString(),
-            'refresh_token' => $plainRefreshToken,
-            'id' => $user->id,
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
+            'id' => (string)$user->id,
             'name' => $user->name,
             'email' => $user->email,
         ], 201);

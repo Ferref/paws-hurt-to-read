@@ -41,7 +41,11 @@ class LoginViewState extends State<LoginView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              FaIcon(FontAwesomeIcons.paw, color: Theme.of(context).appBarTheme.backgroundColor, size: 48),
+              FaIcon(
+                FontAwesomeIcons.paw,
+                color: Theme.of(context).appBarTheme.backgroundColor,
+                size: 48,
+              ),
               const SizedBox(height: 20),
               Text(
                 'PawsHurtToRead',
@@ -64,7 +68,9 @@ class LoginViewState extends State<LoginView> {
               ),
               const SizedBox(height: 26),
               TextField(
-                style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
+                style: TextStyle(
+                  color: Theme.of(context).appBarTheme.foregroundColor,
+                ),
                 controller: _usernameController,
                 decoration: InputDecoration(
                   labelText: 'Username',
@@ -73,7 +79,9 @@ class LoginViewState extends State<LoginView> {
               ),
               const SizedBox(height: 16),
               TextField(
-                style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
+                style: TextStyle(
+                  color: Theme.of(context).appBarTheme.foregroundColor,
+                ),
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -88,15 +96,17 @@ class LoginViewState extends State<LoginView> {
                 height: 49,
                 child: ElevatedButton(
                   onPressed: () async {
+                    setState(() {
+                      errorMessage = null;
+                    });
+
                     try {
                       final user = await authVm.store(
                         _usernameController.text,
                         _passwordController.text,
                       );
 
-                      if (!context.mounted) {
-                        return;
-                      }
+                      if (!context.mounted) return;
 
                       if (user != null) {
                         Navigator.pushReplacement(
@@ -115,24 +125,26 @@ class LoginViewState extends State<LoginView> {
                         );
                       }
                     } catch (e) {
-                      if (e.toString().contains('Validation errors')) {
-                        final errors = jsonDecode(
-                          e.toString().replaceFirst(
-                            'Exception: Validation errors: ',
-                            '',
-                          ),
-                        )["errors"];
-                        setState(() {
-                          errorMessage = errors['message']?[0];
-                        });
-                      } else if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Login failed... Please try again later',
-                            ),
-                          ),
+                      try {
+                        final decoded = jsonDecode(
+                          e.toString().replaceFirst('Exception: ', ''),
                         );
+
+                        setState(() {
+                          errorMessage =
+                              decoded['errors']?['message']?[0] ??
+                              'Invalid username or password';
+                        });
+                      } catch (_) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Login failed... Please try again later',
+                              ),
+                            ),
+                          );
+                        }
                       }
                     }
                   },
@@ -159,7 +171,10 @@ class LoginViewState extends State<LoginView> {
                   // TODO: password recovery implementation
                   'Forgot Password?',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColorLight),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),

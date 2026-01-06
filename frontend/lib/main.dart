@@ -19,6 +19,8 @@ import 'package:frontend/views/login_view.dart';
 final GetIt getIt = GetIt.instance;
 
 void setup() {
+  getIt.registerSingleton<FlutterSecureStorage>(FlutterSecureStorage());
+  
   getIt.registerSingleton<AuthService>(AuthService());
   getIt.registerSingleton<RegistrationService>(RegistrationService());
   getIt.registerSingleton<BookService>(BookService());
@@ -29,7 +31,6 @@ void setup() {
     RegistrationViewModel(getIt<RegistrationService>()),
   );
   
-  getIt.registerSingleton<FlutterSecureStorage>(FlutterSecureStorage());
 
   getIt.registerFactory<BookDetailsViewModel>(
     () => BookDetailsViewModel(getIt<BookService>(), getIt<AuthService>()),
