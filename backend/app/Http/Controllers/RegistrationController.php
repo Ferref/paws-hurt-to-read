@@ -17,7 +17,7 @@ class RegistrationController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => 'required|string|max:100|unique:users',
+                'name' => 'required|string|min:3|max:20|unique:users',
                 'email' => 'required|string|email|regex:/^[A-Za-z0-9.]+@[A-Za-z0-9]+[.][A-Za-z0-9.]+$/|max:255|unique:users',
                 'password' => 'required|string|min:8|max:20',
                 'password_confirmation' => 'required|string|min:8|max:20|same:password',

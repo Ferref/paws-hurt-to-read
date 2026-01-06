@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => 'required|string|max:100',
+                'name' => 'required|string|min:3|max:20|exists:users,name',
                 'password' => 'required|string|min:8|max:20',
             ]);
 
