@@ -1,17 +1,19 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:frontend/config/api_routes.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:frontend/models/user.dart';
 
-class SessionService {
+class AuthService {
   final String host = ApiRoutes.basePath;
   final String loginEndpoint = ApiRoutes.login;
   final String logoutEndpoint = ApiRoutes.logout;
   final String userBooksEndpoint = ApiRoutes.userBooks;
+  
+  late User user;
 
-  // Session Stored (token)
   Future<User> store({required String name, required String password}) async {
     final uri = Uri.parse('$host/$loginEndpoint');
 
@@ -34,24 +36,31 @@ class SessionService {
       jsonDecode(response.body) as Map<String, dynamic>,
     );
 
+    this.user = user;
+
     return user;
   }
 
-  Future<void> storeBook({required int bookId }) async {
+  Future<bool> storeBook({ required int bookId }) async {
     final uri = Uri.parse('$host/$userBooksEndpoint');
 
     final response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({ 'bookId': bookId }),
+      body: jsonEncode({ 'bookId': bookId, 'token':  user.accessToken}),
     );
+
+    developer.log(response.body.toString());
 
     if (response.statusCode != 201) {
       throw Exception('Failed to add book for user: ${response.statusCode}');
     }
+
+    return true;
   }
 
   Future<User?> destroy() async {
+    
     // TODO: Token invalidation
     return null;
   }

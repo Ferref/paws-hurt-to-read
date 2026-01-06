@@ -10,7 +10,7 @@ import 'package:frontend/views/analytics/analytics_view.dart';
 import 'package:frontend/views/settings/settings_view.dart';
 import 'package:frontend/views/login_view.dart';
 
-import 'package:frontend/viewmodels/session_view_model.dart';
+import 'package:frontend/viewmodels/auth_view_model.dart';
 import 'package:frontend/viewmodels/explore_view_model.dart';
 
 enum _DrawerPage { none, profile, analytics, settings, logout }
@@ -71,7 +71,7 @@ class _MainHomeViewState extends State<MainHomeView> {
 
   void _logout() {
     // TODO: Confirmation box
-    getIt<SessionViewModel>().destroy();
+    getIt<AuthViewModel>().destroy();
     setState(() => _drawerPage = _DrawerPage.logout);
   }
 

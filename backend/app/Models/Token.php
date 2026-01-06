@@ -4,13 +4,15 @@ namespace App\Models;
 
 use MongoDB\Laravel\Eloquent\Model;
 
-class UserBooks extends Model
+class Token extends Model
 {
     protected $connection = 'mongodb';
-    protected $collection = 'user_books';
+    protected $collection = 'tokens';
 
     protected $fillable = [
         'user_id',
-        'book_id',
+        'token',
+        'expires_at',
+        'device'
     ];
 }

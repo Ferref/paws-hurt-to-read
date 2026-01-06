@@ -1,13 +1,17 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:frontend/models/user.dart';
 import 'package:frontend/config/api_routes.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class RegistrationService {
   final String host = ApiRoutes.basePath;
   final String registrationEndpoint = ApiRoutes.registration;
+  final FlutterSecureStorage _storage = getIt<FlutterSecureStorage>();
 
   Future<User> store({
     required String name,

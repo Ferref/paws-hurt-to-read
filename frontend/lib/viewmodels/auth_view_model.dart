@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
 
 import 'package:frontend/models/user.dart';
-import 'package:frontend/services/session_service.dart';
+import 'package:frontend/services/auth_service.dart';
 
 // TODO: after auth load user
 
-class SessionViewModel extends ChangeNotifier {
-  final SessionService _sessionService;
+class AuthViewModel extends ChangeNotifier {
+  final AuthService _authService;
   
   User? _user;
   bool _loading = false;
 
-  SessionViewModel(this._sessionService);
+  AuthViewModel(this._authService);
 
   User? get user => _user;
   bool get loading => _loading;
@@ -20,7 +20,7 @@ class SessionViewModel extends ChangeNotifier {
     _loading = true;
     notifyListeners();
     
-    _user = await _sessionService.store(
+    _user = await _authService.store(
       name: name,
       password: password,
     );
@@ -34,7 +34,7 @@ class SessionViewModel extends ChangeNotifier {
   Future<void> destroy() async {
     _loading = true;
     
-    _user = await _sessionService.destroy();
+    _user = await _authService.destroy();
     notifyListeners();
 
     _loading = false;
@@ -44,7 +44,7 @@ class SessionViewModel extends ChangeNotifier {
     _loading = true;
     notifyListeners();
     
-    await _sessionService.storeBook(bookId: bookId);
+    await _authService.storeBook(bookId: bookId);
     
     _loading = false;
     notifyListeners();

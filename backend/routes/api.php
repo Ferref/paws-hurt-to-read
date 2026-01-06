@@ -2,20 +2,24 @@
 
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\BookController;
 use App\Http\Controllers\RegistrationController;
-use App\Http\Controllers\SessionController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserBookController;
 
-// use App\Http\Middleware\CheckJwtToken;
+use App\Http\Controllers\BookController;
 
-// Logged out routes
+// User
 Route::post('/auth/register', [RegistrationController::class, 'store']);
-Route::post('/auth/login', [SessionController::class, 'store']);
+Route::post('/auth/login', [AuthController::class, 'store']);
+Route::post('/auth/logout', [AuthController::class, 'destroy']);
 
-// Logged in routes
-Route::get('/books/{id}', [BookController::class, 'show']);
-Route::get('/books/range/{range}', [BookController::class, 'index']);
-Route::post('/auth/logout', [SessionController::class, 'destroy']);
+Route::post('/users/{userId}/books/{bookId}', [UserBookController::class, 'store']);
 
 // TODO: Logged in requests use tokens
 // TODO: Logged in requests use refresh tokens
+
+// Books
+Route::get('/books/{id}', [BookController::class, 'show']);
+Route::get('/books/range/{range}', [BookController::class, 'index']);
+
+

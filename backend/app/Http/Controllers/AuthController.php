@@ -6,7 +6,8 @@ use Illuminate\Validation\ValidationException;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 use DateTimeImmutable;
 use Lcobucci\JWT\Builder;
@@ -16,9 +17,9 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 
 
 use App\Models\User;
-use App\Models\Book;
+use App\Models\Token;
 
-class SessionController extends Controller
+class AuthController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
@@ -28,27 +29,25 @@ class SessionController extends Controller
                 'password' => 'required|string|min:8|max:20',
             ]);
 
-            if (!Auth::attempt($validated)) {
+            $user = User::where('name', $validated['name'])->first();
+
+            if (!$user || !Hash::check($validated['password'], $user->password)) {
                 throw ValidationException::withMessages([
-                    // Not displaying which data for security reasons!
                     'message' => ['The provided credentials are incorrect.'],
                 ]);
             }
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 401);
         }
-
-        $user = Auth::user();
 
         $key = InMemory::base64Encoded(
             config('jwt.secret')
         );
 
-        $token = (new JwtFacade())->issue(
+        $accessToken = (new JwtFacade())->issue(
             new Sha256(),
             $key,
-            static fn (
+            static fn(
                 Builder $builder,
                 DateTimeImmutable $issuedAt
             ): Builder => $builder
@@ -56,10 +55,19 @@ class SessionController extends Controller
                 ->permittedFor('https://client-app.io')
                 ->expiresAt($issuedAt->modify('+60 minutes'))
         );
-        
+
+        $plainRefreshToken = Str::random(64);
+
+        Token::create([
+            'user_id' => $user->id,
+            'token' => Hash::make($plainRefreshToken),
+            'expires_at' => now()->addDays(30),
+        ]);
+
         return response()->json([
             'message' => 'User logged in successfully',
-            'auth_token' => $token->toString(),
+            'access_token' => $accessToken->toString(),
+            'refresh_token' => $plainRefreshToken,
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
@@ -68,6 +76,6 @@ class SessionController extends Controller
 
     public function destroy(Request $request)
     {
-        // TODO: remove tokens and refresh tokens
+        // Todo: destroy tokens
     }
 }

@@ -7,7 +7,7 @@ import 'package:frontend/main.dart';
 
 import 'package:frontend/views/registration_view.dart';
 import 'package:frontend/views/main_home_view.dart';
-import 'package:frontend/viewmodels/session_view_model.dart';
+import 'package:frontend/viewmodels/auth_view_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -21,7 +21,7 @@ class LoginViewState extends State<LoginView> {
   final _passwordController = TextEditingController();
   String? errorMessage;
 
-  final sessionVm = getIt<SessionViewModel>();
+  final authVm = getIt<AuthViewModel>();
 
   @override
   void dispose() {
@@ -89,18 +89,16 @@ class LoginViewState extends State<LoginView> {
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
-                      // TODO: Uncomment this
-                      // final user = await sessionVm.store(
-                      //   _usernameController.text,
-                      //   _passwordController.text,
-                      // );
+                      final user = await authVm.store(
+                        _usernameController.text,
+                        _passwordController.text,
+                      );
 
                       if (!context.mounted) {
                         return;
                       }
 
-                      // TODO: Replace placeholder
-                      if (true /*user != null*/) {
+                      if (user != null) {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -111,9 +109,7 @@ class LoginViewState extends State<LoginView> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              // TODO: Replace placeholder
-                              // 'Login successful! Welcome, ${user.name}',
-                              'Login successful! Welcome, User',
+                              'Login successful! Welcome, ${user.name}',
                             ),
                           ),
                         );

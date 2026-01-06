@@ -5,6 +5,7 @@ import 'package:frontend/main.dart';
 
 import 'package:frontend/models/book_details.dart';
 import 'package:frontend/viewmodels/book_details_view_model.dart';
+import 'package:frontend/views/main_home_view.dart';
 
 class BookDetailsView extends StatefulWidget {
   final int bookId;
@@ -61,7 +62,9 @@ class _BookDetailsViewState extends State<BookDetailsView> {
   Widget _buildBody(BuildContext context) {
     if (_vm.isLoading) {
       return Center(
-        child: CircularProgressIndicator(color: Theme.of(context).appBarTheme.foregroundColor),
+        child: CircularProgressIndicator(
+          color: Theme.of(context).appBarTheme.foregroundColor,
+        ),
       );
     }
 
@@ -137,7 +140,10 @@ class _BookDetailsViewState extends State<BookDetailsView> {
           if (details.summary != null && details.summary!.isNotEmpty)
             Text(
               details.summary!.substring(leadingCharactersInSummary),
-              style: GoogleFonts.lato(fontSize: 16, color: Theme.of(context).appBarTheme.foregroundColor),
+              style: GoogleFonts.lato(
+                fontSize: 16,
+                color: Theme.of(context).appBarTheme.foregroundColor,
+              ),
             )
           else
             Text(
@@ -154,8 +160,22 @@ class _BookDetailsViewState extends State<BookDetailsView> {
               children: [
                 if (details.formats['application/epub+zip'] != null)
                   InkWell(
-                    onTap: () => {
-                      // TODO: user_books table => sessionVm.storeBook(bookId: widget.bookId)
+                    onTap: () async {
+                      final bool success = await _vm.storeBook(widget.bookId);
+
+                      if (!mounted) {
+                        return;
+                      }
+
+                      if (success) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainHomeView(),
+                          ),
+                        );
+                      }
+
                       // TODO: download book on the device in epub format
                     },
                     child: Chip(
