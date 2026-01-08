@@ -21,14 +21,12 @@ class _AlertWidgetState extends State<AlertWidget> {
       child: AlertDialog(
         title: Center(child: Text(widget.title, style: GoogleFonts.poppins())),
         content: Center(
-          child: Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(widget.message, style: GoogleFonts.poppins(fontSize: 18)),
                 widget.icon
               ],
-            ),
           ),
         ),
         actions: [
