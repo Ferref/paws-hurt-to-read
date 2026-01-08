@@ -1,45 +1,60 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use DateTimeImmutable;
-use Lcobucci\JWT\Builder;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 use Lcobucci\JWT\JwtFacade;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\Clock\SystemClock;
 
 class CheckJwtToken
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
+    public function __construct(
+        private JwtFacade $jwtFacade
+    ) {}
+
     public function handle(Request $request, Closure $next): Response
     {
         $tokenString = $request->bearerToken();
 
-        if (!$tokenString) {
-            return response()->json([
-                'error' => 'Missing token.'
-            ], 401);
+        if ($tokenString === null) {
+            return response()->json(['error' => 'Missing token'], 401);
         }
 
         try {
-            $token = Jwtfacade::parse($tokenString);
-            $key = config('jwt.secret');
+            $token = $this->jwtFacade->parse(
+                $tokenString,
+                new SignedWith(
+                    new Sha256(),
+                    InMemory::plainText((string) config('jwt.secret'))
+                ),
+                new LooseValidAt(SystemClock::fromUTC())
+            );
 
-            $token->validate(new SignedWith(new Sha256(), $key));
-            $token->validate(new ValidAt(new DateTimeImmutable()));
+            $userId = (string) $token->claims()->get('sub');
+
+            $user = User::find($userId);
+
+            if ($user === null) {
+                return response()->json(['error' => 'User not found'], 401);
+            }
+
+            Auth::setUser($user);
 
             return $next($request);
-        } catch (\Throwable $e) {
-            return response()->json(['error' => 'Invalid token', 401]);
+        } catch (\Throwable) {
+            return response()->json(['error' => 'Invalid token'], 401);
         }
-        
     }
 }

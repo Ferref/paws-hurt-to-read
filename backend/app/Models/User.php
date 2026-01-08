@@ -51,6 +51,10 @@ class User extends Authenticatable
         ];
     }
 
+    protected $primaryKey = '_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     public function books()
     {
         return $this->belongsToMany(Book::class, 'user_books', 'user_id', 'book_id');

@@ -39,7 +39,7 @@ class AuthController extends Controller
             'message' => 'User logged in successfully',
             'access_token' => $tokens['access_token'],
             'refresh_token' => $tokens['refresh_token'],
-            'id' => (string)$user->id,
+            'id' => (string)$user->_id,
             'name' => $user->name,
             'email' => $user->email,
         ], 201);

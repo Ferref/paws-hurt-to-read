@@ -13,11 +13,11 @@ use App\Http\Controllers\BookController;
 // Auth
 Route::post('/auth/register', [RegistrationController::class, 'store']);
 Route::post('/auth/login', [AuthController::class, 'store']);
-Route::post('/auth/logout', [AuthController::class, 'destroy']);
-Route::post('/auth/refresh', [TokenController::class, 'refresh']);
+Route::middleware('jwt')->post('/auth/logout', [AuthController::class, 'destroy']);
+Route::middleware('jwt')->post('/auth/refresh', [TokenController::class, 'refresh']);
 
 // User books
-Route::post('/users/{userId}/books/{bookId}', [UserBookController::class, 'store']);
+Route::middleware('jwt')->post('/users/{user}/books/{book}', [UserBookController::class, 'store']);
 
 // Books
 Route::get('/books/{id}', [BookController::class, 'show']);

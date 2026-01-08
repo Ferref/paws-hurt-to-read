@@ -20,7 +20,7 @@ class TokenService
 {
     public function issueForUser(User $user): array
     {
-        return $this->issueTokens((string) $user->id);
+        return $this->issueTokens((string) $user->_id);
     }
 
     public function refresh(string $plainRefreshToken): array
@@ -74,7 +74,7 @@ class TokenService
                 ->issuedBy(config('app.url'))
                 ->relatedTo($userId)
                 ->issuedAt($now)
-                ->expiresAt($now->modify('+15 minutes'))
+                ->expiresAt($now->modify('+45 minutes'))
         )->toString();
     }
 }

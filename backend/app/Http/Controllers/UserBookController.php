@@ -4,45 +4,34 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
 use App\Models\Book;
 use App\Models\UserBooks;
 
-class UserBookController extends Controller
+final class UserBookController extends Controller
 {
-    public function store(Request $request): JsonResponse
+    public function store(User $user, Book $book): JsonResponse
     {
-        try {
-            $validated = $request->validate([
-                'token' => 'required|string|exists:users,token',
-                'book_id' => 'required|integer|exists:books,_id',
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 401);
+        if (Auth::user()->_id !== $user->_id) {
+            return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        $user = User::where('token', $validated['token'])->first();
+        $exists = UserBooks::where('user_id', $user->id)
+            ->where('book_id', $book->id)
+            ->exists();
 
-        $book = Book::where('_id', $validated['book_id'])->first();
 
-        if (!$book) {
-            return response()->json(['message' => 'Book not found'], 404);
+        if ($exists) {
+            return response()->json(['message' => 'Book already added for this user'], 409);
         }
-
-        $userBook = UserBooks::firstOrCreate(
-            [
-                'user_id' => $user->_id,
-                'book_id' => $book->_id,
-            ],
-            [
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
+        
+        $userBook = UserBooks::firstOrCreate([
+            'user_id' => $user->_id,
+            'book_id' => $book->_id,
+        ]);
 
         return response()->json([
             'success' => true,
