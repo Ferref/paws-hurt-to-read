@@ -19,7 +19,7 @@ final class UserBookController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        $books = $user->books;
+        $books = User::with('userBooks.book')->find($user->id);
 
         return response()->json([
             'success' => true,

@@ -59,16 +59,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserBook::class, 'user_id', '_id');
     }
-
-    public function books()
-    {
-        return $this->hasManyThrough(
-            Book::class,
-            UserBook::class,
-            'user_id',
-            '_id',
-            '_id',
-            'book_id'
-        );
-    }
 }

@@ -66,6 +66,8 @@ class AuthService {
     Map<String, dynamic> body,
   ) async {
     final uri = Uri.parse('$host/$endpoint');
+    
+    developer.log(user.accessToken.toString());
 
     final response = await http.post(
       uri,
@@ -81,8 +83,6 @@ class AuthService {
     }
 
     await _refreshAccessToken();
-
-    developer.log(user.accessToken.toString());
 
     final retryResponse = await http.post(
       uri,
