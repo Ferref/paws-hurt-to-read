@@ -17,6 +17,7 @@ Route::middleware('jwt')->post('/auth/logout', [AuthController::class, 'destroy'
 Route::middleware('jwt')->post('/auth/refresh', [TokenController::class, 'refresh']);
 
 // User books
+Route::middleware('jwt')->get('/users/{user}/books', [UserBookController::class, 'index']);
 Route::middleware('jwt')->post('/users/{user}/books/{book}', [UserBookController::class, 'store']);
 
 // Books

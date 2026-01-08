@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:frontend/config/api_routes.dart';
 import 'package:http/http.dart' as http;
@@ -43,7 +44,15 @@ class AuthService {
   }
 
   Future<bool> storeBook({required int bookId}) async {
-    final response = await _authPost(userBooksEndpoint, {'bookId': bookId});
+    final endpoint = "api/users/${user.id}/books/$bookId";
+
+    final response = await _authPost(endpoint, {});
+
+    if (response.statusCode == 409) {
+      throw Exception(
+        'Failed to add book for user, book already in collection...',
+      );
+    }
 
     if (response.statusCode != 201) {
       throw Exception('Failed to add book for user');
@@ -73,7 +82,9 @@ class AuthService {
 
     await _refreshAccessToken();
 
-    return http.post(
+    developer.log(user.accessToken.toString());
+
+    final retryResponse = await http.post(
       uri,
       headers: {
         'Content-Type': 'application/json',
@@ -81,6 +92,12 @@ class AuthService {
       },
       body: jsonEncode(body),
     );
+
+    if (retryResponse.statusCode == 401) {
+      throw Exception('Session expired');
+    }
+
+    return retryResponse;
   }
 
   Future<void> _refreshAccessToken() async {

@@ -8,7 +8,7 @@ class Book extends Model
 {
     protected $connection = 'mongodb';
     protected $collection = 'books';
-    
+
     protected $fillable = [
         '_id',
         'title',
@@ -25,13 +25,20 @@ class Book extends Model
         'removed_from_catalog'
     ];
 
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'user_books', 'book_id', 'user_id');
-    }
-
     public function userBooks()
     {
-        return $this->hasMany(UserBooks::class);
+        return $this->hasMany(UserBook::class, 'book_id', '_id');
+    }
+
+    public function users()
+    {
+        return $this->hasManyThrough(
+            User::class,
+            UserBook::class,
+            'book_id',
+            '_id',
+            '_id',
+            'user_id'
+        );
     }
 }

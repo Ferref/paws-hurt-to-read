@@ -41,13 +41,13 @@ class BookDetailsViewModel extends ChangeNotifier {
 
     try {
       await _authService.storeBook(bookId: bookId);
+      return true;
     } catch (e) {
       _errorMessage = e.toString();
+      return false;
     } finally {
       _isLoading = false;
       notifyListeners();
     }
-
-    return true;
   }
 }

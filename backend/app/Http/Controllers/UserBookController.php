@@ -9,17 +9,31 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
 use App\Models\Book;
-use App\Models\UserBooks;
+use App\Models\UserBook;
 
 final class UserBookController extends Controller
 {
+    public function index(User $user): JsonResponse
+    {
+        if (Auth::user()->_id !== $user->_id) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $books = $user->books;
+
+        return response()->json([
+            'success' => true,
+            'data' => $books,
+        ], 200);
+    }
+
     public function store(User $user, Book $book): JsonResponse
     {
         if (Auth::user()->_id !== $user->_id) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        $exists = UserBooks::where('user_id', $user->id)
+        $exists = UserBook::where('user_id', $user->id)
             ->where('book_id', $book->id)
             ->exists();
 
@@ -27,8 +41,8 @@ final class UserBookController extends Controller
         if ($exists) {
             return response()->json(['message' => 'Book already added for this user'], 409);
         }
-        
-        $userBook = UserBooks::firstOrCreate([
+
+        $userBook = UserBook::firstOrCreate([
             'user_id' => $user->_id,
             'book_id' => $book->_id,
         ]);

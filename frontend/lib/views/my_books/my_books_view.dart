@@ -70,7 +70,4 @@ class _MyBooksBody extends StatelessWidget {
 }
 
 
-
-
-
 // TODO: Add pagination buttons

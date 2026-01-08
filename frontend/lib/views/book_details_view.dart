@@ -1,3 +1,7 @@
+import 'dart:developer' as developer;
+
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:frontend/views/misc/alert_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
@@ -64,15 +68,6 @@ class _BookDetailsViewState extends State<BookDetailsView> {
       return Center(
         child: CircularProgressIndicator(
           color: Theme.of(context).appBarTheme.foregroundColor,
-        ),
-      );
-    }
-
-    if (_vm.errorMessage != null) {
-      return Center(
-        child: Text(
-          'Error: ${_vm.errorMessage}',
-          style: TextStyle(color: Colors.redAccent),
         ),
       );
     }
@@ -167,16 +162,18 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                         return;
                       }
 
-                      if (success) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MainHomeView(),
-                          ),
-                        );
-                      }
-
-                      // TODO: download book on the device in epub format
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertWidget(
+                          title: success ? "Success" : "Oh no",
+                          message: success
+                              ? "Enjoy your book"
+                              : (_vm.errorMessage ?? "Something went wrong..."),
+                          icon: success
+                              ? Icon(FontAwesomeIcons.cat, size: 50)
+                              : Icon(FontAwesomeIcons.bug, size: 50),
+                        ),
+                      );
                     },
                     child: Chip(
                       backgroundColor: Theme.of(

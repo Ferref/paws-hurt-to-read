@@ -55,13 +55,20 @@ class User extends Authenticatable
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public function books()
-    {
-        return $this->belongsToMany(Book::class, 'user_books', 'user_id', 'book_id');
-    }
-
     public function userBooks()
     {
-        return $this->hasMany(UserBooks::class);
+        return $this->hasMany(UserBook::class, 'user_id', '_id');
+    }
+
+    public function books()
+    {
+        return $this->hasManyThrough(
+            Book::class,
+            UserBook::class,
+            'user_id',
+            '_id',
+            '_id',
+            'book_id'
+        );
     }
 }
