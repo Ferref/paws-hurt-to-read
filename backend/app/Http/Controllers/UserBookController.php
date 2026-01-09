@@ -45,6 +45,7 @@ final class UserBookController extends Controller
         $userBook = UserBook::firstOrCreate([
             'user_id' => $user->_id,
             'book_id' => $book->_id,
+            'cfi' => null
         ]);
 
         return response()->json([

@@ -10,7 +10,7 @@ class Book extends Model
     protected $collection = 'books';
 
     protected $fillable = [
-        '_id',
+        'id',
         'title',
         'alternative_title',
         'authors',

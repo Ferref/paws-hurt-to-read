@@ -21,5 +21,5 @@ Route::middleware('jwt')->get('/users/{user}/books', [UserBookController::class,
 Route::middleware('jwt')->post('/users/{user}/books/{book}', [UserBookController::class, 'store']);
 
 // Books
-Route::get('/books/{id}', [BookController::class, 'show']);
-Route::get('/books/range/{range}', [BookController::class, 'index']);
+Route::middleware('jwt')->get('/books/{id}', [BookController::class, 'show']);
+Route::middleware('jwt')->get('/books/range/{range}', [BookController::class, 'index']);

@@ -122,12 +122,7 @@ class AuthService {
 
     final decoded = jsonDecode(response.body);
 
-    user = User(
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      accessToken: decoded['access_token'],
-    );
+    user.accessToken = decoded['access_token'];
 
     await storage.write(key: 'refresh_token', value: decoded['refresh_token']);
   }

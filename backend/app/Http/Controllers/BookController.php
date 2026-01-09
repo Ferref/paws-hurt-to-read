@@ -9,6 +9,8 @@ use App\Repositories\BookRepository;
 
 class BookController extends Controller
 {
+    private BookRepository $bookRepository;
+    
     public function __construct() {
         $this->bookRepository = app(BookRepository::class);
     }

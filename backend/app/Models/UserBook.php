@@ -13,6 +13,7 @@ class UserBook extends Model
     protected $fillable = [
         'user_id',
         'book_id',
+        'cfi'
     ];
 
     public function user()
