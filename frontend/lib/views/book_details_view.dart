@@ -1,7 +1,5 @@
-import 'dart:developer' as developer;
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:frontend/views/misc/alert_dialog.dart';
+import 'package:frontend/common/alert_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +7,6 @@ import 'package:frontend/main.dart';
 
 import 'package:frontend/models/book_details.dart';
 import 'package:frontend/viewmodels/book_details_view_model.dart';
-import 'package:frontend/views/main_home_view.dart';
 
 class BookDetailsView extends StatefulWidget {
   final int bookId;

@@ -5,12 +5,6 @@ import 'package:frontend/common/search_bar_widget.dart';
 import 'package:frontend/views/my_books/import_widget.dart';
 import 'package:frontend/common/books_widget.dart';
 
-// TODO: My books will be displayed here ordered by last_opened
-// TODO: If its not downloaded you can download the book to the device
-// TODO: If its downloaded to the device you can open it for reading
-// TODO: You can remove the book from device
-// TODO: You can remove the book from (account + device)
-
 // TODO: Implement search
 
 class MyBooksView extends StatelessWidget {
