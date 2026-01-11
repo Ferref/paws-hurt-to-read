@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DrawerApp extends StatelessWidget {
   const DrawerApp({super.key});
@@ -22,18 +24,18 @@ class DrawerWidget extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.deepPurpleAccent,
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(top: 10, left: 10),
-              child: Text(
-                'PawsHurtToRead',
-                style: TextStyle(
-                  color: Theme.of(context).canvasColor,
-                  fontSize: 26,
+            padding: EdgeInsetsGeometry.all(40),
+            decoration: BoxDecoration(color: Colors.deepPurpleAccent),
+            child: Column(
+              children: [
+                const FaIcon(
+                  FontAwesomeIcons.paw,
+                  size: 50,
+                  shadows: <Shadow>[
+                    Shadow(color: Colors.black, blurRadius: 15.0),
+                  ],
                 ),
-              ),
+              ],
             ),
           ),
           ListTile(

@@ -19,6 +19,9 @@ class ProfileView extends StatelessWidget {
                   FontAwesomeIcons.shieldCat,
                   color: Theme.of(context).canvasColor,
                   size: 100,
+                  shadows: <Shadow>[
+                    Shadow(color: Theme.of(context).highlightColor, blurRadius: 15.0),
+                  ],
                 ),
               ),
             ),

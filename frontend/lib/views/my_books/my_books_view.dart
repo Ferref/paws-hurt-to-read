@@ -15,7 +15,6 @@ class MyBooksView extends StatefulWidget {
 }
 
 class _MyBooksViewState extends State<MyBooksView> with AutomaticKeepAliveClientMixin {
-  // TODO: Refresh UI if book stored for user
   final MyBooksViewModel vm = getIt<MyBooksViewModel>();
 
   @override
@@ -47,7 +46,7 @@ class _MyBooksViewState extends State<MyBooksView> with AutomaticKeepAliveClient
         final cover = ub.book.coverImage;
 
         return Card(
-          color: Theme.of(context).cardColor,
+          color: Theme.of(context).navigationBarTheme.backgroundColor,
           elevation: 2,
           clipBehavior: Clip.hardEdge,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -79,7 +78,7 @@ class _MyBooksViewState extends State<MyBooksView> with AutomaticKeepAliveClient
                 child: Text(
                   title,
                   style: GoogleFonts.lato(
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                   maxLines: 2,
