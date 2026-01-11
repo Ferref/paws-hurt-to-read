@@ -21,6 +21,10 @@ final class UserBookController extends Controller
 
         $books = User::with('userBooks.book')->find($user->id);
 
+        if ($user->userBooks->isEmpty()) {
+            return response()->json(['message' => 'Books not found for user'], 404);
+        }
+
         return response()->json([
             'success' => true,
             'data' => $books,

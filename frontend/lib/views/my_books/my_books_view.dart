@@ -1,67 +1,154 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/book_details.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import 'package:frontend/main.dart';
 import 'package:frontend/common/search_bar_widget.dart';
+import 'package:frontend/models/user_book.dart';
+import 'package:frontend/viewmodels/my_books_view_model.dart';
 import 'package:frontend/views/my_books/import_widget.dart';
-import 'package:frontend/common/books_widget.dart';
 
-// TODO: Implement search
-
-class MyBooksView extends StatelessWidget {
+class MyBooksView extends StatefulWidget {
   const MyBooksView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-      body: const SafeArea(child: _MyBooksBody()),
-    );
-  }
+  State<MyBooksView> createState() => _MyBooksViewState();
 }
 
-class _MyBooksBody extends StatelessWidget {
-  const _MyBooksBody();
+class _MyBooksViewState extends State<MyBooksView> with AutomaticKeepAliveClientMixin {
+  // TODO: Refresh UI if book stored for user
+  final MyBooksViewModel vm = getIt<MyBooksViewModel>();
 
-  // TODO: Replace placeholder
-  static const List<BookDetails> _details = [
-    BookDetails(
-      id: 1,
-      title: 'Raven book 1',
-      coverImage:
-          'https://ebooklaunch.com/wp-content/uploads/2020/10/ravensong_cover6-640x1024.jpg',
-    ),
-    BookDetails(
-      id: 2,
-      title: 'Raven book 2',
-      coverImage:
-          'https://ebooklaunch.com/wp-content/uploads/2020/10/ravensong_cover6-640x1024.jpg',
-    ),
-    BookDetails(
-      id: 3,
-      title: 'Raven book 3',
-      coverImage:
-          'https://ebooklaunch.com/wp-content/uploads/2020/10/ravensong_cover6-640x1024.jpg',
-    ),
-    BookDetails(
-      id: 4,
-      title: 'Raven book 4',
-      coverImage:
-          'https://ebooklaunch.com/wp-content/uploads/2020/10/ravensong_cover6-640x1024.jpg',
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    vm.loadBooks();
+  }
+
+  Future<void> _refresh() async {
+    await vm.loadBooks();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  Widget _buildGrid(List<UserBook> books) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(12.0),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 0.65,
+      ),
+      itemCount: books.length,
+      itemBuilder: (context, index) {
+        final ub = books[index];
+        final title = ub.book.title;
+        final cover = ub.book.coverImage;
+
+        return Card(
+          color: Theme.of(context).cardColor,
+          elevation: 2,
+          clipBehavior: Clip.hardEdge,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: (cover != null && cover.isNotEmpty)
+                    ? Image.network(
+                        cover,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            const Center(child: Icon(Icons.broken_image)),
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) return child;
+                          return const Center(child: CircularProgressIndicator());
+                        },
+                      )
+                    : Center(
+                        child: Icon(
+                          Icons.book,
+                          size: 40,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
+                      ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  title,
+                  style: GoogleFonts.lato(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        SearchBarWidget(),
-        SizedBox(height: 16),
-        Expanded(child: BooksWidget(details: _details)),
-        ImportWidget(),
-      ],
+    super.build(context);
+    final background = Theme.of(context).appBarTheme.backgroundColor;
+
+    return Scaffold(
+      backgroundColor: background,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SearchBarWidget(),
+            Expanded(
+              child: ListenableBuilder(
+                listenable: vm,
+                builder: (context, _) {
+                  if (vm.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (vm.error != null) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('Error: ${vm.error}'),
+                          const SizedBox(height: 12),
+                          ElevatedButton(
+                            onPressed: _refresh,
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (vm.books.isEmpty) {
+                    return const Center(child: Text('No books found'));
+                  }
+
+                  return RefreshIndicator(
+                    onRefresh: _refresh,
+                    child: _buildGrid(vm.books),
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // TODO: after importing/adding, call _refresh()
+            const ImportWidget(),
+
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
     );
   }
 }
-
-
-// TODO: Add pagination buttons

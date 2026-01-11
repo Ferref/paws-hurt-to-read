@@ -13,6 +13,7 @@ import 'package:frontend/viewmodels/book_details_view_model.dart';
 import 'package:frontend/viewmodels/explore_view_model.dart';
 import 'package:frontend/viewmodels/auth_view_model.dart';
 import 'package:frontend/viewmodels/registration_view_model.dart';
+import 'package:frontend/viewmodels/my_books_view_model.dart';
 
 import 'package:frontend/views/login_view.dart';
 
@@ -30,6 +31,7 @@ void setup() {
   getIt.registerSingleton<RegistrationViewModel>(
     RegistrationViewModel(getIt<RegistrationService>()),
   );
+  getIt.registerSingleton<MyBooksViewModel>(MyBooksViewModel());
   
 
   getIt.registerFactory<BookDetailsViewModel>(

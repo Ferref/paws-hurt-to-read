@@ -153,6 +153,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                 if (details.formats['application/epub+zip'] != null)
                   InkWell(
                     onTap: () async {
+                      // TODO: Refresh MyBookView UI after book stored for user
                       final bool success = await _vm.storeBook(widget.bookId);
 
                       if (!mounted) {

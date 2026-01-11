@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
-import 'package:frontend/config/api_routes.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'package:frontend/config/api_routes.dart';
+import 'package:frontend/models/user_book.dart';
 import 'package:frontend/models/user.dart';
 
 class AuthService {
@@ -44,6 +45,7 @@ class AuthService {
   }
 
   Future<bool> storeBook({required int bookId}) async {
+    // TODO: Get it from env
     final endpoint = "api/users/${user.id}/books/$bookId";
 
     final response = await _authPost(endpoint, {});
@@ -61,12 +63,73 @@ class AuthService {
     return true;
   }
 
+  Future<List<UserBook>> getBooks() async {
+    final endpoint = userBooksEndpoint
+        .replaceAll('{user}', user.id.toString())
+        .replaceAll('/{book}', '');
+
+    final response = await _authGet(endpoint, {});
+
+    if (response.statusCode == 404) {
+      throw Exception('You have no books yet, check the explore page! :)');
+    }
+    if (response.statusCode != 200) {
+      throw Exception('Failed to get books for user, please try again later');
+    }
+
+    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+    final list = (decoded['data']?['user_books'] as List?) ?? const [];
+
+    return list
+        .map((e) => UserBook.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<http.Response> _authGet(
+    String endpoint,
+    Map<String, dynamic> body,
+  ) async {
+    final uri = Uri.parse('$host/$endpoint');
+    developer.log(uri.toString());
+    developer.log(user.id.toString());
+    developer.log(user.accessToken.toString());
+
+    final response = await http.get(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.accessToken}',
+      },
+    );
+
+    if (response.statusCode != 401) {
+      return response;
+    }
+
+    await _refreshAccessToken();
+
+    final retryResponse = await http.get(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.accessToken}',
+      },
+    );
+
+    if (retryResponse.statusCode == 401) {
+      throw Exception('Session expired');
+    }
+
+    return retryResponse;
+  }
+
   Future<http.Response> _authPost(
     String endpoint,
     Map<String, dynamic> body,
   ) async {
     final uri = Uri.parse('$host/$endpoint');
-    
+
+    developer.log(user.id.toString());
     developer.log(user.accessToken.toString());
 
     final response = await http.post(

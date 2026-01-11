@@ -28,7 +28,7 @@ class _MainHomeViewState extends State<MainHomeView> {
   final ExploreViewModel _exploreVm = getIt<ExploreViewModel>();
 
   final List<Widget?> _tabPages = [
-    const MyBooksView(),
+    MyBooksView(),
     null,
   ];
 
