@@ -64,6 +64,7 @@ class _MyBooksViewState extends State<MyBooksView>
                   builder: (context) => ChoiceWidget(
                     title: "Manage your book",
                     message: Formatter.truncateText(books[index].book.title, 60),
+                    bookId: books[index].book.id,
                   ),
                 ),
               );

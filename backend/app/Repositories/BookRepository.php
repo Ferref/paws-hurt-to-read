@@ -7,6 +7,7 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\Http;
 use Psr\Log\LoggerInterface as Logger;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\File;
 
 use \App\Models\Book;
 
@@ -113,5 +114,16 @@ class BookRepository
                 'file' => $filename,
             ]);
         }
+    }
+
+    public function getEpubFile(int $id): File
+    {
+        $path = "epubs/{$id}.epub";
+
+        if (!Storage::exists($path)) {
+            throw new \Exception('Epub file not found!');
+        }
+
+        return new File(Storage::path($path));
     }
 }

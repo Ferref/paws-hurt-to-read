@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserBookController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\EpubController;
 
 // Auth
 Route::post('/auth/register', [RegistrationController::class, 'store']);
@@ -23,3 +24,5 @@ Route::middleware('jwt')->post('/users/{user}/books/{book}', [UserBookController
 // Books
 Route::middleware('jwt')->get('/books/{id}', [BookController::class, 'show']);
 Route::middleware('jwt')->get('/books/range/{range}', [BookController::class, 'index']);
+
+Route::middleware('jwt')->get('/epubs/{id}', [EpubController::class, 'show']);
