@@ -19,72 +19,6 @@ class AuthService {
 
   late User user;
 
-  Future<User> store({required String name, required String password}) async {
-    final uri = Uri.parse('$host/$loginEndpoint');
-
-    final response = await http.post(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'name': name, 'password': password}),
-    );
-
-    if (response.statusCode == 401) {
-      throw Exception(response.body);
-    }
-
-    if (response.statusCode != 201) {
-      throw Exception('Login failed');
-    }
-
-    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
-
-    await storage.write(key: 'refresh_token', value: decoded['refresh_token']);
-
-    user = User.fromJson(decoded);
-    return user;
-  }
-
-  Future<bool> storeBook({required int bookId}) async {
-    // TODO: Get it from env
-    final endpoint = "api/users/${user.id}/books/$bookId";
-
-    final response = await _authPost(endpoint, {});
-
-    if (response.statusCode == 409) {
-      throw Exception(
-        'Failed to add book for user, book already in collection...',
-      );
-    }
-
-    if (response.statusCode != 201) {
-      throw Exception('Failed to add book for user');
-    }
-
-    return true;
-  }
-
-  Future<List<UserBook>> getBooks() async {
-    final endpoint = userBooksEndpoint
-        .replaceAll('{user}', user.id.toString())
-        .replaceAll('/{book}', '');
-
-    final response = await _authGet(endpoint, {});
-
-    if (response.statusCode == 404) {
-      throw Exception('You have no books yet, check the explore page! :)');
-    }
-    if (response.statusCode != 200) {
-      throw Exception('Failed to get books for user, please try again later');
-    }
-
-    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
-    final list = (decoded['data']?['user_books'] as List?) ?? const [];
-
-    return list
-        .map((e) => UserBook.fromJson(e as Map<String, dynamic>))
-        .toList();
-  }
-
   Future<http.Response> _authGet(
     String endpoint,
     Map<String, dynamic> body,
@@ -202,5 +136,75 @@ class AuthService {
     }
 
     await storage.delete(key: 'refresh_token');
+  }
+
+  Future<User> store({required String name, required String password}) async {
+    final uri = Uri.parse('$host/$loginEndpoint');
+
+    final response = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'name': name, 'password': password}),
+    );
+
+    if (response.statusCode == 401) {
+      throw Exception(response.body);
+    }
+
+    if (response.statusCode != 201) {
+      throw Exception('Login failed');
+    }
+
+    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+
+    await storage.write(key: 'refresh_token', value: decoded['refresh_token']);
+
+    user = User.fromJson(decoded);
+    return user;
+  }
+
+  // TODO: Consider extracting book related methods
+  Future<bool> storeBook({required int bookId}) async {
+    final endpoint = ApiRoutes.userBooks
+        .replaceAll("{user}", user.id)
+        .replaceAll("{book}", bookId.toString());
+
+    final response = await _authPost(endpoint, {});
+
+    if (response.statusCode == 409) {
+      throw Exception(
+        'Failed to add book for user, book already in collection...',
+      );
+    }
+
+    if (response.statusCode != 201) {
+      throw Exception('Failed to add book for user');
+    }
+
+    return true;
+  }
+
+  Future<List<UserBook>> getBooks() async {
+    final endpoint = userBooksEndpoint
+        .replaceAll('{user}', user.id.toString())
+        .replaceAll('/{book}', '');
+    
+    developer.log(endpoint.toString());
+
+    final response = await _authGet(endpoint, {});
+
+    if (response.statusCode == 404) {
+      throw Exception('You have no books yet, check the explore page! :)');
+    }
+    if (response.statusCode != 200) {
+      throw Exception('Failed to get books for user, please try again later');
+    }
+
+    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+    final list = (decoded['data']?['user_books'] as List?) ?? const [];
+
+    return list
+        .map((e) => UserBook.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }
