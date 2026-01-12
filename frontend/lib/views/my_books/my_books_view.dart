@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:frontend/utils/formatter.dart';
+import 'package:frontend/views/my_books/choice_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:frontend/main.dart';
@@ -14,7 +17,8 @@ class MyBooksView extends StatefulWidget {
   State<MyBooksView> createState() => _MyBooksViewState();
 }
 
-class _MyBooksViewState extends State<MyBooksView> with AutomaticKeepAliveClientMixin {
+class _MyBooksViewState extends State<MyBooksView>
+    with AutomaticKeepAliveClientMixin {
   final MyBooksViewModel vm = getIt<MyBooksViewModel>();
 
   @override
@@ -49,43 +53,62 @@ class _MyBooksViewState extends State<MyBooksView> with AutomaticKeepAliveClient
           color: Theme.of(context).navigationBarTheme.backgroundColor,
           elevation: 2,
           clipBehavior: Clip.hardEdge,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: (cover != null && cover.isNotEmpty)
-                    ? Image.network(
-                        cover,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) =>
-                            const Center(child: Icon(Icons.broken_image)),
-                        loadingBuilder: (context, child, progress) {
-                          if (progress == null) return child;
-                          return const Center(child: CircularProgressIndicator());
-                        },
-                      )
-                    : Center(
-                        child: Icon(
-                          Icons.book,
-                          size: 40,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                      ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  title,
-                  style: GoogleFonts.lato(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChoiceWidget(
+                    title: "Manage your book",
+                    message: Formatter.truncateText(books[index].book.title, 60),
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: (cover != null && cover.isNotEmpty)
+                      ? Image.network(
+                          cover,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) =>
+                              const Center(child: Icon(Icons.broken_image)),
+                          loadingBuilder: (context, child, progress) {
+                            if (progress == null) {
+                              return child;
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Icon(
+                            Icons.book,
+                            size: 40,
+                            color: Theme.of(context).iconTheme.color,
+                          ),
+                        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    title,
+                    style: GoogleFonts.lato(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

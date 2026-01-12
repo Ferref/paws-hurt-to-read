@@ -182,7 +182,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                         color: Theme.of(context).appBarTheme.backgroundColor,
                       ),
                       label: Text(
-                        'Download to My Books',
+                        'Add to my books',
                         style: TextStyle(
                           color: Theme.of(
                             context,
