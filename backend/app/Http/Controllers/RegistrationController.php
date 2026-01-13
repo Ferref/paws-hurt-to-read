@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 
 use App\Services\TokenService;
 
@@ -87,6 +88,39 @@ class RegistrationController extends Controller
         return response()->json([
             'message' => 'Email updated successfully',
             'email' => $user->email,
+        ], 200);
+    }
+
+    public function updatePassword(Request $request, TokenService $tokenService): JsonResponse
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'old_password' => 'required|string|min:8|max:20',
+            'new_password' => 'required|string|min:8|max:20|confirmed',
+        ]);
+
+        if (!Hash::check($validated['old_password'], $user->password)) {
+            return response()->json([
+                'message' => 'Old password does not match',
+            ], 400);
+        }
+
+        if (Hash::check($validated['new_password'], $user->password)) {
+            return response()->json([
+                'message' => 'New password must be different from the old password',
+            ], 400);
+        }
+
+        $user->password = Hash::make($validated['new_password']);
+        $user->save();
+
+        $tokens = $tokenService->rotateTokensForUser($user);
+
+        return response()->json([
+            'message' => 'Password updated successfully',
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
         ], 200);
     }
 }

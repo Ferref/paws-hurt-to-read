@@ -13,7 +13,8 @@ use App\Http\Controllers\EpubController;
 
 // Auth
 Route::post('/auth/register', [RegistrationController::class, 'store']);
-Route::middleware('jwt')->patch('/auth/users/email/{id}', [RegistrationController::class, 'updateEmail']);
+Route::middleware('jwt')->patch('/auth/users/{user}/email', [RegistrationController::class, 'updateEmail']);
+Route::middleware('jwt')->patch('/auth/users/{user}/password', [RegistrationController::class, 'updatePassword']);
 
 Route::post('/auth/login', [AuthController::class, 'store']);
 

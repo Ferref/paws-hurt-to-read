@@ -20,10 +20,7 @@ class _ProfileViewState extends State<ProfileView> {
     String newEmail,
   ) async {
     try {
-      await _authService.changeEmail(
-        oldEmail: oldEmail,
-        newEmail: newEmail,
-      );
+      await _authService.changeEmail(oldEmail: oldEmail, newEmail: newEmail);
 
       if (!mounted) {
         return;
@@ -34,9 +31,7 @@ class _ProfileViewState extends State<ProfileView> {
       Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email updated successfully'),
-        ),
+        const SnackBar(content: Text('Email updated successfully')),
       );
     } catch (e) {
       if (!mounted) {
@@ -44,9 +39,7 @@ class _ProfileViewState extends State<ProfileView> {
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString().replaceAll('Exception: ', '')),
-        ),
+        SnackBar(content: Text(e.toString().replaceAll('Exception: ', ''))),
       );
     }
   }
@@ -97,6 +90,7 @@ class _ProfileViewState extends State<ProfileView> {
   void _showChangePasswordDialog(BuildContext context) {
     final oldPasswordController = TextEditingController();
     final newPasswordController = TextEditingController();
+    final newPasswordConfirmationController = TextEditingController();
 
     showDialog(
       context: context,
@@ -117,6 +111,11 @@ class _ProfileViewState extends State<ProfileView> {
               controller: newPasswordController,
               obscureText: true,
               decoration: const InputDecoration(labelText: 'New Password'),
+            ),
+            TextField(
+              controller: newPasswordController,
+              obscureText: true,
+              decoration: const InputDecoration(labelText: 'New Password Confirmation'),
             ),
           ],
         ),
@@ -172,9 +171,7 @@ class _ProfileViewState extends State<ProfileView> {
                     _authService.user.name,
                     style: GoogleFonts.poppins(
                       fontSize: 26,
-                      color: Theme.of(context)
-                          .appBarTheme
-                          .foregroundColor,
+                      color: Theme.of(context).appBarTheme.foregroundColor,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -182,9 +179,7 @@ class _ProfileViewState extends State<ProfileView> {
                     _authService.user.email,
                     style: GoogleFonts.poppins(
                       fontSize: 18,
-                      color: Theme.of(context)
-                          .appBarTheme
-                          .foregroundColor,
+                      color: Theme.of(context).appBarTheme.foregroundColor,
                     ),
                   ),
                 ],

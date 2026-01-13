@@ -77,4 +77,20 @@ class TokenService
                 ->expiresAt($now->modify('+45 minutes'))
         )->toString();
     }
+
+    public function revokeAllForUser(string $userId): void
+    {
+        RefreshToken::where('user_id', $userId)
+            ->whereNull('revoked_at')
+            ->update([
+                'revoked_at' => now(),
+            ]);
+    }
+
+    public function rotateTokensForUser(User $user): array
+    {
+        $this->revokeAllForUser((string) $user->_id);
+
+        return $this->issueForUser($user);
+    }
 }
