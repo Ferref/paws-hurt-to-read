@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:frontend/common/search_bar_widget.dart';
+
 import 'package:frontend/models/book.dart';
 import 'package:frontend/views/book_details_view.dart';
 import 'package:frontend/viewmodels/explore_view_model.dart';
@@ -19,64 +21,71 @@ class ExploreView extends StatefulWidget {
 
 class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClientMixin {
   Widget _buildGrid(List<Book> books) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(12.0),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 0.65,
-      ),
-      itemCount: books.length,
-      itemBuilder: (context, index) {
-        final book = books[index];
-        final title = book.title;
-        final cover = book.coverImage;
-
-        return InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BookDetailsView(bookId: book.id),
-              ),
-            );
-          },
-          child: Card(
-            color: Theme.of(context).cardColor,
-            elevation: 2,
-            clipBehavior: Clip.hardEdge,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: cover?.isNotEmpty == true
-                      ? Image.network(cover!, fit: BoxFit.cover)
-                      : Center(
-                          child: Icon(
-                            Icons.book,
-                            size: 48,
-                            color: Theme.of(context).cardColor
-                          ),
-                        ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    title,
-                    style: GoogleFonts.lato(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+    return Column(
+      children: [
+        const SearchBarWidget(),
+        Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.all(12.0),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.65,
+            ),
+            itemCount: books.length,
+            itemBuilder: (context, index) {
+              final book = books[index];
+              final title = book.title;
+              final cover = book.coverImage;
+          
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BookDetailsView(bookId: book.id),
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  );
+                },
+                child: Card(
+                  color: Theme.of(context).cardColor,
+                  elevation: 2,
+                  clipBehavior: Clip.hardEdge,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: cover?.isNotEmpty == true
+                            ? Image.network(cover!, fit: BoxFit.cover)
+                            : Center(
+                                child: Icon(
+                                  Icons.book,
+                                  size: 48,
+                                  color: Theme.of(context).cardColor
+                                ),
+                              ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          title,
+                          style: GoogleFonts.lato(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 
