@@ -57,4 +57,26 @@ final class UserBookController extends Controller
             'data' => $userBook,
         ], 201);
     }
+
+    public function destroy(User $user, Book $book): JsonResponse
+    {
+        if (Auth::user()->_id !== $user->_id) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $userBook = UserBook::where('user_id', $user->_id)
+            ->where('book_id', $book->_id)
+            ->first();
+
+        if (!$userBook) {
+            return response()->json(['message' => 'Book not found for user'], 404);
+        }
+
+        $userBook->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Book deleted',
+        ], 200);
+    }
 }

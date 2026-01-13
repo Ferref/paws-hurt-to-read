@@ -20,6 +20,7 @@ Route::middleware('jwt')->post('/auth/refresh', [TokenController::class, 'refres
 // User books
 Route::middleware('jwt')->get('/users/{user}/books', [UserBookController::class, 'index']);
 Route::middleware('jwt')->post('/users/{user}/books/{book}', [UserBookController::class, 'store']);
+Route::middleware('jwt')->delete('/users/{user}/books/{book}', [UserBookController::class, 'destroy']);
 
 // Books
 Route::middleware('jwt')->get('/books/{id}', [BookController::class, 'show']);
