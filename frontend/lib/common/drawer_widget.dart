@@ -28,11 +28,11 @@ class DrawerWidget extends StatelessWidget {
             decoration: BoxDecoration(color: Colors.deepPurpleAccent),
             child: Column(
               children: [
-                const FaIcon(
+                FaIcon(
                   FontAwesomeIcons.paw,
                   size: 50,
                   shadows: <Shadow>[
-                    Shadow(color: Colors.black, blurRadius: 15.0),
+                    Shadow(color: Theme.of(context).cardColor, blurRadius: 15.0),
                   ],
                 ),
               ],
