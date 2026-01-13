@@ -119,7 +119,7 @@ class _MainHomeViewState extends State<MainHomeView> {
   Widget get _body {
     switch (_drawerPage) {
       case _DrawerPage.profile:
-        return const ProfileView();
+        return ProfileView();
       case _DrawerPage.analytics:
         return const AnalyticsView();
       case _DrawerPage.settings:

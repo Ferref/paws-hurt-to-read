@@ -13,7 +13,10 @@ use App\Http\Controllers\EpubController;
 
 // Auth
 Route::post('/auth/register', [RegistrationController::class, 'store']);
+Route::middleware('jwt')->patch('/auth/users/{id}', [RegistrationController::class, 'update']);
+
 Route::post('/auth/login', [AuthController::class, 'store']);
+
 Route::middleware('jwt')->post('/auth/logout', [AuthController::class, 'destroy']);
 Route::middleware('jwt')->post('/auth/refresh', [TokenController::class, 'refresh']);
 

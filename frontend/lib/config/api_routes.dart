@@ -6,6 +6,8 @@ class ApiRoutes {
   static final String basePath = dotenv.env['API_HOST']!;
 
   static final String registration = "api/auth/register";
+  static final String registrationChange = "api/auth/users/{user}";
+
   static final String login = "api/auth/login";
   static final String logout = "api/auth/logout";
   static final String refresh = "api/auth/refresh";

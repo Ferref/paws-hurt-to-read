@@ -1,26 +1,26 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:frontend/models/book.dart';
 import 'package:frontend/services/book_service.dart';
 
 class ExploreViewModel extends ChangeNotifier {
   final BookService _bookService;
 
-  List<Book> _books = [];
+  ExploreViewModel(this._bookService);
+
+  final List<Book> _books = [];
   bool _loading = false;
+  bool _hasMore = true;
+  int _page = 0;
+  final int _limit = 25;
   String? _error;
   bool _showBooks = true;
-  
-  ExploreViewModel(this._bookService);
 
   List<Book> get books => _books;
   bool get loading => _loading;
   String? get error => _error;
   bool get showBooks => _showBooks;
 
-  void hideBooks() {
-    setShowBooks(false);
-  }
+  void hideBooks() => setShowBooks(false);
 
   void setShowBooks(bool value) {
     if (_showBooks != value) {
@@ -29,31 +29,37 @@ class ExploreViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> loadBooks({bool force = false}) async {
-    if (!force && _books.isNotEmpty) {
-      return;
-    }
-
-    // TODO: implement pagination
-    final start = 1;
-    final end = 10;
+  Future<void> loadNext() async {
+    if (_loading || !_hasMore) return;
 
     _loading = true;
     _error = null;
     notifyListeners();
 
     try {
-      final fetched = await _bookService.fetchRange(start: start, end: end);
-      _books = fetched;
+      final start = _page * _limit;
+      final end = start + _limit;
+      final fetched =
+          await _bookService.fetchRange(start: start, end: end);
+
+      if (fetched.length < _limit) {
+        _hasMore = false;
+      }
+
+      _books.addAll(fetched);
+      _page++;
     } catch (e) {
       _error = e.toString();
-      _books = [];
+      _hasMore = false;
     } finally {
       _loading = false;
       notifyListeners();
     }
   }
 
-  Future<void> ensureLoaded() => loadBooks(force: false);
-  Future<void> reload() => loadBooks(force: true);
+  Future<void> ensureLoaded() async {
+    if (_books.isEmpty) {
+      await loadNext();
+    }
+  }
 }

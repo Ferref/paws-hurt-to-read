@@ -14,6 +14,7 @@ class AuthService {
   final String logoutEndpoint = ApiRoutes.logout;
   final String refreshEndpoint = ApiRoutes.refresh;
   final String userBooksEndpoint = ApiRoutes.userBooks;
+  final String registrationChangeEndpoint = ApiRoutes.registrationChange;
 
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
@@ -54,7 +55,7 @@ class AuthService {
     return retryResponse;
   }
 
-    Future<http.Response> _authDelete(String endpoint) async {
+  Future<http.Response> _authDelete(String endpoint) async {
     final uri = Uri.parse('$host/$endpoint');
     developer.log(uri.toString());
     developer.log(user.id.toString());
@@ -114,6 +115,43 @@ class AuthService {
     await _refreshAccessToken();
 
     final retryResponse = await http.post(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.accessToken}',
+      },
+      body: jsonEncode(body),
+    );
+
+    if (retryResponse.statusCode == 401) {
+      throw Exception('Session expired');
+    }
+
+    return retryResponse;
+  }
+
+  Future<http.Response> _authPatch(
+    String endpoint,
+    Map<String, dynamic> body,
+  ) async {
+    final uri = Uri.parse('$host/$endpoint');
+
+    final response = await http.patch(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.accessToken}',
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode != 401) {
+      return response;
+    }
+
+    await _refreshAccessToken();
+
+    final retryResponse = await http.patch(
       uri,
       headers: {
         'Content-Type': 'application/json',
@@ -198,8 +236,8 @@ class AuthService {
   // TODO: Consider extracting book related methods
   Future<bool> storeBook({required int bookId}) async {
     final endpoint = ApiRoutes.userBooks
-      .replaceAll("{user}", user.id)
-      .replaceAll("{book}", bookId.toString());
+        .replaceAll("{user}", user.id)
+        .replaceAll("{book}", bookId.toString());
 
     final response = await _authPost(endpoint, {});
 
@@ -218,8 +256,8 @@ class AuthService {
 
   Future<List<UserBook>> getBooks() async {
     final endpoint = userBooksEndpoint
-      .replaceAll('{user}', user.id.toString())
-      .replaceAll('/{book}', '');
+        .replaceAll('{user}', user.id.toString())
+        .replaceAll('/{book}', '');
 
     developer.log(endpoint.toString());
 
@@ -242,14 +280,49 @@ class AuthService {
 
   Future<void> deleteBook(int bookId) async {
     final endpoint = userBooksEndpoint
-      .replaceAll('{user}', user.id.toString())
-      .replaceAll('{book}', bookId.toString());
+        .replaceAll('{user}', user.id.toString())
+        .replaceAll('{book}', bookId.toString());
 
-      final response = await _authDelete(endpoint);
+    final response = await _authDelete(endpoint);
 
-      if (response.statusCode != 200) {
-        throw Exception('Failed to delete bookP for user, please try again later');
-      }
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete book for user, please try again later');
+    }
+  }
 
+  Future<String> changeEmail({
+    required String oldEmail,
+    required String newEmail,
+  }) async {
+    final endpoint = registrationChangeEndpoint.replaceAll(
+      '{user}',
+      user.id.toString(),
+    );
+
+    developer.log(registrationChangeEndpoint);
+
+    final response = await _authPatch(endpoint, {
+      'old_email': oldEmail,
+      'new_email': newEmail,
+    });
+
+    if (response.statusCode == 400) {
+      throw Exception('Old email cannot be the same as new email');
+    }
+
+    if (response.statusCode == 422) {
+      throw Exception('Invalid email');
+    }
+
+    if (response.statusCode == 409) {
+      throw Exception('Email already in use');
+    }
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update user');
+    }
+
+    user.email = newEmail;
+    return newEmail;
   }
 }

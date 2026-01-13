@@ -38,9 +38,55 @@ class RegistrationController extends Controller
             'message' => 'User registered successfully',
             'access_token' => $tokens['access_token'],
             'refresh_token' => $tokens['refresh_token'],
-            'id' => (string)$user->id,
+            'id' => (string) $user->id,
             'name' => $user->name,
             'email' => $user->email,
         ], 201);
+    }
+
+    public function update(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        try {
+            $validated = $request->validate([
+                'old_email' => ['required', 'email'],
+                'new_email' => ['required', 'email'],
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'errors' => $e->errors(),
+            ], 422);
+        }
+
+        if ($validated['old_email'] === $validated['new_email']) {
+            return response()->json([
+                'message' => 'Old email is the same as new email',
+            ], 400);
+        }
+
+        if ($user->email !== $validated['old_email']) {
+            return response()->json([
+                'message' => 'Old email does not match',
+            ], 400);
+        }
+
+        if (
+            User::where('email', $validated['new_email'])
+            ->where('_id', '!=', $user->_id)
+            ->exists()
+        ) {
+            return response()->json([
+                'message' => 'Email already in use',
+            ], 409);
+        }
+
+        $user->email = $validated['new_email'];
+        $user->save();
+
+        return response()->json([
+            'message' => 'Email updated successfully',
+            'email' => $user->email,
+        ], 200);
     }
 }
