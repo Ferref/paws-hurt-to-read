@@ -299,27 +299,25 @@ class AuthService {
       user.id.toString(),
     );
 
-    developer.log(registrationEmailEndpoint);
-
     final response = await _authPatch(endpoint, {
       'old_email': oldEmail,
       'new_email': newEmail,
     });
 
-    if (response.statusCode == 400) {
-      throw Exception('Old email cannot be the same as new email');
-    }
-
-    if (response.statusCode == 422) {
-      throw Exception('Invalid email');
-    }
-
-    if (response.statusCode == 409) {
-      throw Exception('Email already in use');
+    if (response.statusCode == 400 ||
+        response.statusCode == 409 ||
+        response.statusCode == 422) {
+      throw Exception(response.body);
     }
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to update user');
+      throw Exception(
+        jsonEncode({
+          'errors': {
+            'message': ['Failed to update email'],
+          },
+        }),
+      );
     }
 
     user.email = newEmail;

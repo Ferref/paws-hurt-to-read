@@ -106,7 +106,9 @@ class LoginViewState extends State<LoginView> {
                         _passwordController.text,
                       );
 
-                      if (!context.mounted) return;
+                      if (!context.mounted) {
+                        return;
+                      } 
 
                       if (user != null) {
                         Navigator.pushReplacement(

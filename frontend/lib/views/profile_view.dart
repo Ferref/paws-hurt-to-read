@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/main.dart';
@@ -14,76 +16,123 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final AuthService _authService = getIt<AuthService>();
 
-  Future<void> _changeEmail(
-    BuildContext context,
-    String oldEmail,
-    String newEmail,
-  ) async {
-    try {
-      await _authService.changeEmail(oldEmail: oldEmail, newEmail: newEmail);
-
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {});
-
-      Navigator.pop(context);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email updated successfully')),
-      );
-    } catch (e) {
-      if (!mounted) {
-        return;
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceAll('Exception: ', ''))),
-      );
-    }
-  }
-
   void _showChangeEmailDialog(BuildContext context) {
     final oldEmailController = TextEditingController();
     final newEmailController = TextEditingController();
 
+    String? oldEmailError;
+    String? newEmailError;
+
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Change Email'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: oldEmailController,
-              decoration: const InputDecoration(labelText: 'Old Email'),
-            ),
-            TextField(
-              controller: newEmailController,
-              decoration: const InputDecoration(labelText: 'New Email'),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _changeEmail(
-                context,
-                oldEmailController.text,
-                newEmailController.text,
-              );
-            },
-            child: const Text('Update'),
-          ),
-        ],
-      ),
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            Future<void> submit() async {
+              setDialogState(() {
+                oldEmailError = null;
+                newEmailError = null;
+              });
+
+              try {
+                await _authService.changeEmail(
+                  oldEmail: oldEmailController.text,
+                  newEmail: newEmailController.text,
+                );
+
+                if (!mounted) {
+                  return;
+                }
+
+                Navigator.pop(context);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Email updated successfully'),
+                  ),
+                );
+              } catch (e) {
+                try {
+                  final decoded = jsonDecode(
+                    e.toString().replaceFirst('Exception: ', ''),
+                  );
+
+                  setDialogState(() {
+                    if (decoded['errors'] != null) {
+                      if (decoded['errors']['old_email'] != null) {
+                        oldEmailError =
+                            decoded['errors']['old_email'][0];
+                      }
+                      if (decoded['errors']['new_email'] != null) {
+                        newEmailError =
+                            decoded['errors']['new_email'][0];
+                      }
+                      if (decoded['errors']['email'] != null) {
+                        if (oldEmailError == null) {
+                          oldEmailError =
+                              decoded['errors']['email'][0];
+                        }
+                        if (newEmailError == null) {
+                          newEmailError =
+                              decoded['errors']['email'][0];
+                        }
+                      }
+                    }
+                  });
+                } catch (_) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Email update failed. Please try again later',
+                        ),
+                      ),
+                    );
+                  }
+                }
+              }
+            }
+
+            return AlertDialog(
+              title: const Text('Change Email'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: oldEmailController,
+                    decoration: InputDecoration(
+                      labelText: 'Old Email',
+                      errorText: oldEmailError,
+                      errorStyle: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: newEmailController,
+                    decoration: InputDecoration(
+                      labelText: 'New Email',
+                      errorText: newEmailError,
+                      errorStyle: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: submit,
+                  child: const Text('Update'),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
@@ -92,48 +141,85 @@ class _ProfileViewState extends State<ProfileView> {
     final newPasswordController = TextEditingController();
     final newPasswordConfirmationController = TextEditingController();
 
+    String? oldPasswordError;
+    String? newPasswordError;
+    String? confirmationError;
+
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(
-          'Change Password',
-          style: GoogleFonts.poppins(fontSize: 24),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: oldPasswordController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Old Password'),
-            ),
-            TextField(
-              controller: newPasswordController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'New Password'),
-            ),
-            TextField(
-              controller: newPasswordController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'New Password Confirmation'),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Update'),
-          ),
-        ],
-      ),
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            Future<void> submit() async {
+              setDialogState(() {
+                oldPasswordError = null;
+                newPasswordError = null;
+                confirmationError = null;
+              });
+
+              // await _authService.changePassword(
+              //   oldPassword: oldPasswordController.text,
+              //   newPassword: newPasswordController.text,
+              //   newPasswordConfirmation:
+              //       newPasswordConfirmationController.text,
+              // );
+            }
+
+            return AlertDialog(
+              title: Text(
+                'Change Password',
+                style: GoogleFonts.poppins(fontSize: 24),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: oldPasswordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Old Password',
+                      errorText: oldPasswordError,
+                      errorStyle: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: newPasswordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'New Password',
+                      errorText: newPasswordError,
+                      errorStyle: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: newPasswordConfirmationController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'New Password Confirmation',
+                      errorText: confirmationError,
+                      errorStyle: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: submit,
+                  child: const Text('Update'),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
@@ -171,7 +257,9 @@ class _ProfileViewState extends State<ProfileView> {
                     _authService.user.name,
                     style: GoogleFonts.poppins(
                       fontSize: 26,
-                      color: Theme.of(context).appBarTheme.foregroundColor,
+                      color: Theme.of(context)
+                          .appBarTheme
+                          .foregroundColor,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -179,7 +267,9 @@ class _ProfileViewState extends State<ProfileView> {
                     _authService.user.email,
                     style: GoogleFonts.poppins(
                       fontSize: 18,
-                      color: Theme.of(context).appBarTheme.foregroundColor,
+                      color: Theme.of(context)
+                          .appBarTheme
+                          .foregroundColor,
                     ),
                   ),
                 ],
