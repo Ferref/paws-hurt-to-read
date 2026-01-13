@@ -57,8 +57,8 @@ class _MyBooksViewState extends State<MyBooksView>
             borderRadius: BorderRadius.circular(10),
           ),
           child: InkWell(
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              final isChange = await Navigator.push<bool>(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ChoiceWidget(
@@ -67,7 +67,11 @@ class _MyBooksViewState extends State<MyBooksView>
                     bookId: books[index].book.id,
                   ),
                 ),
-              );
+              ) ?? false;
+
+              if (isChange) {
+                _refresh();
+              }
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

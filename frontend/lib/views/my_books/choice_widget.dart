@@ -105,10 +105,12 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                         return;
                       }
 
+                      Navigator.pop(context, true);
+
                       scaffoldMessengerKey.currentState?.showSnackBar(
                         const SnackBar(
                           content: Text('Book deleted'),
-                          duration: Duration(seconds: 15),
+                          duration: Duration(seconds: 5),
                         ),
                       );
                     } catch (e) {
