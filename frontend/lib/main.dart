@@ -18,6 +18,7 @@ import 'package:frontend/viewmodels/my_books_view_model.dart';
 import 'package:frontend/views/login_view.dart';
 
 final GetIt getIt = GetIt.instance;
+final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 void setup() {
   getIt.registerSingleton<FlutterSecureStorage>(FlutterSecureStorage());

@@ -67,7 +67,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                           setState(() => _loading = true);
 
                           try {
-                            await widget._authService.openBook(widget.bookId);
+                            // await widget._authService.openBook(widget.bookId);
                           } catch (e) {
                             developer.log(e.toString());
                           } finally {
