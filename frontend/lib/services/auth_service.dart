@@ -14,7 +14,7 @@ class AuthService {
   final String logoutEndpoint = ApiRoutes.logout;
   final String refreshEndpoint = ApiRoutes.refresh;
   final String userBooksEndpoint = ApiRoutes.userBooks;
-  final String registrationChangeEndpoint = ApiRoutes.registrationChange;
+  final String registrationEmailEndpoint = ApiRoutes.registrationEmail;
 
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
@@ -294,12 +294,12 @@ class AuthService {
     required String oldEmail,
     required String newEmail,
   }) async {
-    final endpoint = registrationChangeEndpoint.replaceAll(
+    final endpoint = registrationEmailEndpoint.replaceAll(
       '{user}',
       user.id.toString(),
     );
 
-    developer.log(registrationChangeEndpoint);
+    developer.log(registrationEmailEndpoint);
 
     final response = await _authPatch(endpoint, {
       'old_email': oldEmail,

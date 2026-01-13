@@ -44,7 +44,7 @@ class RegistrationController extends Controller
         ], 201);
     }
 
-    public function update(Request $request): JsonResponse
+    public function updateEmail(Request $request): JsonResponse
     {
         $user = $request->user();
 
