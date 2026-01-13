@@ -19,10 +19,7 @@ class AuthService {
 
   late User user;
 
-  Future<http.Response> _authGet(
-    String endpoint,
-    Map<String, dynamic> body,
-  ) async {
+  Future<http.Response> _authGet(String endpoint) async {
     final uri = Uri.parse('$host/$endpoint');
     developer.log(uri.toString());
     developer.log(user.id.toString());
@@ -188,10 +185,10 @@ class AuthService {
     final endpoint = userBooksEndpoint
         .replaceAll('{user}', user.id.toString())
         .replaceAll('/{book}', '');
-    
+
     developer.log(endpoint.toString());
 
-    final response = await _authGet(endpoint, {});
+    final response = await _authGet(endpoint);
 
     if (response.statusCode == 404) {
       throw Exception('You have no books yet, check the explore page! :)');
