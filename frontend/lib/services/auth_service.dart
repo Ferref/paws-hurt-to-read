@@ -54,6 +54,41 @@ class AuthService {
     return retryResponse;
   }
 
+    Future<http.Response> _authDelete(String endpoint) async {
+    final uri = Uri.parse('$host/$endpoint');
+    developer.log(uri.toString());
+    developer.log(user.id.toString());
+    developer.log(user.accessToken.toString());
+
+    final response = await http.delete(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.accessToken}',
+      },
+    );
+
+    if (response.statusCode != 401) {
+      return response;
+    }
+
+    await _refreshAccessToken();
+
+    final retryResponse = await http.delete(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.accessToken}',
+      },
+    );
+
+    if (retryResponse.statusCode == 401) {
+      throw Exception('Session expired');
+    }
+
+    return retryResponse;
+  }
+
   Future<http.Response> _authPost(
     String endpoint,
     Map<String, dynamic> body,
@@ -163,8 +198,8 @@ class AuthService {
   // TODO: Consider extracting book related methods
   Future<bool> storeBook({required int bookId}) async {
     final endpoint = ApiRoutes.userBooks
-        .replaceAll("{user}", user.id)
-        .replaceAll("{book}", bookId.toString());
+      .replaceAll("{user}", user.id)
+      .replaceAll("{book}", bookId.toString());
 
     final response = await _authPost(endpoint, {});
 
@@ -183,8 +218,8 @@ class AuthService {
 
   Future<List<UserBook>> getBooks() async {
     final endpoint = userBooksEndpoint
-        .replaceAll('{user}', user.id.toString())
-        .replaceAll('/{book}', '');
+      .replaceAll('{user}', user.id.toString())
+      .replaceAll('/{book}', '');
 
     developer.log(endpoint.toString());
 
@@ -203,5 +238,18 @@ class AuthService {
     return list
         .map((e) => UserBook.fromJson(e as Map<String, dynamic>))
         .toList();
+  }
+
+  Future<void> deleteBook(int bookId) async {
+    final endpoint = userBooksEndpoint
+      .replaceAll('{user}', user.id.toString())
+      .replaceAll('{book}', bookId.toString());
+
+      final response = await _authDelete(endpoint);
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete bookP for user, please try again later');
+      }
+
   }
 }

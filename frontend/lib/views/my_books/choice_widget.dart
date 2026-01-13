@@ -57,7 +57,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                       ? null
                       : () async {
                           Navigator.pop(context);
-                          
+
                           scaffoldMessengerKey.currentState?.showSnackBar(
                             const SnackBar(
                               content: Text('Downloading book...'),
@@ -97,9 +97,37 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                 ),
                 const SizedBox(height: 2),
                 TextButton.icon(
-                  onPressed: () => developer.log(
-                    'Remove from device, delete from my account',
-                  ),
+                  onPressed: () async {
+                    try {
+                      await widget._authService.deleteBook(widget.bookId);
+
+                      if (!context.mounted) {
+                        return;
+                      }
+
+                      scaffoldMessengerKey.currentState?.showSnackBar(
+                        const SnackBar(
+                          content: Text('Book deleted'),
+                          duration: Duration(seconds: 15),
+                        ),
+                      );
+                    } catch (e) {
+                      if (!context.mounted) {
+                        return;
+                      }
+
+                      Navigator.pop(context);
+
+                      scaffoldMessengerKey.currentState?.showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Could not delete book please try again later',
+                          ),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
+                    }
+                  },
                   icon: const Icon(FontAwesomeIcons.userSlash),
                   label: const Text('Remove from account'),
                 ),
