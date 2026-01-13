@@ -170,6 +170,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                           icon: success
                               ? Icon(FontAwesomeIcons.cat, size: 50)
                               : Icon(FontAwesomeIcons.bug, size: 50),
+                          success: success
                         ),
                       );
                     },
@@ -189,8 +190,6 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                           ).navigationBarTheme.backgroundColor,
                         ),
                       ),
-                      // TODO: add book to my account button
-                      // TODO: add book to my account implementation
                     ),
                   ),
               ],
