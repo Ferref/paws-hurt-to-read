@@ -95,20 +95,31 @@ class RegistrationController extends Controller
     {
         $user = $request->user();
 
-        $validated = $request->validate([
-            'old_password' => 'required|string|min:8|max:20',
-            'new_password' => 'required|string|min:8|max:20|confirmed',
-        ]);
+        try {
+            $validated = $request->validate([
+                'old_password' => 'required',
+                'new_password' => 'required|string|min:8|max:20',
+                'new_password_confirmation' => 'required|string|min:8|max:20|same:new_password',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'errors' => $e->errors(),
+            ], 422);
+        }
 
         if (!Hash::check($validated['old_password'], $user->password)) {
             return response()->json([
-                'message' => 'Old password does not match',
-            ], 400);
+                'errors' => [
+                    'old_password' => 'Please provide the correct credentials'
+                ]
+            ], 401);
         }
 
         if (Hash::check($validated['new_password'], $user->password)) {
             return response()->json([
-                'message' => 'New password must be different from the old password',
+                'errors' => ['
+                    New password must be different from the old password'
+                ],
             ], 400);
         }
 
