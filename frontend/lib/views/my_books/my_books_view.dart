@@ -58,16 +58,21 @@ class _MyBooksViewState extends State<MyBooksView>
           ),
           child: InkWell(
             onTap: () async {
-              final isChange = await Navigator.push<bool>(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChoiceWidget(
-                    title: "Manage your book",
-                    message: Formatter.truncateText(books[index].book.title, 60),
-                    bookId: books[index].book.id,
-                  ),
-                ),
-              ) ?? false;
+              final isChange =
+                  await Navigator.push<bool>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChoiceWidget(
+                        title: "Manage your book",
+                        message: Formatter.truncateText(
+                          books[index].book.title,
+                          60,
+                        ),
+                        bookId: books[index].book.id,
+                      ),
+                    ),
+                  ) ??
+                  false;
 
               if (isChange) {
                 _refresh();
@@ -140,18 +145,20 @@ class _MyBooksViewState extends State<MyBooksView>
                   }
 
                   if (vm.error != null) {
-                    return Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('Error: ${vm.error}'),
-                          const SizedBox(height: 12),
-                          ElevatedButton(
-                            onPressed: _refresh,
-                            child: const Text('Retry'),
-                          ),
-                        ],
-                      ),
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(FontAwesomeIcons.searchengin, size: 100),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(vm.error.toString().replaceAll("Exception: ", ""), style: GoogleFonts.poppins(fontSize: 24)),
+                        ),
+                        ElevatedButton(
+                          onPressed: _refresh,
+                          child: const Text('Retry'),
+                        ),
+                      ],
                     );
                   }
 
