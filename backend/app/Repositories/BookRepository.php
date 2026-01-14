@@ -79,6 +79,7 @@ class BookRepository
     public function getBookCoversByIdRange(int $min, int $max): array
     {
         return Book::whereBetween('id', [$min, $max])
+            ->orderBy('title', 'asc')
             ->get(['title', 'cover_image'])
             ->toArray();
     }

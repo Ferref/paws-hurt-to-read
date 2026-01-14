@@ -57,6 +57,6 @@ class User extends Authenticatable
 
     public function userBooks()
     {
-        return $this->hasMany(UserBook::class, 'user_id', '_id');
+        return $this->hasMany(UserBook::class, 'user_id', '_id')->orderBy('created_at', 'desc');
     }
 }
