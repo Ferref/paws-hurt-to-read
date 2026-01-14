@@ -82,9 +82,10 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                             if (!context.mounted) {
                               return;
                             }
-                            
+
                             widget._userBookHandler.openBook(
-                              context, widget.bookId,
+                              context,
+                              widget.bookId,
                             );
                           } catch (e) {
                             developer.log(e.toString());
@@ -109,7 +110,39 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
 
                 const SizedBox(height: 4),
                 TextButton.icon(
-                  onPressed: () => developer.log('Remove from device'),
+                  onPressed: () async {
+                    try {
+                      bool deleted = await widget._userBookHandler
+                          .deleteBookFromDevice(widget.bookId);
+
+                      if (deleted) {
+                        if (!context.mounted) {
+                          return;
+                        }
+
+                        Navigator.pop(context);
+
+                        scaffoldMessengerKey.currentState?.showSnackBar(
+                          const SnackBar(
+                            content: Text('Book deleted'),
+                            duration: Duration(seconds: 5),
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (!context.mounted) {
+                        return;
+                      }
+
+                      Navigator.pop(context);
+                      scaffoldMessengerKey.currentState?.showSnackBar(
+                        SnackBar(
+                          content: Text('Failed to delete book: $e'),
+                          duration: const Duration(seconds: 5),
+                        ),
+                      );
+                    }
+                  },
                   icon: const Icon(FontAwesomeIcons.trash),
                   label: const Text('Remove from device'),
                 ),

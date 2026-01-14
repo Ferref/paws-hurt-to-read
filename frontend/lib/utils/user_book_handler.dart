@@ -13,6 +13,18 @@ class UserBookHandler {
     return file.exists();
   }
 
+  Future<bool> deleteBookFromDevice(int bookId) async {
+    final filePath = '/storage/emulated/0/Download/epubs/$bookId.epub';
+    final file = File(filePath);
+
+    if (await file.exists()) {
+      throw Exception("File not on device");
+    }
+
+    await file.delete();
+    return true;
+  }
+
   void openBook(BuildContext context, int bookId) {
     final filePath = '/storage/emulated/0/Download/epubs/$bookId.epub';
 
