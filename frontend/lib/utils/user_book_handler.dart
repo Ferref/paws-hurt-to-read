@@ -17,7 +17,7 @@ class UserBookHandler {
     final filePath = '/storage/emulated/0/Download/epubs/$bookId.epub';
     final file = File(filePath);
 
-    if (await file.exists()) {
+    if (!await file.exists()) {
       throw Exception("File not on device");
     }
 
