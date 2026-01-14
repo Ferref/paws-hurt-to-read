@@ -47,57 +47,60 @@ class _ExploreViewState extends State<ExploreView>
         children: [
           const SearchBarWidget(),
           Expanded(
-            child: GridView.builder(
-              controller: _scroll,
-              padding: const EdgeInsets.all(12.0),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 0.65,
-              ),
-              itemCount: books.length,
-              itemBuilder: (context, index) {
-                final book = books[index];
-                final cover = book.coverImage;
-      
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BookDetailsView(bookId: book.id),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    elevation: 2,
-                    clipBehavior: Clip.hardEdge,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: cover?.isNotEmpty == true
-                              ? Image.network(cover!, fit: BoxFit.cover)
-                              : const Center(child: Icon(Icons.book, size: 48)),
+            child: RefreshIndicator(
+              onRefresh: widget.vm.refresh,
+              child: GridView.builder(
+                controller: _scroll,
+                padding: const EdgeInsets.all(12.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.65,
+                ),
+                itemCount: books.length,
+                itemBuilder: (context, index) {
+                  final book = books[index];
+                  final cover = book.coverImage;
+                    
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BookDetailsView(bookId: book.id),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            book.title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.lato(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                      );
+                    },
+                    child: Card(
+                      elevation: 2,
+                      clipBehavior: Clip.hardEdge,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: cover?.isNotEmpty == true
+                                ? Image.network(cover!, fit: BoxFit.cover)
+                                : const Center(child: Icon(Icons.book, size: 48)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              book.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.lato(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ],

@@ -30,7 +30,9 @@ class ExploreViewModel extends ChangeNotifier {
   }
 
   Future<void> loadNext() async {
-    if (_loading || !_hasMore) return;
+    if (_loading || !_hasMore) { 
+      return;
+    }
 
     _loading = true;
     _error = null;
@@ -62,4 +64,16 @@ class ExploreViewModel extends ChangeNotifier {
       await loadNext();
     }
   }
+
+  Future<void> refresh() async {
+    books.clear();
+    _hasMore = true;
+    _error = null;
+    _page = 0;
+    notifyListeners();
+
+    await loadNext();
+  }
+
+
 }
