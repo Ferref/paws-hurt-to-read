@@ -16,14 +16,12 @@ class EpubController extends Controller
 
     public function show(int $id)
     {
-        if (ob_get_level()) {
-            ob_end_clean();
-        }
-
         $file = $this->bookRepository->getEpubFile($id);
 
-        return response()->download(
-            $file->getPathname(),
+        return response()->streamDownload(
+            function () use ($file) {
+                readfile($file->getPathname());
+            },
             "book_{$id}.epub",
             [
                 'Content-Type' => 'application/epub+zip',

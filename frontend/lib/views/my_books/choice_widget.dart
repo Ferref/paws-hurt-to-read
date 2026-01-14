@@ -58,7 +58,6 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                   onPressed: _loading
                       ? null
                       : () async {
-                          Navigator.pop(context);
                           setState(() => _loading = true);
 
                           try {
@@ -81,7 +80,20 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                               widget.bookId,
                             );
                           } catch (e) {
-                            developer.log(e.toString());
+
+                            if (!context.mounted) {
+                              return;
+                            }
+
+                            Navigator.pop(context);
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  e.toString().replaceFirst('Exception: ', ''),
+                                ),
+                              ),
+                            );
                           } finally {
                             if (mounted) {
                               setState(() => _loading = false);
@@ -96,7 +108,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                         )
                       : const Icon(FontAwesomeIcons.bookOpen),
                   label: Text(
-                    _loading ? 'Loading…' : 'Open book',
+                    _loading ? 'Downloading book' : 'Open book',
                     style: const TextStyle(fontSize: 24),
                   ),
                 ),

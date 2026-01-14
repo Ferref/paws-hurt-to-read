@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:io';
@@ -329,12 +330,25 @@ class AuthService {
 
   // Download, and save could be separated
   Future<void> downloadEpub({required int bookId}) async {
-    developer.log("Download book...");
+    final completer = Completer<void>();
 
     final endpoint = '$host/$epubsEndpoint'.replaceAll(
       '{book}',
       bookId.toString(),
     );
+
+    final headerResponse = await http.head(
+      Uri.parse(endpoint),
+      headers: {'Authorization': 'Bearer ${user.accessToken}'},
+    );
+
+    if (headerResponse.statusCode == 404) {
+      throw Exception('No Epub file for this book. Please try again later.');
+    }
+
+    if (headerResponse.statusCode != 200) {
+      throw Exception('Failed to download book. Please try again later.');
+    }
 
     FileDownloader.downloadFile(
       url: endpoint,
@@ -343,20 +357,22 @@ class AuthService {
       subPath: "epubs/",
       downloadService: DownloadService.httpConnection,
       onDownloadCompleted: (String path) async {
-        // Removes mimetype from name
-        String newName = '/storage/emulated/0/Download/epubs/$bookId.epub';
+        try {
+          final newName = '/storage/emulated/0/Download/epubs/$bookId.epub';
 
-        await File(
-          path,
-        ).rename(newName);
-
-        developer.log('FILE DOWNLOADED TO PATH: $newName');
+          await File(path).rename(newName);
+          completer.complete();
+        } catch (e) {
+          completer.completeError(e);
+        }
       },
       onDownloadError: (String error) {
-        throw Exception(error);
+        completer.completeError(
+          Exception('Download failed. Please try again later.'),
+        );
       },
     );
 
-    developer.log("Downloaded book...");
+    return completer.future;
   }
 }

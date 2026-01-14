@@ -121,7 +121,7 @@ class BookRepository
         $path = "epubs/{$id}.epub";
 
         if (!Storage::exists($path)) {
-            throw new \Exception('Epub file not found!');
+            abort(404, 'Epub file not found!');
         }
 
         return new File(Storage::path($path));
