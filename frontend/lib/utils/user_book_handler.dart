@@ -32,8 +32,15 @@ class UserBookHandler {
       context,
       MaterialPageRoute(
         builder: (_) => Scaffold(
-          backgroundColor: Colors.white,
+          appBar: AppBar(
+            iconTheme: IconThemeData(
+              color: Theme.of(context).appBarTheme.foregroundColor,
+            ),
+          ),
           body: EpubViewer(
+            displaySettings: EpubDisplaySettings(
+              theme: EpubTheme.dark(),
+            ),
             epubController: epubController,
             epubSource: EpubSource.fromFile(File(filePath)),
           ),
