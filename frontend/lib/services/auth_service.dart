@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -326,22 +327,36 @@ class AuthService {
     return newEmail;
   }
 
-  // Future<http.StreamedResponse> downloadEpub({required int bookId}) async {
+  // Download, and save could be separated
   Future<void> downloadEpub({required int bookId}) async {
     developer.log("Download book...");
-    //   final endpoint = '$host/epubsEndpoint'.replaceAll('{book}', bookId.toString());
 
-    //   FileDownloader.downloadFile(
-    //     url: endpoint,
-    //     headers: {
-    //       'Content-Type': 'application/epub+zip',
-    //       'Authorization': 'Bearer ${user.accessToken}',
-    //     },
-    //     name: "$bookId.epub",
-    //     subPath: "epubs/",
-    //     onDownloadCompleted: (String path) {
-    //       developer.log('FILE DOWNLOADED TO PATH: $path');
-    //     },
-    //   );
+    final endpoint = '$host/$epubsEndpoint'.replaceAll(
+      '{book}',
+      bookId.toString(),
+    );
+
+    FileDownloader.downloadFile(
+      url: endpoint,
+      headers: {'Authorization': 'Bearer ${user.accessToken}'},
+      name: "$bookId.epub",
+      subPath: "epubs/",
+      downloadService: DownloadService.httpConnection,
+      onDownloadCompleted: (String path) async {
+        // Removes mimetype from name
+        String newName = '/storage/emulated/0/Download/epubs/$bookId.epub';
+
+        await File(
+          path,
+        ).rename(newName);
+
+        developer.log('FILE DOWNLOADED TO PATH: $newName');
+      },
+      onDownloadError: (String error) {
+        throw Exception(error);
+      },
+    );
+
+    developer.log("Downloaded book...");
   }
 }
