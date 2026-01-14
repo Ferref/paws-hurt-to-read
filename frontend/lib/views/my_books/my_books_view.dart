@@ -107,14 +107,19 @@ class _MyBooksViewState extends State<MyBooksView>
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    title,
-                    style: GoogleFonts.lato(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  child: SizedBox(
+                    height: 42,
+                    child: Center(
+                      child: Text(
+                        title,
+                        style: GoogleFonts.lato(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

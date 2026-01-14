@@ -85,13 +85,18 @@ class _ExploreViewState extends State<ExploreView>
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              book.title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.lato(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                            child: SizedBox(
+                              height: 42,
+                              child: Center(
+                                child: Text(
+                                  book.title,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.lato(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
