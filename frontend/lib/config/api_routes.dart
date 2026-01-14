@@ -16,5 +16,7 @@ class ApiRoutes {
   static final String bookDetails = "api/books/{id}";
   static final String bookCovers = "api/books/range/{range}";
 
-  static final String  userBooks = "api/users/{user}/books/{book}";
+  static final String userBooks = "api/users/{user}/books/{book}";
+
+  static final String epubs = "api/ebooks";
 }

@@ -15,6 +15,7 @@ class AuthService {
   final String refreshEndpoint = ApiRoutes.refresh;
   final String userBooksEndpoint = ApiRoutes.userBooks;
   final String registrationEmailEndpoint = ApiRoutes.registrationEmail;
+  final String epubsEndpoint = ApiRoutes.epubs;
 
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
@@ -322,5 +323,10 @@ class AuthService {
 
     user.email = newEmail;
     return newEmail;
+  }
+
+  // Future<http.StreamedResponse> downloadEpub({required int bookId}) async {
+  Future<void> downloadEpub({required int bookId}) async {
+    developer.log("Downloading epub");
   }
 }

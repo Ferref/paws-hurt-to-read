@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:frontend/services/auth_service.dart';
+import 'package:frontend/utils/user_book_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -10,6 +11,7 @@ class ChoiceWidget extends StatefulWidget {
   final String title;
   final String message;
   final AuthService _authService = getIt<AuthService>();
+  final UserBookHandler _userBookHandler = getIt<UserBookHandler>();
 
   int bookId;
 
@@ -67,6 +69,12 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                           setState(() => _loading = true);
 
                           try {
+                            bool bookOnDevice = await widget._userBookHandler.isBookOnDevice(widget.bookId);
+                            developer.log(bookOnDevice.toString());
+
+                            if (!bookOnDevice) {
+                              await widget._authService.downloadEpub(bookId: widget.bookId);
+                            }
                             // await widget._authService.openBook(widget.bookId);
                           } catch (e) {
                             developer.log(e.toString());

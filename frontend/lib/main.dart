@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/utils/user_book_handler.dart';
 import 'package:get_it/get_it.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 
@@ -22,6 +23,7 @@ final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 void setup() {
   getIt.registerSingleton<FlutterSecureStorage>(FlutterSecureStorage());
+  getIt.registerSingleton<UserBookHandler>(UserBookHandler());
   
   getIt.registerSingleton<AuthService>(AuthService());
   getIt.registerSingleton<RegistrationService>(RegistrationService());
