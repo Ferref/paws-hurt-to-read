@@ -5,6 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/utils/user_book_handler.dart';
 import 'package:get_it/get_it.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_inappwebview_android/flutter_inappwebview_android.dart';
 
 import 'package:frontend/services/book_service.dart';
 import 'package:frontend/services/registration_service.dart';
@@ -24,18 +26,15 @@ final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 void setup() {
   getIt.registerSingleton<FlutterSecureStorage>(FlutterSecureStorage());
   getIt.registerSingleton<UserBookHandler>(UserBookHandler());
-  
+
   getIt.registerSingleton<AuthService>(AuthService());
   getIt.registerSingleton<RegistrationService>(RegistrationService());
   getIt.registerSingleton<BookService>(BookService());
-  getIt.registerSingleton<AuthViewModel>(
-    AuthViewModel(getIt<AuthService>()),
-  );
+  getIt.registerSingleton<AuthViewModel>(AuthViewModel(getIt<AuthService>()));
   getIt.registerSingleton<RegistrationViewModel>(
     RegistrationViewModel(getIt<RegistrationService>()),
   );
   getIt.registerSingleton<MyBooksViewModel>(MyBooksViewModel());
-  
 
   getIt.registerFactory<BookDetailsViewModel>(
     () => BookDetailsViewModel(getIt<BookService>(), getIt<AuthService>()),
@@ -50,6 +49,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   setup();
+  InAppWebViewPlatform.instance = AndroidInAppWebViewPlatform();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   runApp(MyApp(savedThemeMode: savedThemeMode));
 }

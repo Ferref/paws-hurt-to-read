@@ -69,13 +69,23 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                           setState(() => _loading = true);
 
                           try {
-                            bool bookOnDevice = await widget._userBookHandler.isBookOnDevice(widget.bookId);
+                            bool bookOnDevice = await widget._userBookHandler
+                                .isBookOnDevice(widget.bookId);
                             developer.log(bookOnDevice.toString());
 
                             if (!bookOnDevice) {
-                              await widget._authService.downloadEpub(bookId: widget.bookId);
+                              await widget._authService.downloadEpub(
+                                bookId: widget.bookId,
+                              );
                             }
-                            // await widget._authService.openBook(widget.bookId);
+
+                            if (!context.mounted) {
+                              return;
+                            }
+                            
+                            widget._userBookHandler.openBook(
+                              context, widget.bookId,
+                            );
                           } catch (e) {
                             developer.log(e.toString());
                           } finally {
