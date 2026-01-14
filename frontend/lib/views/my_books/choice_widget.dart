@@ -59,13 +59,6 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                       ? null
                       : () async {
                           Navigator.pop(context);
-
-                          scaffoldMessengerKey.currentState?.showSnackBar(
-                            const SnackBar(
-                              content: Text('Downloading book...'),
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
                           setState(() => _loading = true);
 
                           try {
@@ -122,10 +115,9 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
 
                         Navigator.pop(context);
 
-                        scaffoldMessengerKey.currentState?.showSnackBar(
-                          const SnackBar(
-                            content: Text('Book deleted'),
-                            duration: Duration(seconds: 5),
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Book deleted from device...'),
                           ),
                         );
                       }
@@ -135,10 +127,9 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                       }
 
                       Navigator.pop(context);
-                      scaffoldMessengerKey.currentState?.showSnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Failed to delete book: $e'),
-                          duration: const Duration(seconds: 5),
+                          content: Text('Failed to delete book from device...'),
                         ),
                       );
                     }
@@ -158,10 +149,9 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
 
                       Navigator.pop(context, true);
 
-                      scaffoldMessengerKey.currentState?.showSnackBar(
-                        const SnackBar(
-                          content: Text('Book deleted'),
-                          duration: Duration(seconds: 5),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Book removed from you account...'),
                         ),
                       );
                     } catch (e) {
@@ -171,12 +161,11 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
 
                       Navigator.pop(context);
 
-                      scaffoldMessengerKey.currentState?.showSnackBar(
-                        const SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
                           content: Text(
-                            'Could not delete book please try again later',
+                            'Could not delete book, please try again later...',
                           ),
-                          duration: Duration(seconds: 3),
                         ),
                       );
                     }
