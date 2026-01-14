@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 
 import 'package:frontend/config/api_routes.dart';
 import 'package:frontend/models/user_book.dart';
@@ -327,6 +328,20 @@ class AuthService {
 
   // Future<http.StreamedResponse> downloadEpub({required int bookId}) async {
   Future<void> downloadEpub({required int bookId}) async {
-    developer.log("Downloading epub");
+    developer.log("Download book...");
+    //   final endpoint = '$host/epubsEndpoint'.replaceAll('{book}', bookId.toString());
+
+    //   FileDownloader.downloadFile(
+    //     url: endpoint,
+    //     headers: {
+    //       'Content-Type': 'application/epub+zip',
+    //       'Authorization': 'Bearer ${user.accessToken}',
+    //     },
+    //     name: "$bookId.epub",
+    //     subPath: "epubs/",
+    //     onDownloadCompleted: (String path) {
+    //       developer.log('FILE DOWNLOADED TO PATH: $path');
+    //     },
+    //   );
   }
 }

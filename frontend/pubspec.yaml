@@ -47,6 +47,7 @@ dependencies:
   toggle_switch: ^2.3.0
   adaptive_theme: ^3.7.2
   flutter_secure_storage: ^10.0.0
+  flutter_file_downloader: ^2.1.1
 
 dev_dependencies:
   flutter_test:
