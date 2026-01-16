@@ -11,7 +11,15 @@ class TokenController extends Controller
 {
     public function refresh(Request $request): JsonResponse
     {
-        $tokens = app(TokenService::class)->refresh($request->string('refresh_token'));
+        $refreshToken = $request->header('X-Refresh-Token');
+
+        if (!$refreshToken) {
+            return response()->json([
+                'message' => 'Refresh token missing',
+            ], 401);
+        }
+
+        $tokens = app(TokenService::class)->refresh($refreshToken);
 
         return response()->json($tokens, 200);
     }
