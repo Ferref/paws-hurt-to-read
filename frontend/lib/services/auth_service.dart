@@ -183,7 +183,7 @@ class AuthService {
     final response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'refresh_token': refreshToken}),
+      body: jsonEncode({'refresh_token': refreshToken}), // TODO: COnsider using header instead
     );
 
     if (response.statusCode != 200) {

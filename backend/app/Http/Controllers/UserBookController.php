@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Models\Book;
 use App\Models\UserBook;
 
-final class UserBookController extends Controller
+class UserBookController extends Controller
 {
     public function index(User $user): JsonResponse
     {
