@@ -1,0 +1,14 @@
+$boxPadding: 2rem;
+.container {
+    z-index: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.tales {
+    background-color: azure;
+    padding: $boxPadding;
+}
