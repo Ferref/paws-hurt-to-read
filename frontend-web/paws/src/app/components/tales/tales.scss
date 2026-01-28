@@ -1,0 +1,86 @@
+$backgroundColor: black;
+$boxPadding: 1rem;
+$headerFontSize: 1rem;
+
+$primaryColor: white;
+
+.tales-window {
+    width: 100%;
+    height: 100%;
+    padding: $boxPadding;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.window-header {
+    background-color: $primaryColor;
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    z-index: 2;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: $headerFontSize;
+}
+
+.tales {
+    min-width: 700px;
+    height: 500px;
+    background-color: $backgroundColor;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: $primaryColor;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: $boxPadding;
+    align-items: center;
+}
+
+.tale {
+    width: 90%;
+    padding: $boxPadding;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.window-footer {
+    background-color: $backgroundColor;
+    color: $primaryColor;
+    width: 100%;
+    height: 1rem;
+    display: flex;
+    justify-content: start;
+    font-weight: 500;
+    position: relative;
+    gap: $boxPadding;
+    bottom: 2rem;
+    z-index: 4;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: $headerFontSize * 1.5;
+}
+
+.cursor {
+    padding-bottom: 1rem;
+    padding-left: 2rem;
+    animation-name: toggle;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes toggle {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

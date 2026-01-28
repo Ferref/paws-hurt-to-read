@@ -1,15 +1,4 @@
 <app-background />
 <div class="container">
-    <div class="tales">
-        @for (tale of tales; track tale.name) {
-            <div class="tale">
-                <div class="tale-name">{{ tale.name }}</div>
-                <div class="tale-value">{{ tale.value }}</div>
-            </div>
-        } @empty {
-            <div class="error">
-                There are no items
-            </div>
-        }
-    </div>
+    <app-tales />
 </div>
