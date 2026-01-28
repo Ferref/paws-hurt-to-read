@@ -19,7 +19,7 @@ export class Particles implements OnInit {
 
   particlesOptions = {
     background: {
-      color: { value: '#180b1bff' }
+      color: { value: '#4B0082' }
     },
     fpsLimit: 144,
     interactivity: {

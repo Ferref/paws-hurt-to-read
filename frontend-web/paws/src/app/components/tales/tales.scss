@@ -7,7 +7,6 @@ $primaryColor: white;
 .tales-window {
     width: 100%;
     height: 100%;
-    padding: $boxPadding;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -29,7 +28,7 @@ $primaryColor: white;
 }
 
 .tales {
-    min-width: 700px;
+    gap: 3rem;
     height: 500px;
     background-color: $backgroundColor;
     font-family: 'Courier New', Courier, monospace;
@@ -43,6 +42,7 @@ $primaryColor: white;
 }
 
 .tale {
+    gap: $boxPadding;
     width: 90%;
     padding: $boxPadding;
     display: flex;
@@ -60,16 +60,14 @@ $primaryColor: white;
     justify-content: start;
     font-weight: 500;
     position: relative;
-    gap: $boxPadding;
     bottom: 2rem;
     z-index: 4;
     font-family: 'Courier New', Courier, monospace;
-    font-size: $headerFontSize * 1.5;
+    font-size: $headerFontSize * 1.25;
+    padding-left: $boxPadding;
 }
 
 .cursor {
-    padding-bottom: 1rem;
-    padding-left: 2rem;
     animation-name: toggle;
     animation-duration: 1s;
     animation-iteration-count: infinite;
