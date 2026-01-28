@@ -12,6 +12,6 @@ export class Tales {
     { id: 1, name: "Goal......", value: "We'll analyze you! I mean the books you're reading :)" },
     { id: 2, name: "Library...", value: "We currently have 999 books waiting to be read......."},
     { id: 3, name: "Import.....", value: "Did you know? You can import your own books too......"},
-    { id: 4, name: "Platforms..", value: "[Android] => get it form the cat"},
+    { id: 4, name: "Platforms..", value: "{Android} => Get it form the cat....................."},
   ];
 }
