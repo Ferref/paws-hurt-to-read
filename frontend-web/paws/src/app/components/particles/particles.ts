@@ -17,10 +17,9 @@ export class Particles implements OnInit {
     background: {
       color: { value: '#23023fff' }
     },
-    fpsLimit: 144,
+    fpsLimit: 30,
     interactivity: {
       events: {
-        onClick: { enable: true, mode: 'push' },
         onHover: { enable: true, mode: 'grab' }
       },
       modes: {
@@ -33,7 +32,7 @@ export class Particles implements OnInit {
     },
     particles: {
       color: {
-        value: ['#00ffff', '#ff00ff', '#39ff14', '#ffea00', '#ff0055'],
+        value: ['#ff00ff', '#39ff14', '#ff0055'],
         animation: {
           enable: true,
           speed: 20,
